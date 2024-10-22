@@ -33,7 +33,7 @@ export const GET: APIRoute = async ({ params, props }) => {
             <p style="font-size: 48px;">Personal Website</p>
             <p style="font-size: 38px;">${title}</p>
           </div>
-          <img src="/assets/img/zachary_s.JPG" width="200px" height="200px" style="border: 3px solid black; border-radius: 0.5rem;" />
+          <img src="https://m.media-amazon.com/images/M/MV5BZjM2M2E3YzAtZDJjYy00MDhkLThiYmItOGZhNzQ3NTgyZmI0XkEyXkFqcGc@._V1_FMjpg_UX1000_.jpg" width="200px" height="200px" style="border: 3px solid black; border-radius: 0.5rem;" />
         </div>
         <div style="display: flex;">
           <p style="font-size: 24px;">${description}</p>
