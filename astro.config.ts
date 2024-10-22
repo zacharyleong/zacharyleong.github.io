@@ -5,7 +5,6 @@ import UnoCSS from 'unocss/astro';
 export default defineConfig({
   // used to generate images
   site: "https://zacharyleong.github.io",
-  base: "zacharyleong.github.io",
   trailingSlash: 'ignore',
   integrations: [sitemap(), UnoCSS({ injectReset: true })],
   vite: {
