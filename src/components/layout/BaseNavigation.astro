@@ -6,6 +6,7 @@ interface Props {
 const navigationItems = [
   { name: 'Home', url: '/' },
   { name: 'Blog', url: '/blog/' },
+  { name: 'Demo Reel', url: 'https://vimeo.com/1020070019?share=copy' },
 ];
 
 const socialIcons = [
@@ -44,6 +45,7 @@ const { pageTitle } = Astro.props;
               class='text-lg font-medium hover:text-green hover:underline transition-all duration-150 ease-in-out'
               href={item.url}
               title={`Go to ${item.name}`}
+              target={item.name === 'Demo Reel' ? '_blank' : '_self'}
             >
               {item.name}
             </a>
