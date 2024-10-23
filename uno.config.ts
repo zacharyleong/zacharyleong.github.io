@@ -18,4 +18,9 @@ export default defineConfig({
     }),
     presetTypography(),
   ],
+  theme: {
+    colors: {
+      lightblue: '#add8e6', // Light blue color
+    },
+  },
 });

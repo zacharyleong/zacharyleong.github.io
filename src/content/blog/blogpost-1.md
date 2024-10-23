@@ -1,7 +1,7 @@
 ---
-title: Blogpost 1
-pubDate: 11/09/2022 14:25
-author: "Elian Van Cutsem"
+title: Snowboard Game
+pubDate: 10/22/2024 11:25
+author: "Zachary Leong"
 tags:
   - JavaScript
   - Astro
