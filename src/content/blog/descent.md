@@ -27,9 +27,8 @@ Bis pallor et mecum me, igne patruelibus *tendebam*, vultu sterilique terruerat
 - Potuissent aetas parili coniuge se lumina breve
 - Tamen ille crepitantibus ulla coeperunt quibus iugulo
 - Pindusque solacia luctataque felix
-
 ## Longum minus sic saepe
-
+![[2024-11-19 18-45-17.mp4]]
 Genu cupiens quoque: cum dolor: sollicitive cantu, et piae Leuconoe, huius non
 nil tuli Peleusque rauca. Et alvum cuncti Hippodamas meritis nec coniunx ausa,
 pete. Congestaque nisi nullus poena. Tanto cum, curvis vulnera quod optatis,
