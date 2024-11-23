@@ -3,16 +3,19 @@ import { getCollection } from 'astro:content';
 import BlogList from '../projects/BlogList.astro';
 import { Card } from '@eliancodes/brutal-ui';
 import { Button } from '@eliancodes/brutal-ui';
+import type { CollectionEntry } from 'astro:content';
 
 interface Props {
   count?: number;
+  filter?: string;
 }
 
-const { count } = Astro.props;
+const { count, filter } = Astro.props;
 
-const posts = await getCollection('blog').then((posts) =>
-  posts.reverse().slice(0, count ?? 3)
-);
+const posts = await getCollection('blog').then((posts) => {
+  const filteredPosts = filter ? posts.filter(post => !post.data.title.includes(filter)) : posts;
+  return filteredPosts.reverse().slice(0, count ?? 3)
+});
 ---
 
 <section class='mt-8'>

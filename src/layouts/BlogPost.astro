@@ -8,6 +8,7 @@ const ogImage = new URL(`/v1/generate/og/${Astro.params.slug}.png`, Astro.url);
 
 const { content, headings } = Astro.props;
 const { title, description } = content;
+
 ---
 
 <Layout
@@ -22,6 +23,6 @@ const { title, description } = content;
     </BlogContent>
   </main>
   <section class='p-6'>
-    <RecentBlogPosts count={6} />
+    <RecentBlogPosts count={6} filter={title}/>
   </section>
 </Layout>
