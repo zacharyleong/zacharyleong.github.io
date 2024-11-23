@@ -1,6 +1,7 @@
 ---
 import type { CollectionEntry } from 'astro:content';
 import BlogSummaryCard from './BlogSummaryCard.astro';
+import LinkSummaryCard from './LinkSummaryCard.astro';
 
 interface Props {
   posts: CollectionEntry<'blog'>[];
@@ -12,9 +13,14 @@ const { posts } = Astro.props;
 <ul class='grid md:grid-cols-2 lg:grid-cols-3 gap-8'>
   {
     posts.map((post) => {
+      const { externalLink } = post.data;
       return (
         <li>
-          <BlogSummaryCard post={post} />
+          {externalLink ? (
+            <LinkSummaryCard post={post} />
+          ) : (
+            <BlogSummaryCard post={post} />
+          )}
         </li>
       );
     })

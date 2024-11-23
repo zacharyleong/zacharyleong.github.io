@@ -1,0 +1,25 @@
+---
+import Layout from './Default.astro';
+import LinkContent from '@components/blog/LinkContent.astro';
+import RecentBlogPosts from '@components/generic/RecentBlogPosts.astro';
+
+const ogImage = new URL(`/v1/generate/og/${Astro.params.slug}.png`, Astro.url);
+
+const { content, headings } = Astro.props;
+const { title, description } = content;
+---
+
+<Layout
+  title={title as string}
+  description={description as string}
+  ogImage={ogImage}
+>
+  <main class='p-6 lg:grid lg:grid-cols-3 flex justify-center'>
+    <div class="lg:col-span-2 flex justify-center">
+      <LinkContent content={content}></LinkContent>
+    </div>
+  </main>
+  <section class='p-6'>
+    <RecentBlogPosts count={6} />
+  </section>
+</Layout>
