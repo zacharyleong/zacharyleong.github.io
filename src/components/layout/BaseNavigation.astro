@@ -7,6 +7,7 @@ const navigationItems = [
   { name: 'Home', url: '/' },
   { name: 'Projects', url: '/blog/' },
   { name: 'Demo Reel', url: 'https://vimeo.com/1020070019?share=copy' },
+  { name : 'Resume', url: ''}
 ];
 
 const socialIcons = [
@@ -21,9 +22,9 @@ const socialIcons = [
     icon: 'i-uil-instagram',
   },
   {
-    name: 'YouTube',
-    url: 'https://www.youtube.com/@_feelinghappy_',
-    icon: 'i-uil-youtube',
+    name: 'Email',
+    url: 'mailto:zachary.j.leong@proton.me',
+    icon: 'i-uil-envelope',
   },
 ];
 
@@ -42,7 +43,7 @@ const { pageTitle } = Astro.props;
         navigationItems.map((item) => (
           <li>
             <a
-              class='text-lg font-medium hover:text-green hover:underline transition-all duration-150 ease-in-out'
+              class={`text-lg font-medium hover:text-green hover:underline transition-all duration-150 ease-in-out ${item.name === 'Resume' ? 'resume-link' : ''}`}
               href={item.url}
               title={`Go to ${item.name}`}
               target={item.name === 'Demo Reel' ? '_blank' : '_self'}
@@ -58,8 +59,8 @@ const { pageTitle } = Astro.props;
             <a
               href={item.url}
               class='hover:text-green hover:underline transition-all duration-150 ease-in-out'
-              target='_blank'
-              title={`'See @Zachary Leong on ${item.name}`}
+              target={item.name === 'Email' ? '_self' : '_blank'}
+              title={item.name === 'Email' ? 'Send an email to Zachary Leong' : `See @Zachary Leong on ${item.name}`}
             >
               <div class:list={[item.icon, 'w-6 h-6']} />
             </a>

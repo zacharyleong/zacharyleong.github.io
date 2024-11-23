@@ -6,20 +6,13 @@ import { Pill } from '@eliancodes/brutal-ui';
 import { Button } from '@eliancodes/brutal-ui';
 import { Card } from '@eliancodes/brutal-ui';
 
-const builtWith = [
-  { name: 'Astro', url: 'https://astro.build/' },
-  { name: 'UnoCSS', url: 'https://uno.antfu.me/' },
-  {
-    name: 'Content Collections',
-    url: 'https://docs.astro.build/en/guides/content-collections/',
-  },
-  { name: 'RSS', url: 'https://docs.astro.build/en/guides/rss/' },
-  {
-    name: 'Sitemap',
-    url: 'https://docs.astro.build/en/guides/integrations-guide/sitemap/',
-  },
-  { name: 'Vercel', url: 'https://vercel.com' },
-  { name: 'TypeScript', url: 'https://www.typescriptlang.org/' },
+const skills = [
+{ name: 'Houdini', url: 'https://www.sidefx.com/products/houdini/' },
+{ name: 'Blender', url: 'https://www.blender.org/' },
+{ name: 'Unity', url: 'https://unity.com/' },
+{ name: 'Unreal Engine', url: 'https://www.unrealengine.com/' },
+{ name: 'Plasticity', url: 'https://www.plasticity.xyz/' },
+{ name: 'Substance Designer', url: 'https://www.adobe.com/products/substance3d-designer.html' },
 ];
 ---
 
@@ -35,11 +28,11 @@ const builtWith = [
         <Card>
           <div class='flex flex-col justify-between items-start gap-4'>
             <p class='mt-4 outfit text-2xl md:text-5xl lg:text-7xl'>
-              Hello!
-              I'm Zachary Leong
+              Hey!
+              I'm Zachary
             </p>
-            <p class='mt-2 outfit text-xl md:text-3xl lg:text-5xl'>
-              An undergraduate at UPenn.
+            <p class='mt-2 mb-4 outfit text-xl md:text-3xl lg:text-5xl'>
+              A student at UPenn studying computer science and computer graphics.
             </p>
             <Button target={'_self'} href='/blog/'>
               Check out my projects &rarr;
@@ -49,12 +42,17 @@ const builtWith = [
       </div>
       <div class='col-span-4'>
         <Card>
-          <h2 class='text-2xl md:text-4xl lg:text-6xl mb-8 dm-serif'>
-            Brutal is built with
-          </h2>
+          <div class='mb-8 iframe-container'>
+            <iframe
+              src="https://player.vimeo.com/video/1020070019"
+              allow="autoplay; fullscreen"
+              allowfullscreen
+              title="Demo Reel"
+            ></iframe>
+          </div>
           <ul class='flex gap-4 flex-wrap'>
             {
-              builtWith.map((item) => (
+              skills.map((item) => (
                 <li>
                   <Pill>
                     <a
