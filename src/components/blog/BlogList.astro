@@ -8,11 +8,13 @@ interface Props {
 }
 
 const { posts } = Astro.props;
+
+const sortedPosts = posts.sort((a, b) => new Date(b.data.pubDate).getTime() - new Date(a.data.pubDate).getTime());
 ---
 
 <ul class='grid md:grid-cols-2 lg:grid-cols-3 gap-8'>
   {
-    posts.map((post) => {
+    sortedPosts.map((post) => {
       const { externalLink } = post.data;
       return (
         <li>

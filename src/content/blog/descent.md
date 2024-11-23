@@ -1,14 +1,13 @@
 ---
-title: Blogpost 4
-author: Elian Van Cutsem
-pubDate: 2023-02-15 12:00
+title: 'Descent: Snowboard Game'
+pubDate: 2024-10-22 9:41
+author: "Zachary Leong"
 tags:
-  - Astro
-  - JavaScript
-  - Web Development
+  - Unity
+  - Blender
+imgUrl: '../../assets/descent.png'
 description: Lorem markdownum longo os thyrso telum, continet servat fetus nymphae, vox nocte sedesque, decimo. Omnia esse, quam sive; conplevit illis indestrictus admovit dedit sub quod protectus, impedit non.
-imgUrl: '../../assets/astro.jpeg'
-layout: "../../layouts/BlogPost.astro"
+layout: '../../layouts/BlogPost.astro'
 ---
 
 ## Deorum petiit ignis

@@ -5,7 +5,7 @@ pubDate: 2024-10-22 11:13
 author: Zachary Leong
 tags:
   - Houdini
-imgUrl: '../../assets/astro.jpeg'
+imgUrl: '../../assets/city_gen.png'
 layout: ../../layouts/BlogPost.astro
 ---
 
