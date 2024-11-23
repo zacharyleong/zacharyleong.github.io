@@ -5,7 +5,7 @@ interface Props {
 
 const navigationItems = [
   { name: 'Home', url: '/' },
-  { name: 'Projects', url: '/blog/' },
+  { name: 'Projects', url: '/projects/' },
   { name: 'Demo Reel', url: 'https://vimeo.com/1020070019?share=copy' },
   { name : 'Resume', url: '/pdf/resume.pdf'}
 ];
@@ -72,7 +72,7 @@ const { pageTitle } = Astro.props;
   <nav class='md:hidden flex'>
     <h2 class='hidden'>Mobile Navigation</h2>
     <ul>
-      <li><a href='/blog/'>Projects</a></li>
+      <li><a href='/projects/'>Projects</a></li>
     </ul>
   </nav>
 </header>

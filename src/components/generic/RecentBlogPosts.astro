@@ -1,6 +1,6 @@
 ---
 import { getCollection } from 'astro:content';
-import BlogList from '../blog/BlogList.astro';
+import BlogList from '../projects/BlogList.astro';
 import { Card } from '@eliancodes/brutal-ui';
 import { Button } from '@eliancodes/brutal-ui';
 
@@ -22,10 +22,10 @@ const posts = await getCollection('blog').then((posts) =>
         Recent Projects
       </h2>
       <div class='hidden md:block'>
-        <Button href='/blog/'>Go to projects &rarr;</Button>
+        <Button href='/projects/'>Go to projects &rarr;</Button>
       </div>
       <div class='block md:hidden'>
-        <Button href='/blog/'>to projects</Button>
+        <Button href='/projects/'>to projects</Button>
       </div>
     </div>
     <BlogList posts={posts} />
