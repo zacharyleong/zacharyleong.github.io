@@ -3,5 +3,6 @@
   "newFileFolderPath": "content/blog",
   "newLinkFormat": "relative",
   "attachmentFolderPath": "img",
-  "useMarkdownLinks": true
+  "useMarkdownLinks": true,
+  "alwaysUpdateLinks": true
 }
