@@ -14,7 +14,8 @@ const { count, filter } = Astro.props;
 
 const posts = await getCollection('blog').then((posts) => {
   const filteredPosts = filter ? posts.filter(post => !post.data.title.includes(filter)) : posts;
-  return filteredPosts.reverse().slice(0, count ?? 3)
+  const sortedPosts = filteredPosts.sort((a, b) => new Date(b.data.pubDate).getTime() - new Date(a.data.pubDate).getTime())
+  return sortedPosts.slice(0, count ?? 3)
 });
 ---
 
