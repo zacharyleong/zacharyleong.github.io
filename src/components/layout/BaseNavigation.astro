@@ -51,7 +51,7 @@ const { pageTitle } = Astro.props;
               class={`text-lg font-medium hover:text-green hover:underline transition-all duration-150 ease-in-out ${item.name === 'Resume' ? 'resume-link' : ''}`}
               href={item.url}
               title={`Go to ${item.name}`}
-              target={item.name === 'Demo Reel' ? '_blank' : '_self'}
+              target={item.name === 'Demo Reel' || item.name == 'Resume' ? '_blank' : '_self'}
             >
               {item.name}
             </a>
