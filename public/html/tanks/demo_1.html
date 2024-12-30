@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>2D Tank Maze Game</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/phaser/3.60.0/phaser.min.js"></script>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+        }
+        canvas {
+            display: block;
+            margin: 0 auto;
+        }
+    </style>
+</head>
+<body>
+    <script>
+        const config = {
+            type: Phaser.AUTO,
+            width: 320,
+            height: 320,
+            backgroundColor: '#ffffff', // Set background color to white
+            physics: {
+                default: 'arcade',
+                arcade: {
+                    debug: false
+                }
+            },
+            scene: {
+                preload: preload,
+                create: create,
+                update: update
+            }
+        };
+
+        const game = new Phaser.Game(config);
+
+        let tank, cursors, walls, goal;
+        let tankSpeed = 150;
+        let tankRotationSpeed = 3;
+
+        function preload() {
+            this.load.image('tank', '/html/tanks/tankBase.png');
+        }
+
+        function create() {
+            tank = this.physics.add.sprite(52, 52, 'tank');
+            tank.setCollideWorldBounds(true);
+
+            walls = this.physics.add.staticGroup();
+
+            // Create maze walls
+            createMaze.call(this, walls);
+
+            this.physics.add.collider(tank, walls);
+
+            cursors = this.input.keyboard.addKeys({
+                left: Phaser.Input.Keyboard.KeyCodes.A,
+                right: Phaser.Input.Keyboard.KeyCodes.D,
+                up: Phaser.Input.Keyboard.KeyCodes.W,
+                down: Phaser.Input.Keyboard.KeyCodes.S
+            });
+        }
+
+        function update() {
+            if (cursors.left.isDown) {
+                tank.angle -= tankRotationSpeed;
+            } else if (cursors.right.isDown) {
+                tank.angle += tankRotationSpeed;
+            }
+
+            if (cursors.up.isDown) {
+                this.physics.velocityFromAngle(tank.angle, tankSpeed, tank.body.velocity);
+            } else if (cursors.down.isDown) {
+                this.physics.velocityFromAngle(tank.angle, -tankSpeed, tank.body.velocity);
+            } else {
+                tank.setVelocity(0);
+            }
+        }
+
+        function createMaze(walls) {
+            const mazeData = [
+                'XXXXXXXXX',
+                'X       X',
+                'XXXXXXX X',
+                'X     X X',
+                'X  X  X X',
+                'X  X    X',
+                'XXXXXXX X',
+                'X       X',
+                'XXXXXXXXX',
+            ];
+
+            const tileSize = 35;
+
+            mazeData.forEach((row, rowIndex) => {
+                row.split('').forEach((tile, colIndex) => {
+                    if (tile === 'X') {
+                        const x = colIndex * tileSize;
+                        const y = rowIndex * tileSize;
+
+                        // Create a rectangle for the wall with grey color
+                        const wall = this.add.rectangle(x + tileSize / 2, y + tileSize / 2, tileSize, tileSize, 0x808080);
+                        this.physics.add.existing(wall, true);
+                        walls.add(wall);
+                    }
+                });
+            });
+        }
+    </script>
+</body>
+</html>

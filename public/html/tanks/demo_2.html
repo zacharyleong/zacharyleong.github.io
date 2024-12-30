@@ -1,0 +1,152 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <title>2D Tank Maze Game</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/phaser/3.60.0/phaser.min.js"></script>
+    <style>
+      body {
+        margin: 0;
+        padding: 0;
+      }
+      canvas {
+        display: block;
+        margin: 0 auto;
+      }
+    </style>
+  </head>
+  <body>
+    <script>
+      const config = {
+        type: Phaser.AUTO,
+        width: 320,
+        height: 320,
+        backgroundColor: "#ffffff", // Set background color to white
+        physics: {
+          default: "arcade",
+          arcade: {
+            debug: false,
+          },
+        },
+        scene: {
+          preload: preload,
+          create: create,
+          update: update,
+        },
+      };
+
+      const game = new Phaser.Game(config);
+
+      let tank, cursors, walls, goal;
+      let maxSpeed = 150;
+      let tankSpeed = 150;
+
+      function preload() {
+        this.load.image("tank", "/html/tanks/tankBase.png");
+      }
+
+      function create() {
+        tank = this.physics.add.sprite(172, 172, "tank");
+        tank.setCollideWorldBounds(true);
+
+        walls = this.physics.add.staticGroup();
+
+        // Create maze walls
+        createMaze.call(this, walls);
+
+        this.physics.add.collider(tank, walls);
+
+        cursors = this.input.keyboard.addKeys({
+          left: Phaser.Input.Keyboard.KeyCodes.A,
+          right: Phaser.Input.Keyboard.KeyCodes.D,
+          up: Phaser.Input.Keyboard.KeyCodes.W,
+          down: Phaser.Input.Keyboard.KeyCodes.S,
+        });
+      }
+
+      function update() {
+        tank.body.setVelocity(0);
+
+        let moveX = 0;
+        let moveY = 0;
+
+        if (cursors.left.isDown) {
+          moveX = -1;
+        }
+        if (cursors.right.isDown) {
+          moveX = 1;
+        }
+        if (cursors.up.isDown) {
+          moveY = 1;
+        }
+        if (cursors.down.isDown) {
+          moveY = -1;
+        }
+
+        if (moveX !== 0 || moveY !== 0) {
+          let v = new Phaser.Math.Vector2(moveX, moveY);
+          let fwd = new Phaser.Math.Vector2(Math.cos(tank.rotation), Math.sin(tank.rotation));
+          let back = new Phaser.Math.Vector2(-Math.cos(tank.rotation), -Math.sin(tank.rotation));
+
+          let angleFwd = Math.acos(v.dot(fwd) / (v.length() * fwd.length()));
+          let angleBack = Math.acos(v.dot(back) / (v.length() * back.length()));
+
+          let deltaAngle = Math.min(angleFwd, angleBack);
+
+          if (angleBack < angleFwd) {
+            v.negate();
+          }
+
+          if (v.cross(fwd) > 0.05) {
+            if (fwd.cross(v) > 0) {
+                deltaAngle *= -1;
+            }
+            console.log(deltaAngle);
+            tank.rotation = Phaser.Math.Angle.RotateTo(tank.rotation, tank.rotation + deltaAngle, 0.1);
+          }
+          
+        //   let angle = Phaser.Math.Angle.BetweenPoints(vector1, vector2);
+        //   tank.setRotation(Phaser.Math.DegToRad(angle));
+        //   tank.body.setVelocityX(Math.cos(tank.rotation) * tankSpeed);
+        //   tank.body.setVelocityY(Math.sin(tank.rotation) * tankSpeed);
+        }
+      }
+
+      function createMaze(walls) {
+        const mazeData = [
+          "XXXXXXXXX",
+          "X       X",
+          "X   XXX X",
+          "X     X X",
+          "X  X  X X",
+          "X  X    X",
+          "X  X    X",
+          "X       X",
+          "XXXXXXXXX",
+        ];
+
+        const tileSize = 35;
+
+        mazeData.forEach((row, rowIndex) => {
+          row.split("").forEach((tile, colIndex) => {
+            if (tile === "X") {
+              const x = colIndex * tileSize;
+              const y = rowIndex * tileSize;
+
+              // Create a rectangle for the wall with grey color
+              const wall = this.add.rectangle(
+                x + tileSize / 2,
+                y + tileSize / 2,
+                tileSize,
+                tileSize,
+                0x808080
+              );
+              this.physics.add.existing(wall, true);
+              walls.add(wall);
+            }
+          });
+        });
+      }
+    </script>
+  </body>
+</html>

@@ -12,12 +12,24 @@ layout: ../../layouts/BlogPost.astro
 ## Rethinking Traditional Tank Controls
 In most traditional computer tank games, movement is controlled by 2 keys for rotating the hull, a key for moving forward, and a key for moving backward.
 
-Consider the WASD tank controls in World of Tanks:
+<div style="display: flex; justify-content: center;">
+  <iframe src="/html/tanks/demo_1.html" 
+          width="320"
+          height="320" 
+          style="overflow: hidden;" 
+          allow="fullscreen">
+  </iframe>
+</div>
+<p style="margin-top: 5px; text-align: center; color: grey">Demo of traditional tank controls (WASD)</p>
 
+## Proposal: Auto Tank Rotation
 
-<iframe src="/html/tanks_demo_1.html" 
-        width="300"
-        height="300" 
-        style="border: 1px solid #ccc; overflow: hidden;" 
-        allow="fullscreen">
-</iframe>
+<div style="display: flex; justify-content: center;">
+  <iframe src="/html/tanks/demo_2.html" 
+          width="320"
+          height="320" 
+          style="overflow: hidden;" 
+          allow="fullscreen">
+  </iframe>
+</div>
+<p style="margin-top: 5px; text-align: center; color: grey">Demo of improved tank controls (WASD)</p>
