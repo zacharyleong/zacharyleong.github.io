@@ -6,7 +6,7 @@ author: Zachary Leong
 tags:
   - Unity
   - Blender
-imgUrl: ../../assets/prism1.png
+imgUrl: ../../assets/prism.png
 layout: ../../layouts/BlogPost.astro
 ---
 
