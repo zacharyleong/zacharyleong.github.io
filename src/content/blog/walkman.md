@@ -1,5 +1,5 @@
 ---
-title: Walkman
+title: Walkman TPS-L2
 description: Reimagining the Sony Walkman TPS-L2 as a stylized render
 pubDate: 2025-04-17 10:16
 author: Zachary Leong
