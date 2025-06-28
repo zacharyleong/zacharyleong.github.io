@@ -4,80 +4,48 @@ interface Props {
 }
 
 const navigationItems = [
-  { name: 'Home', url: '/' },
-  { name: 'Projects', url: '/projects/' },
-  { name: 'Demo Reel', url: 'https://vimeo.com/1052903768' },
-  { name : 'Resume', url: '/pdf/zachary_leong_resume.pdf'}
-];
-
-const socialIcons = [
-  {
-    name: 'GitHub',
-    url: 'https://github.com/zdragonite21',
-    icon: 'i-uil-github',
-  },
-  {
-    name: 'Instagram',
-    url: 'https://www.instagram.com/_feelinghappy_',
-    icon: 'i-uil-instagram',
-  },
-  {
-    name: 'LinkedIn',
-    url: 'https://www.linkedin.com/in/zleong/',
-    icon: 'i-uil-linkedin',
-  },
-  {
-    name: 'Email',
-    url: 'mailto:zachary.j.leong@proton.me',
-    icon: 'i-uil-envelope',
-  },
+  { name: 'WORK', url: '/projects/' },
+  { name: 'REEL', url: 'https://vimeo.com/1052903768' },
+  { name: 'ABOUT', url: '/about/' },
+  { name : 'RESUME', url: '/pdf/zachary_leong_resume.pdf'}
 ];
 
 const { pageTitle } = Astro.props;
 ---
 
-<header class='border-b-4 border-black flex justify-between p-6 items-center'>
-  {pageTitle && <h1 class='hidden'>{pageTitle}</h1>}
-  <a href='/' title='Back to Home'>
-    <p class='righteous md:text-5xl'>Zachary Leong</p>
+<header class="border-b-4 border-black flex justify-between p-6 items-center">
+  {pageTitle && <h1 class="hidden">{pageTitle}</h1>}
+
+  <!-- Brand -->
+  <a href="/" title="Back to Home">
+    <p class="righteous md:text-5xl">ZACHARY LEONG</p>
   </a>
-  <nav class='hidden md:inline-block'>
-    <h2 class='hidden'>Navigation</h2>
-    <ul class='flex gap-8 poppins'>
-      {
-        navigationItems.map((item) => (
-          <li>
-            <a
-              class={`text-lg font-medium hover:text-green hover:underline transition-all duration-150 ease-in-out ${item.name === 'Resume' ? 'resume-link' : ''}`}
-              href={item.url}
-              title={`Go to ${item.name}`}
-              target={item.name === 'Demo Reel' || item.name == 'Resume' ? '_blank' : '_self'}
-            >
-              {item.name}
-            </a>
-          </li>
-        ))
-      }
-      {
-        socialIcons.map((item) => (
-          <li>
-            <a
-              href={item.url}
-              class='hover:text-green hover:underline transition-all duration-150 ease-in-out'
-              target={item.name === 'Email' ? '_self' : '_blank'}
-              title={item.name === 'Email' ? 'Send an email to Zachary Leong' : `See @Zachary Leong on ${item.name}`}
-            >
-              <div class:list={[item.icon, 'w-6 h-6']} />
-            </a>
-          </li>
-        ))
-      }
+
+
+  <!-- Main navigation -->
+  <nav class="hidden md:inline-block">
+    <h2 class="hidden">Navigation</h2>
+    <ul class="flex gap-8 poppins">
+      {navigationItems.map(item => (
+        <li>
+          <a
+            class={`text-2xl font-medium hover:text-green hover:underline transition-all duration-150 ease-in-out ${item.name === 'Resume' ? 'resume-link' : ''}`}
+            href={item.url}
+            title={`Go to ${item.name}`}
+            target={item.name === 'REEL' || item.name === 'RESUME' ? '_blank' : '_self'}
+          >
+            {item.name}
+          </a>
+        </li>
+      ))}
     </ul>
   </nav>
-  <nav class='md:hidden flex'>
-    <h2 class='hidden'>Mobile Navigation</h2>
+
+  <!-- Mobile nav stays the same -->
+  <nav class="md:hidden flex">
+    <h2 class="hidden">Mobile Navigation</h2>
     <ul>
-      <li><a href='/projects/'>Projects</a></li>
+      <li><a href="/projects/">Projects</a></li>
     </ul>
   </nav>
 </header>

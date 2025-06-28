@@ -4,7 +4,32 @@ export interface Props {
 }
 
 const { backToTop = false } = Astro.props;
+
+const socialIcons = [
+  {
+    name: 'GitHub',
+    url: 'https://github.com/zdragonite21',
+    icon: 'i-uil-github',
+  },
+  {
+    name: 'Instagram',
+    url: 'https://www.instagram.com/_feelinghappy_',
+    icon: 'i-uil-instagram',
+  },
+  {
+    name: 'LinkedIn',
+    url: 'https://www.linkedin.com/in/zleong/',
+    icon: 'i-uil-linkedin',
+  },
+  {
+    name: 'Email',
+    url: 'mailto:zachary.j.leong@gmail.com',
+    icon: 'i-uil-envelope',
+  },
+];
+
 ---
+
 
 {
   backToTop && (
@@ -33,11 +58,30 @@ const { backToTop = false } = Astro.props;
   )
 }
 
-<footer class='bg-black text-white p-6'>
+<footer class='bg-black text-white p-6 flex items-center justify-between'>
   <h2 class='hidden'>Footer</h2>
   <p class='outfit'>
     Zachary Leong
   </p>
+
+  <ul class="flex gap-4 mt-2">
+      {
+        socialIcons.map(item => (
+          <li>
+            <a
+              href={item.url}
+              class="hover:text-green hover:underline transition-all duration-150 ease-in-out"
+              target={item.name === 'Email' ? '_self' : '_blank'}
+              title={item.name === 'Email'
+                ? 'Send an email to Zachary Leong'
+                : `See @Zachary Leong on ${item.name}`}
+            >
+              <div class:list={[item.icon, 'w-6 h-6']} />
+            </a>
+          </li>
+        ))
+      }
+    </ul>
 </footer>
 
 <style>
