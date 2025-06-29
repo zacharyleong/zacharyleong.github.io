@@ -25,9 +25,9 @@ const skills = [
     <MobileSocials />
     <section id='about' class='grid md:grid-cols-8 gap-8 mt-4'>
       <div class='col-span-full'>
-        <div class='mb-8 iframe-container overflow-hidden rounded-lg video-wrapper'>
+        <div class='video-wrapper'>
           <iframe
-            src="https://player.vimeo.com/video/1052903768?autoplay=1&muted=1"
+            src="https://player.vimeo.com/video/1052903768?autoplay=1&muted=1&byline=0&portrait=0&loop=1"
             allow="autoplay; fullscreen"
             allowfullscreen
             title="Demo Reel"
@@ -35,16 +35,20 @@ const skills = [
         </div>
 
         <style>
-          div.video-wrapper {
-            border-radius: 0.5rem;
-            border: 3px solid black;
-            filter: drop-shadow(7px 7px 0 rgb(0 0 0 / 1));
-            transition: all;
-            transition-duration: 0.5s;
-            animation: ease-in-out;
+          .video-wrapper {
+            width: 100%;
+            max-width: 100%;
+            border: 4px solid #333;
+            border-radius: 12px;
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
+            overflow: hidden;
           }
-          div.video-wrapper:hover {
-            filter: drop-shadow(5px 5px 0 rgb(0 0 0 / 1));
+
+          /* Make the iframe fill the wrapper */
+          .video-wrapper iframe {
+            width: 100%;
+            height: 100%;
+            display: block;
           }
         </style>
           
