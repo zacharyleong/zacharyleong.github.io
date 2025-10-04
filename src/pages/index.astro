@@ -1,65 +1,72 @@
 ---
-import Layout from '@layouts/Default.astro';
-import RecentBlogPosts from '@components/generic/RecentBlogPosts.astro';
-import MobileSocials from '@components/home/MobileSocials.astro';
-import { Pill } from '@eliancodes/brutal-ui';
-import { Button } from '@eliancodes/brutal-ui';
-import { Card } from '@eliancodes/brutal-ui';
+import Layout from "@layouts/Default.astro";
+import RecentBlogPosts from "@components/generic/RecentBlogPosts.astro";
+import MobileSocials from "@components/home/MobileSocials.astro";
+import { Pill } from "@eliancodes/brutal-ui";
+import { Button } from "@eliancodes/brutal-ui";
+import { Card } from "@eliancodes/brutal-ui";
+import { Vimeo, YouTube } from "astro-embed";
 
 const skills = [
-{ name: 'Houdini', url: 'https://www.sidefx.com/products/houdini/' },
-{ name: 'Blender', url: 'https://www.blender.org/' },
-{ name: 'Unity', url: 'https://unity.com/' },
-{ name: 'Unreal Engine', url: 'https://www.unrealengine.com/' },
-{ name: 'Plasticity', url: 'https://www.plasticity.xyz/' },
-{ name: 'Substance Designer', url: 'https://www.adobe.com/products/substance3d-designer.html' },
+  { name: "Houdini", url: "https://www.sidefx.com/products/houdini/" },
+  { name: "Blender", url: "https://www.blender.org/" },
+  { name: "Unity", url: "https://unity.com/" },
+  { name: "Unreal Engine", url: "https://www.unrealengine.com/" },
+  { name: "Plasticity", url: "https://www.plasticity.xyz/" },
+  {
+    name: "Substance Designer",
+    url: "https://www.adobe.com/products/substance3d-designer.html",
+  },
 ];
 ---
 
 <Layout
-  title='Home'
-  pageTitle='Zachary Leong | Home'
-  description='Zachary Leong Personal Website'
+  title="Home"
+  pageTitle="Zachary Leong | Home"
+  description="Zachary Leong Personal Website"
 >
-  <main class='bg-blue p-6'>
+  <main class="bg-blue p-6">
     <!-- <MobileSocials /> -->
-    <section id='about' class='grid md:grid-cols-8 gap-8 mt-4'>
-      <div class='col-span-full'>
+    <section id="about" class="grid md:grid-cols-8 gap-8 mt-4">
+      <div class="col-span-full">
         <div class='iframe-container card-shadow'>
           <iframe
+            id="vimeo-player"
             src="https://player.vimeo.com/video/1052903768?autoplay=1&muted=1&byline=1&portrait=0&loop=1&color"
-            allow="autoplay; fullscreen"
             allowfullscreen
+            allow="autoplay; fullscreen"
             title="Demo Reel"
-            class="bg-black"
           ></iframe>
         </div>
         
         <style>
           .iframe-container {
+            position:relative;
+            background-color: rgba(0, 0, 0, 0.5);
             position: relative;
-            width: 100%;
             overflow: hidden;
-
-            height: 0;
-
+            padding:56.5% 0 0 0;
+            
             border-radius: 8px;
           }
 
           .iframe-container iframe {
+            background-color: rgba(0, 0, 0, 0.5);
             position: absolute;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            box-sizing: border-box;
+            /* box-sizing: border-box; */
 
-            border: 3px solid #000000;
+            
+            /* border-radius: 8px; */
             border-radius: 8px;
+            border: 3px solid #000000;
           }
         </style>
-          
-          <!-- <ul class='flex gap-4 flex-wrap'>
+
+        <!-- <ul class='flex gap-4 flex-wrap'>
             {
               skills.map((item) => (
                 <li>
