@@ -3,9 +3,11 @@ interface Props {
   pageTitle?: string;
 }
 
+import { VIMEO_ID } from "../../globals";
+
 const navigationItems = [
   { name: 'PROJECTS', url: '/projects/' },
-  { name: 'REEL', url: 'https://vimeo.com/1052903768' },
+  { name: 'REEL', url: `https://vimeo.com/${VIMEO_ID}`},
   { name: 'ABOUT', url: '/about/' },
   { name : 'RESUME', url: '/pdf/zachary_leong_resume.pdf'}
 ];

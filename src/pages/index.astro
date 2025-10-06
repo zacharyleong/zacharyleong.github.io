@@ -6,6 +6,7 @@ import { Pill } from "@eliancodes/brutal-ui";
 import { Button } from "@eliancodes/brutal-ui";
 import { Card } from "@eliancodes/brutal-ui";
 import { Vimeo, YouTube } from "astro-embed";
+import { VIMEO_ID } from "../globals";
 
 const skills = [
   { name: "Houdini", url: "https://www.sidefx.com/products/houdini/" },
@@ -32,7 +33,7 @@ const skills = [
         <div class='iframe-container card-shadow'>
           <iframe
             id="vimeo-player"
-            src="https://player.vimeo.com/video/1124712045?autoplay=1&muted=1&byline=1&portrait=0&loop=1&color"
+            src=`https://player.vimeo.com/video/${VIMEO_ID}?autoplay=1&muted=1&byline=1&portrait=0&loop=1&color`
             allowfullscreen
             allow="autoplay; fullscreen"
             title="Demo Reel"
