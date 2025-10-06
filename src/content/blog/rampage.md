@@ -1,0 +1,32 @@
+---
+title: Rampage Rally Challenge
+description: My submission to the month-long 3D community challenge
+pubDate: 2025-10-06 15:12
+author: Zachary Leong
+tags:
+  - Blender
+imgUrl: ../../img/rampage_thumb2.png
+layout: ../../layouts/BlogPost.astro
+---
+<div style="aspect-ratio:16/9;max-width:700px;margin:auto;">
+  <iframe
+    src="https://player.vimeo.com/video/1124951489?background=1&autoplay=1&muted=1&byline=1&loop=1"
+    width="100%"
+    height="100%"
+    frameborder="0"
+    allow="autoplay; fullscreen"
+    allowfullscreen
+    title="Rampage Rally Challenge Demo"
+    style="width:100%;height:100%;border-radius:8px;"
+  ></iframe>
+</div>
+
+## About
+
+This is my latest animation project for the **Rampage Rally 3D Community Challenge**, I tell a story of a young boy riding through the hilly streets of San Francisco who dreams of flying. 
+
+I brought to life an original character via sculpting, retopology, rigging, texturing and used pose-to-pose animation, focusing on snappier movements on the ground and smoother movements above the clouds.
+
+I approached the animation by forming strong poses by focusing on the believeability (joint limits), line of action, silhouette (ensuring body features are not hidden), simple vs complex side, contrasting I, C, and S curves, and viewing the shoulders as the eyebrows of the torso. For the in-betweens, I used Blender’s breakdowner tool to create the first ease in and ease out, thinking about what is leading / dragging and used Blender’s motion path tool to analyze the curved paths. 
+
+It was an amazing experience to create a character from the ground up and bring it to life  – a significant goal I’ve had since I started learning CG.

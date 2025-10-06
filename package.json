@@ -26,6 +26,7 @@
     "astro": "^4.16.3",
     "astro-embed": "^0.9.1",
     "astro-font": "^0.0.80",
+    "lightgallery": "^2.9.0",
     "satori": "^0.5.0",
     "satori-html": "^0.3.2",
     "typescript": "^5.6.3"
