@@ -1,6 +1,7 @@
 ---
 import { getCollection } from 'astro:content';
 import type { CollectionEntry } from 'astro:content';
+import BlogPost from '../../layouts/BlogPost.astro';
 
 export async function getStaticPaths() {
   const blogEntries = await getCollection('blog');
@@ -15,7 +16,16 @@ interface Props {
 }
 
 const { blogpost } = Astro.props;
-const { Content } = await blogpost.render();
+const { Content, headings } = await blogpost.render();
+
+// Check if it's an MDX file (MDX files don't have layout in frontmatter)
+const isMDX = blogpost.id.endsWith('.mdx');
 ---
 
-<Content />
+{isMDX ? (
+  <BlogPost content={blogpost.data} headings={headings}>
+    <Content />
+  </BlogPost>
+) : (
+  <Content />
+)}
