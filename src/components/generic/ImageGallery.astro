@@ -1,0 +1,79 @@
+---
+interface Props {
+  images: Array<{ src: string; alt: string }>;
+  caption?: string;
+}
+
+const { images, caption } = Astro.props;
+---
+
+<div class="image-gallery" id="lightGallery">
+  {images.map((image) => (
+    <a 
+      href={image.src}
+      data-src={image.src}
+      class="gallery-item"
+    >
+      <img src={image.src} alt={image.alt} loading="lazy" />
+    </a>
+  ))}
+</div>
+
+{caption && <figcaption class="gallery-caption">{caption}</figcaption>}
+
+<script>
+  import lightGallery from 'lightgallery';
+  import lgZoom from 'lightgallery/plugins/zoom';
+  import 'lightgallery/css/lightgallery.css';
+  import 'lightgallery/css/lg-zoom.css';
+
+  document.addEventListener('DOMContentLoaded', () => {
+    const gallery = document.getElementById('lightGallery');
+    if (gallery && !gallery.classList.contains('lg-initialized')) {
+      lightGallery(gallery as HTMLElement, {
+        plugins: [lgZoom],
+        speed: 500,
+        zoom: true,
+      });
+      gallery.classList.add('lg-initialized');
+    }
+  });
+</script>
+
+<style>
+  .image-gallery {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    gap: 0.5rem;
+    margin: 2rem 0;
+  }
+
+  .gallery-item {
+    position: relative;
+    overflow: hidden;
+    border-radius: 8px;
+    cursor: pointer;
+    display: block;
+    aspect-ratio: auto;
+  }
+
+  .gallery-item img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.3s ease;
+    display: block;
+  }
+
+  .gallery-item:hover img {
+    transform: scale(1.02);
+  }
+
+  .gallery-caption {
+    font-size: 0.9rem;
+    color: #666;
+    margin: 0.5rem 0 0 0;
+    font-style: italic;
+    text-align: center;
+  }
+</style>

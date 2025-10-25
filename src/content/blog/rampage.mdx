@@ -6,8 +6,10 @@ author: Zachary Leong
 tags:
   - Blender
 imgUrl: ../../img/rampage_thumb2.png
-layout: ../../layouts/BlogPost.astro
 ---
+
+import ImageGallery from '@components/generic/ImageGallery.astro';
+
 <div style="aspect-ratio:16/9;max-width:700px;margin:auto;">
   <iframe
     src="https://player.vimeo.com/video/1124951489?background=1&autoplay=1&muted=1&byline=1&loop=1"
@@ -29,4 +31,14 @@ I brought to life an original character via sculpting, retopology, rigging, text
 
 I approached the animation by forming strong poses by focusing on the believeability (joint limits), line of action, silhouette (ensuring body features are not hidden), simple vs complex side, contrasting I, C, and S curves, and viewing the shoulders as the eyebrows of the torso. For the in-betweens, I used Blender’s breakdowner tool to create the first ease in and ease out, thinking about what is leading / dragging and used Blender’s motion path tool to analyze the curved paths. 
 
-It was an amazing experience to create a character from the ground up and bring it to life  – a significant goal I’ve had since I started learning CG.
+It was an amazing experience to create a character from the ground up and bring it to life  – a significant goal I've had since I started learning CG.
+
+<ImageGallery 
+  images={[
+    { src: '/img/blog/rampage/rampage.png', alt: 'Final rendered scene' },
+    { src: '/img/blog/rampage/rampage-1.png', alt: 'Character sculpt wireframe' },
+    { src: '/img/blog/rampage/rampage-2.png', alt: 'Final rendered scene' },
+    { src: '/img/blog/rampage/rampage-3.png', alt: 'Final rendered scene' }
+  ]}
+  caption="Character designs and final renders from the Rampage Rally project"
+/>

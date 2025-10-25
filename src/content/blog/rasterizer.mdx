@@ -5,8 +5,11 @@ pubDate: 2025-09-13 13:48
 author: Zachary Leong
 tags: 
   - C++
-imgUrl: ../../img/lightmario.png
+imgUrl: ../../img/rampage_thumb.png
 ---
+
+import ImageGallery from '@components/generic/ImageGallery.astro';
+
 <figure>
   <video controls width="800" loading="lazy">
     <source src="/videos/rasterizer.mp4" type="video/mp4" />
@@ -18,5 +21,7 @@ imgUrl: ../../img/lightmario.png
 
 I made this C++ rasterizer with OBJ importing, Lambert shading, distance fog, 16x anti-aliasing, and shadow mapping.
 
+<ImageGallery images={[
+  { src: '/img/profile.JPG', alt: 'Depth map from light perspective of Mario' }
+]} />
 
-![](../../img/lightmario.png)
