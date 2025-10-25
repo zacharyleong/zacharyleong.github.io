@@ -6,7 +6,7 @@ tags:
   - Unity
   - Blender
 description: An endless, zen snowboard run down a procedurally-generated mountain.
-imgUrl: ../../assets/descent.png
+imgUrl: ../../img/descent.png
 layout: ../../layouts/BlogPost.astro
 ---
 

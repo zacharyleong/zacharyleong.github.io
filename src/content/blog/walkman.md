@@ -6,13 +6,13 @@ author: Zachary Leong
 tags:
   - Blender
   - Plasticity
-imgUrl: ../../assets/walkman_stylized_low.png
+imgUrl: ../../img/walkman_stylized_low.png
 layout: ../../layouts/BlogPost.astro
 ---
 
 ## Render
 
-![](../../assets/walkman_stylized.png)
+![](../../img/walkman_stylized.png)
 
 ## About
 
