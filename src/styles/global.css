@@ -2,6 +2,18 @@
 @tailwind components;
 @tailwind utilities;
 
+figure {
+  margin: 1.5rem 0;
+  text-align: center;
+}
+
+figcaption {
+  font-size: 0.9rem;
+  color: #666;
+  margin-top: 0.5rem;
+  font-style: italic;
+}
+
 .iframe-container {
   flex: 1;
   display: flex;
