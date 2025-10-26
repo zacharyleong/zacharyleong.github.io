@@ -169,7 +169,6 @@ const themeClass = theme === 'dark' ? 'theme-dark' : 'theme-light';
     let currentIndex = 0;
     let isAnimating = false;
     let autoplayTimer = null;
-    let lightboxInstance = null;
 
     carousel.setAttribute('tabindex', '0');
 
@@ -243,17 +242,6 @@ const themeClass = theme === 'dark' ? 'theme-dark' : 'theme-light';
 
     updateIndicators(currentIndex);
     updateCaptions(currentIndex);
-
-    const dynamicItems = baseSlides.map((slide) => {
-      const img = slide.querySelector('img');
-      const src = img ? img.getAttribute('src') || '' : '';
-      const captionText = img ? img.dataset.captionText || img.getAttribute('alt') || '' : '';
-      return {
-        src,
-        thumb: src,
-        subHtml: captionText ? `<p>${captionText}</p>` : '',
-      };
-    });
 
     const stopAutoplay = () => {
       if (autoplayTimer) {
@@ -399,27 +387,28 @@ const themeClass = theme === 'dark' ? 'theme-dark' : 'theme-light';
     };
 
     const openLightbox = (startIndex) => {
-      const { lightGallery, lgZoom } = window;
-      if (!lightGallery || !lgZoom) return;
+      if (!window.mediumZoom) return;
 
-      if (!lightboxInstance) {
-        lightboxInstance = lightGallery(carousel, {
-          dynamic: true,
-          dynamicEl: dynamicItems,
-          plugins: [lgZoom],
-          download: false,
-          counter: true,
-          closable: true,
-          escKey: true,
-          keyPress: true,
-          hideScrollbar: true,
-          getCaptionFromTitleOrAlt: false,
+      // Initialize medium-zoom on first use with only base slide images (no clones)
+      if (!carousel._mediumZoom) {
+        const baseImages = baseSlides.map(slide => slide.querySelector('img')).filter(Boolean);
+        
+        carousel._mediumZoom = window.mediumZoom(baseImages, {
+          margin: 48,
+          background: 'rgba(0, 0, 0, 0.95)',
+          scrollOffset: 0,
         });
       }
 
-      if (lightboxInstance && typeof lightboxInstance.openGallery === 'function') {
-        lightboxInstance.openGallery(startIndex);
-      }
+      // Get the base slide image at the current index
+      const targetSlide = baseSlides[startIndex];
+      if (!targetSlide) return;
+      
+      const img = targetSlide.querySelector('img');
+      if (!img) return;
+
+      // Trigger zoom on the specific base slide image
+      carousel._mediumZoom.open({ target: img });
     };
 
     if (multipleSlides && prevBtn) {
@@ -489,7 +478,29 @@ const themeClass = theme === 'dark' ? 'theme-dark' : 'theme-light';
 })();
 </script>
 
+<script is:inline>
+  if (!window.mediumZoomLoaded) {
+    window.mediumZoomLoaded = true;
+    
+    const script = document.createElement('script');
+    script.src = 'https://cdn.jsdelivr.net/npm/medium-zoom@1.1.0/dist/medium-zoom.min.js';
+    script.onerror = () => {
+      console.error('Failed to load medium-zoom');
+    };
+    document.head.appendChild(script);
+  }
+</script>
+
 <style>
+  /* Ensure medium-zoom appears above everything */
+  :global(.medium-zoom-overlay) {
+    z-index: 10000 !important;
+  }
+
+  :global(.medium-zoom-image--opened) {
+    z-index: 10001 !important;
+  }
+
   .carousel-container {
     position: relative;
     width: 100%;
@@ -654,7 +665,7 @@ const themeClass = theme === 'dark' ? 'theme-dark' : 'theme-light';
     transform: translateX(-50%);
     display: flex;
     gap: 0.5rem;
-    z-index: 3;
+    z-index: 5;
   }
 
   .indicator {
