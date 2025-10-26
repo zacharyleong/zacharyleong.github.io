@@ -22,37 +22,39 @@ const galleryId = 'gallery-' + crypto.randomUUID();
 
 {caption && <figcaption class="gallery-caption">{caption}</figcaption>}
 
-<script>
-  import lightGallery from 'lightgallery';
-  import lgZoom from 'lightgallery/plugins/zoom';
-  import lgThumbnail from 'lightgallery/plugins/thumbnail';
-  import lgHash from 'lightgallery/plugins/hash';
-  import 'lightgallery/css/lightgallery.css';
-  import 'lightgallery/css/lg-zoom.css';
-  import 'lightgallery/css/lg-thumbnail.css';
-
-  function initGalleries() {
-    const galleries = document.querySelectorAll('.image-gallery:not(.lg-initialized)');
-    galleries.forEach((gallery) => {
-      lightGallery(gallery as HTMLElement, {
-        plugins: [lgZoom, lgThumbnail, lgHash],
-        speed: 500,
-        thumbnail: true,
-        animateThumb: true,
-        getCaptionFromTitleOrAlt: true,
-        galleryId: (gallery as HTMLElement).id,
+<script is:inline>
+  (async function() {
+    async function initGalleries() {
+      // Dynamically import LightGallery modules
+      const { default: lightGallery } = await import('https://cdn.jsdelivr.net/npm/lightgallery@2.9.0/lightgallery.es5.js');
+      const { default: lgZoom } = await import('https://cdn.jsdelivr.net/npm/lightgallery@2.9.0/plugins/zoom/lg-zoom.es5.js');
+      const { default: lgThumbnail } = await import('https://cdn.jsdelivr.net/npm/lightgallery@2.9.0/plugins/thumbnail/lg-thumbnail.es5.js');
+      const { default: lgHash } = await import('https://cdn.jsdelivr.net/npm/lightgallery@2.9.0/plugins/hash/lg-hash.es5.js');
+      
+      const galleries = document.querySelectorAll('.image-gallery:not(.lg-initialized)');
+      galleries.forEach((gallery) => {
+        lightGallery(gallery, {
+          plugins: [lgZoom, lgThumbnail, lgHash],
+          speed: 500,
+          thumbnail: true,
+          animateThumb: true,
+          getCaptionFromTitleOrAlt: true,
+          galleryId: gallery.id,
+        });
+        gallery.classList.add('lg-initialized');
       });
-      gallery.classList.add('lg-initialized');
-    });
-  }
+    }
 
-  // Run on both DOMContentLoaded and immediately (for already-loaded pages)
-  if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', initGalleries);
-  } else {
-    initGalleries();
-  }
+    // Run on both DOMContentLoaded and immediately (for already-loaded pages)
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', initGalleries);
+    } else {
+      initGalleries();
+    }
+  })();
 </script>
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/lightgallery@2.9.0/css/lightgallery-bundle.min.css" />
 
 <style>
   .image-gallery {
