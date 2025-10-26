@@ -30,19 +30,14 @@ const uid = galleryId ?? `gallery-${Math.random().toString(36).slice(2, 10)}`;
   <div id={uid} class="image-gallery">
     {
       images.map((img) => {
-        const sizeAttr =
-          typeof img.width === 'number' && typeof img.height === 'number'
-            ? `${img.width}-${img.height}`
-            : undefined;
-
         return (
-          <figure
+          <a
             class="gallery-item"
-            data-src={img.src}
+            href={img.src}
+            data-sub-html={img.alt ? `<h4>${img.alt}</h4>` : undefined}
+            data-aspect-ratio={img.aspectRatio}
             data-width={img.width}
             data-height={img.height}
-            data-aspect-ratio={img.aspectRatio}
-            {...(sizeAttr ? { 'data-lg-size': sizeAttr } : {})}
           >
             <img
               src={img.thumb ?? img.src}
@@ -50,7 +45,7 @@ const uid = galleryId ?? `gallery-${Math.random().toString(36).slice(2, 10)}`;
               loading="lazy"
               decoding="async"
             />
-          </figure>
+          </a>
         );
       })
     }
@@ -83,13 +78,15 @@ const uid = galleryId ?? `gallery-${Math.random().toString(36).slice(2, 10)}`;
   .gallery-item {
     margin: 0;
     padding: 0;
-    cursor: zoom-in;
+    cursor: pointer;
     overflow: hidden;
     position: relative;
     flex-grow: 1;
     flex-shrink: 1;
     flex-basis: 200px;
     height: 220px;
+    text-decoration: none;
+    display: block;
   }
   
   .gallery-item img {
@@ -98,12 +95,11 @@ const uid = galleryId ?? `gallery-${Math.random().toString(36).slice(2, 10)}`;
     height: 100%;
     object-fit: cover;
     vertical-align: bottom;
-    transition: transform 0.3s ease, opacity 0.2s ease;
+    transition: opacity 0.2s ease;
   }
   
   .gallery-item:hover img {
-    transform: scale(1.05);
-    opacity: 0.95;
+    opacity: 0.9;
   }
 
   /* Responsive adjustments */
@@ -138,7 +134,7 @@ const uid = galleryId ?? `gallery-${Math.random().toString(36).slice(2, 10)}`;
     const el = document.getElementById(uid);
     if (!el || el.dataset.lgInit) return;
 
-    if (!window.lightGallery || !window.lgMediumZoom || !window.lgThumbnail) {
+    if (!window.lightGallery || !window.lgThumbnail) {
       setTimeout(initGallery, 100);
       return;
     }
@@ -230,7 +226,7 @@ const uid = galleryId ?? `gallery-${Math.random().toString(36).slice(2, 10)}`;
     try {
       window.lightGallery(el, {
         selector: '.gallery-item',
-        plugins: [window.lgMediumZoom, window.lgThumbnail],
+        plugins: [window.lgThumbnail],
         speed: 400,
         thumbnail: true,
         animateThumb: true,
@@ -238,6 +234,7 @@ const uid = galleryId ?? `gallery-${Math.random().toString(36).slice(2, 10)}`;
         thumbWidth: 100,
         thumbHeight: '80px',
         thumbMargin: 5,
+        download: false,
         mobileSettings: {
           controls: true,
           showCloseIcon: true,
@@ -270,8 +267,7 @@ const uid = galleryId ?? `gallery-${Math.random().toString(36).slice(2, 10)}`;
     
     const scripts = [
       'https://cdn.jsdelivr.net/npm/lightgallery@2.8.3/lightgallery.umd.min.js',
-      'https://cdn.jsdelivr.net/npm/lightgallery@2.8.3/plugins/thumbnail/lg-thumbnail.umd.min.js',
-      'https://cdn.jsdelivr.net/npm/lightgallery@2.8.3/plugins/mediumZoom/lg-medium-zoom.umd.min.js'
+      'https://cdn.jsdelivr.net/npm/lightgallery@2.8.3/plugins/thumbnail/lg-thumbnail.umd.min.js'
     ];
 
     let loaded = 0;
