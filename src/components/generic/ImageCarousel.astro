@@ -1,290 +1,492 @@
 ---
 interface Props {
-  images: Array<{ src: string; alt: string; caption?: string }>;
+  images: Array<{
+    src: string;
+    alt: string;
+    caption?: string;
+  }>;
   id?: string;
-  transition?: 'slide' | 'fade';
-  theme?: 'light' | 'dark';
-  aspectWidth?: number;
-  aspectHeight?: number;
+  transition?: 'fade' | 'slide';
   autoplay?: boolean;
   autoplaySpeed?: number;
+  aspectWidth?: number;
+  aspectHeight?: number;
+  theme?: 'light' | 'dark';
 }
 
 const {
   images,
-  id = 'carousel-' + crypto.randomUUID(),
+  id = `carousel-${Math.random().toString(36).slice(2)}`,
   transition = 'fade',
-  theme = 'dark',
-  aspectWidth = 16,
-  aspectHeight = 9,
   autoplay = false,
   autoplaySpeed = 5000,
-}: Props = Astro.props;
+  aspectWidth = 16,
+  aspectHeight = 9,
+  theme = 'light',
+} = Astro.props as Props;
 
-const safeAspectWidth = Math.max(Number(aspectWidth) || 0, 1);
-const safeAspectHeight = Math.max(Number(aspectHeight) || 0, 1);
-const aspectRatio = `${safeAspectWidth} / ${safeAspectHeight}`;
-const aspectPadding = (safeAspectHeight / safeAspectWidth) * 100;
+const hasMultiple = images.length > 1;
+const aspectRatio = `${aspectWidth} / ${aspectHeight}`;
+const aspectPadding = `${(aspectHeight / aspectWidth) * 100}%`;
+const transitionClass = transition === 'slide' ? 'transition-slide' : 'transition-fade';
+const themeClass = theme === 'dark' ? 'theme-dark' : 'theme-light';
 ---
-
-<div class={`carousel-container transition-${transition} theme-${theme}`} id={id}>
+{images.length === 0 ? (
+  <div class="carousel-empty">No images provided.</div>
+) : (
   <div
-    class="carousel-viewport"
-    style={`--carousel-aspect-ratio: ${aspectRatio}; --carousel-aspect-padding: ${aspectPadding}%;`}
+    id={id}
+    class={`carousel-container ${transitionClass} ${themeClass}`}
+    data-transition={transition}
   >
-    <div class="carousel-viewport-inner">
-      <div class="carousel-track">
-        {images.map((image, index) => (
-          <div
-            class={`carousel-slide ${index === 0 ? 'active' : ''}`}
-            data-index={index}
-            aria-hidden={index === 0 ? 'false' : 'true'}
-          >
-            <img
-              src={image.src}
-              alt={image.alt}
-              data-caption={image.caption || image.alt}
-              loading="lazy"
-              decoding="async"
-              draggable="false"
-            />
-          </div>
-        ))}
+    <div
+      class="carousel-viewport"
+      style={{
+        '--carousel-aspect-ratio': aspectRatio,
+        '--carousel-aspect-padding': aspectPadding,
+      }}
+    >
+      <div class="carousel-viewport-inner">
+        <div class="carousel-track">
+          {images.map((image, index) => (
+            <div
+              class={`carousel-slide${index === 0 ? ' active' : ''}`}
+              data-index={index}
+              data-base="true"
+              aria-hidden={index === 0 ? 'false' : 'true'}
+            >
+              <img
+                src={image.src}
+                alt={image.alt}
+                loading="lazy"
+                decoding="async"
+                data-caption-text={image.caption ?? image.alt ?? ''}
+              />
+            </div>
+          ))}
+        </div>
       </div>
 
-      {images.length > 1 && (
+      {hasMultiple && (
         <>
-          <button class="carousel-control prev" type="button" aria-label="Previous slide">
-            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="currentColor" role="img">
-              <path d="M11.354 1.646a.5.5 0 0 1 0 .708L5.707 8l5.647 5.646a.5.5 0 0 1-.708.708l-6-6a.5.5 0 0 1 0-.708l6-6a.5.5 0 0 1 .708 0z" />
+          <button
+            class="carousel-control prev"
+            type="button"
+            aria-label="Previous slide"
+            data-action="prev"
+          >
+            <svg viewBox="0 0 24 24" aria-hidden="true">
+              <path
+                d="M15.5 5 9 12l6.5 7"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              />
             </svg>
           </button>
-          <button class="carousel-control next" type="button" aria-label="Next slide">
-            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="currentColor" role="img">
-              <path d="M4.646 1.646a.5.5 0 0 1 .708 0l6 6a.5.5 0 0 1 0 .708l-6 6a.5.5 0 0 1-.708-.708L10.293 8 4.646 2.354a.5.5 0 0 1 0-.708z" />
+          <button
+            class="carousel-control next"
+            type="button"
+            aria-label="Next slide"
+            data-action="next"
+          >
+            <svg viewBox="0 0 24 24" aria-hidden="true">
+              <path
+                d="m8.5 5 6.5 7-6.5 7"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              />
             </svg>
           </button>
+
           <div class="carousel-indicators" role="tablist">
             {images.map((_, index) => (
               <button
-                class={`indicator ${index === 0 ? 'active' : ''}`}
-                data-index={index}
+                class={`indicator${index === 0 ? ' active' : ''}`}
                 type="button"
                 role="tab"
                 aria-label={`Go to slide ${index + 1}`}
-                aria-selected={index === 0}
-              ></button>
+                aria-selected={index === 0 ? 'true' : 'false'}
+                data-indicator={index}
+              />
             ))}
           </div>
         </>
       )}
     </div>
-  </div>
 
-  {images.length > 0 && (
     <div class="carousel-caption-container" aria-live="polite">
       {images.map((image, index) => (
-        <span
-          class={`carousel-caption ${index === 0 ? 'active' : ''}`}
-          data-index={index}
+        <div
+          class={`carousel-caption${index === 0 ? ' active' : ''}`}
+          data-caption-index={index}
           aria-hidden={index === 0 ? 'false' : 'true'}
         >
-          {image.caption || image.alt}
-        </span>
+          {image.caption ?? image.alt ?? ''}
+        </div>
       ))}
     </div>
-  )}
-</div>
+  </div>
+)}
 
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/lightgallery@2.9.0/css/lightgallery-bundle.min.css">
-<script src="https://cdn.jsdelivr.net/npm/lightgallery@2.9.0/lightgallery.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/lightgallery@2.9.0/plugins/zoom/lg-zoom.min.js"></script>
+<script is:inline define:vars={{ id, transition, autoplay, autoplaySpeed, hasMultiple }}>
+/* @ts-nocheck */
+(() => {
+  const init = () => {
+    const carousel = document.getElementById(id);
+    if (!carousel || carousel.dataset.initialized) return;
 
-<script is:inline define:vars={{ id, transition, autoplay, autoplaySpeed }}>
-  (function () {
-    const init = () => {
-      const carousel = document.getElementById(id);
-      if (!carousel || carousel.dataset.initialized) return;
+    const track = carousel.querySelector('.carousel-track');
+    const baseSlides = Array.from(
+      carousel.querySelectorAll('.carousel-slide[data-base="true"]'),
+    );
+    if (!track || baseSlides.length === 0) {
+      carousel.dataset.initialized = 'true';
+      return;
+    }
 
-      const track = carousel.querySelector('.carousel-track');
-      const slides = Array.from(carousel.querySelectorAll('.carousel-slide'));
-      if (!track || slides.length === 0) {
-        carousel.dataset.initialized = 'true';
-        return;
+    const prevBtn = carousel.querySelector('[data-action="prev"]');
+    const nextBtn = carousel.querySelector('[data-action="next"]');
+    const indicators = Array.from(carousel.querySelectorAll('[data-indicator]'));
+    const captions = Array.from(carousel.querySelectorAll('[data-caption-index]'));
+
+    const scheduleFrame =
+      typeof window.requestAnimationFrame === 'function'
+        ? window.requestAnimationFrame.bind(window)
+        : (callback) => window.setTimeout(callback, 16);
+
+    const totalSlides = baseSlides.length;
+    const isFade = transition === 'fade';
+    const multipleSlides = hasMultiple && totalSlides > 1;
+    const autoplayDelay = Math.max(Number(autoplaySpeed) || 0, 1000);
+    const fadeDuration = 600;
+
+    let currentIndex = 0;
+    let isAnimating = false;
+    let autoplayTimer = null;
+    let lightboxInstance = null;
+
+    carousel.setAttribute('tabindex', '0');
+
+    if (!isFade && multipleSlides) {
+      const firstClone = baseSlides[0].cloneNode(true);
+      const lastClone = baseSlides[totalSlides - 1].cloneNode(true);
+      firstClone.classList.remove('active');
+      lastClone.classList.remove('active');
+      firstClone.setAttribute('aria-hidden', 'true');
+      lastClone.setAttribute('aria-hidden', 'true');
+      firstClone.dataset.clone = 'true';
+      lastClone.dataset.clone = 'true';
+      track.appendChild(firstClone);
+      track.insertBefore(lastClone, track.firstChild);
+    }
+
+    const renderedSlides = Array.from(track.querySelectorAll('.carousel-slide'));
+
+    const setTrackPosition = (position, options = {}) => {
+      if (isFade || !multipleSlides) return;
+      const immediate = Boolean(options.immediate);
+      if (immediate) {
+        track.style.transition = 'none';
+      } else {
+        track.style.transition = '';
       }
+      track.style.transform = `translateX(-${position * 100}%)`;
+      if (immediate) {
+        void track.offsetWidth;
+        track.style.transition = '';
+      }
+    };
 
-      carousel.setAttribute('tabindex', '0');
-
-    const prevBtn = carousel.querySelector('.carousel-control.prev');
-    const nextBtn = carousel.querySelector('.carousel-control.next');
-      const indicators = Array.from(carousel.querySelectorAll('.indicator'));
-      const captions = Array.from(carousel.querySelectorAll('.carousel-caption'));
-      const isFade = transition === 'fade';
-      const hasMultiple = slides.length > 1;
-      const autoplayDelay = Math.max(Number(autoplaySpeed) || 0, 1000);
-
-      let currentIndex = 0;
-      let autoplayTimer = null;
-      let lightbox = null;
-
-      const dynamicItems = slides.map((slide) => {
-        const img = slide.querySelector('img');
-        const src = img?.getAttribute('src') ?? '';
-        const captionText = img?.dataset.caption || img?.alt || '';
-        return {
-          src,
-          thumb: src,
-          subHtml: captionText ? `<p>${captionText}</p>` : '',
-        };
+    const updateIndicators = (index) => {
+      indicators.forEach((indicator, idx) => {
+        const isActiveIndicator = idx === index;
+        indicator.classList.toggle('active', isActiveIndicator);
+        indicator.setAttribute('aria-selected', isActiveIndicator ? 'true' : 'false');
       });
+    };
 
-      const applySlidePosition = () => {
-        if (!isFade) {
-          track.style.transform = `translateX(-${currentIndex * 100}%)`;
+    const updateCaptions = (index) => {
+      captions.forEach((captionNode, idx) => {
+        const isActiveCaption = idx === index;
+        captionNode.classList.toggle('active', isActiveCaption);
+        captionNode.setAttribute('aria-hidden', isActiveCaption ? 'false' : 'true');
+      });
+    };
+
+    const setSlideActiveForSlideMode = (index) => {
+      if (isFade) return;
+      baseSlides.forEach((slide, idx) => {
+        const isActiveSlide = idx === index;
+        slide.classList.toggle('active', isActiveSlide);
+        slide.setAttribute('aria-hidden', isActiveSlide ? 'false' : 'true');
+      });
+    };
+
+    if (isFade) {
+      baseSlides.forEach((slide, idx) => {
+        const isActiveSlide = idx === 0;
+        slide.classList.toggle('active', isActiveSlide);
+        slide.classList.remove('incoming');
+        slide.classList.remove('fade-underneath');
+        slide.setAttribute('aria-hidden', isActiveSlide ? 'false' : 'true');
+      });
+    } else {
+      setSlideActiveForSlideMode(currentIndex);
+      setTrackPosition(currentIndex + 1, { immediate: true });
+    }
+
+    updateIndicators(currentIndex);
+    updateCaptions(currentIndex);
+
+    const dynamicItems = baseSlides.map((slide) => {
+      const img = slide.querySelector('img');
+      const src = img ? img.getAttribute('src') || '' : '';
+      const captionText = img ? img.dataset.captionText || img.getAttribute('alt') || '' : '';
+      return {
+        src,
+        thumb: src,
+        subHtml: captionText ? `<p>${captionText}</p>` : '',
+      };
+    });
+
+    const stopAutoplay = () => {
+      if (autoplayTimer) {
+        window.clearInterval(autoplayTimer);
+        autoplayTimer = null;
+      }
+    };
+
+    const startAutoplay = () => {
+      if (!autoplay || !multipleSlides) return;
+      stopAutoplay();
+      autoplayTimer = window.setInterval(() => {
+        if (!isAnimating) {
+          goToSlide(currentIndex + 1, { direction: 1, force: true });
         }
-      };
+      }, autoplayDelay);
+    };
 
-      const updateActiveStates = () => {
-        slides.forEach((slide, idx) => {
-          const isActive = idx === currentIndex;
-          slide.classList.toggle('active', isActive);
-          slide.setAttribute('aria-hidden', isActive ? 'false' : 'true');
-        });
+    const goToSlide = (requestedIndex, options = {}) => {
+      if (!multipleSlides) return;
 
-        indicators.forEach((indicator, idx) => {
-          const isActive = idx === currentIndex;
-          indicator.classList.toggle('active', isActive);
-          indicator.setAttribute('aria-selected', isActive ? 'true' : 'false');
-        });
-      };
+      const normalizedTarget = ((requestedIndex % totalSlides) + totalSlides) % totalSlides;
+      if (!options.force && normalizedTarget === currentIndex) return;
 
-      const syncCaptions = () => {
-        if (!captions.length) return;
-        captions.forEach((captionNode, idx) => {
-          const isActive = idx === currentIndex;
-          captionNode.classList.toggle('active', isActive);
-          captionNode.setAttribute('aria-hidden', isActive ? 'false' : 'true');
-        });
-      };
+      stopAutoplay();
 
-      const stopAutoplay = () => {
-        if (autoplayTimer) {
-          window.clearInterval(autoplayTimer);
-          autoplayTimer = null;
-        }
-      };
-
-      const startAutoplay = () => {
-        if (!autoplay || !hasMultiple) return;
-        stopAutoplay();
-        autoplayTimer = window.setInterval(() => {
-          goToSlide(currentIndex + 1);
-        }, autoplayDelay);
-      };
-
-      const goToSlide = (nextIndex) => {
-        if (!slides.length) return;
-        if (!hasMultiple) {
-          currentIndex = 0;
-          updateActiveStates();
-          syncCaptions();
-          applySlidePosition();
+      if (isFade) {
+        if (isAnimating) return;
+        const previousIndex = currentIndex;
+        if (previousIndex === normalizedTarget) {
+          startAutoplay();
           return;
         }
 
-        const total = slides.length;
-        currentIndex = (nextIndex % total + total) % total;
-        updateActiveStates();
-        syncCaptions();
-        applySlidePosition();
+        const nextSlide = baseSlides[normalizedTarget];
+        const prevSlide = baseSlides[previousIndex];
 
-        if (autoplay) {
-          stopAutoplay();
+        if (!nextSlide) {
           startAutoplay();
-        }
-      };
-
-      const openLightbox = (startIndex) => {
-        const win = window;
-        const lightGalleryFactory = win && win.lightGallery;
-        const zoomPlugin = win && win.lgZoom;
-        if (!lightGalleryFactory || !zoomPlugin) return;
-
-        if (!lightbox) {
-          lightbox = lightGalleryFactory(carousel, {
-            dynamic: true,
-            dynamicEl: dynamicItems,
-            plugins: [zoomPlugin],
-            download: false,
-            counter: true,
-            closable: true,
-            escKey: true,
-            keyPress: true,
-            hideScrollbar: true,
-            getCaptionFromTitleOrAlt: false,
-          });
+          return;
         }
 
-        if (lightbox?.openGallery) {
-          lightbox.openGallery(startIndex);
+        isAnimating = true;
+        currentIndex = normalizedTarget;
+        updateIndicators(currentIndex);
+        updateCaptions(currentIndex);
+
+        if (prevSlide && prevSlide !== nextSlide) {
+          prevSlide.classList.add('fade-underneath');
+          prevSlide.setAttribute('aria-hidden', 'true');
         }
-      };
 
-      if (hasMultiple && prevBtn) {
-        prevBtn.addEventListener('click', () => goToSlide(currentIndex - 1));
-      }
+        nextSlide.classList.add('incoming');
+        nextSlide.setAttribute('aria-hidden', 'false');
 
-      if (hasMultiple && nextBtn) {
-        nextBtn.addEventListener('click', () => goToSlide(currentIndex + 1));
-      }
-
-      indicators.forEach((indicator) => {
-        indicator.addEventListener('click', (event) => {
-          const target = event.currentTarget;
-          if (!(target instanceof HTMLElement)) return;
-          const idx = Number(target.dataset.index);
-          if (!Number.isNaN(idx)) {
-            goToSlide(idx);
-          }
+        scheduleFrame(() => {
+          nextSlide.classList.add('active');
         });
-      });
 
-      carousel.addEventListener('keydown', (event) => {
-        if (!hasMultiple) return;
-        if (event.key === 'ArrowLeft') {
-          goToSlide(currentIndex - 1);
-        } else if (event.key === 'ArrowRight') {
-          goToSlide(currentIndex + 1);
-        }
-      });
+        let fadeCompleted = false;
+        let fallbackTimer = null;
 
-      slides.forEach((slide, idx) => {
-        slide.addEventListener('click', () => openLightbox(idx));
-      });
+        const cleanup = () => {
+          if (fadeCompleted) return;
+          fadeCompleted = true;
 
-      if (autoplay && hasMultiple) {
-        carousel.addEventListener('mouseenter', stopAutoplay);
-        carousel.addEventListener('mouseleave', startAutoplay);
-        carousel.addEventListener('focusin', stopAutoplay);
-        carousel.addEventListener('focusout', startAutoplay);
+          if (fallbackTimer !== null) {
+            window.clearTimeout(fallbackTimer);
+            fallbackTimer = null;
+          }
+
+          nextSlide.classList.remove('incoming');
+          if (prevSlide && prevSlide !== nextSlide) {
+            prevSlide.classList.remove('fade-underneath');
+            prevSlide.classList.remove('active');
+            prevSlide.setAttribute('aria-hidden', 'true');
+          }
+          isAnimating = false;
+          startAutoplay();
+        };
+
+        const handleTransitionEnd = (event) => {
+          if (event.target !== nextSlide || event.propertyName !== 'opacity') return;
+          nextSlide.removeEventListener('transitionend', handleTransitionEnd);
+          cleanup();
+        };
+
+        nextSlide.addEventListener('transitionend', handleTransitionEnd);
+
+        fallbackTimer = window.setTimeout(() => {
+          nextSlide.removeEventListener('transitionend', handleTransitionEnd);
+          cleanup();
+        }, fadeDuration + 150);
+
+        return;
       }
 
-  updateActiveStates();
-  syncCaptions();
-      applySlidePosition();
-      startAutoplay();
+      if (isAnimating) return;
+      isAnimating = true;
 
-      carousel.dataset.initialized = 'true';
+      const previousIndex = currentIndex;
+      const direction =
+        typeof options.direction === 'number' && options.direction !== 0
+          ? options.direction
+          : requestedIndex > previousIndex
+          ? 1
+          : -1;
+
+      let targetPosition = normalizedTarget + 1;
+      let wrapReset = null;
+
+      if (direction > 0 && previousIndex === totalSlides - 1 && normalizedTarget === 0) {
+        targetPosition = totalSlides + 1;
+        wrapReset = { index: 0, position: 1 };
+      } else if (direction < 0 && previousIndex === 0 && normalizedTarget === totalSlides - 1) {
+        targetPosition = 0;
+        wrapReset = { index: totalSlides - 1, position: totalSlides };
+      }
+
+      currentIndex = normalizedTarget;
+      updateIndicators(currentIndex);
+      updateCaptions(currentIndex);
+      setSlideActiveForSlideMode(currentIndex);
+      setTrackPosition(targetPosition, { immediate: false });
+
+      const handleTransitionEnd = (event) => {
+        if (event.target !== track || event.propertyName !== 'transform') return;
+        track.removeEventListener('transitionend', handleTransitionEnd);
+
+        if (wrapReset) {
+          setTrackPosition(wrapReset.position, { immediate: true });
+          currentIndex = wrapReset.index;
+          updateIndicators(currentIndex);
+          updateCaptions(currentIndex);
+          setSlideActiveForSlideMode(currentIndex);
+        }
+
+        isAnimating = false;
+        startAutoplay();
+      };
+
+      track.addEventListener('transitionend', handleTransitionEnd);
     };
 
-    if (document.readyState === 'loading') {
-      document.addEventListener('DOMContentLoaded', () => {
-        window.setTimeout(init, 100);
+    const openLightbox = (startIndex) => {
+      const { lightGallery, lgZoom } = window;
+      if (!lightGallery || !lgZoom) return;
+
+      if (!lightboxInstance) {
+        lightboxInstance = lightGallery(carousel, {
+          dynamic: true,
+          dynamicEl: dynamicItems,
+          plugins: [lgZoom],
+          download: false,
+          counter: true,
+          closable: true,
+          escKey: true,
+          keyPress: true,
+          hideScrollbar: true,
+          getCaptionFromTitleOrAlt: false,
+        });
+      }
+
+      if (lightboxInstance && typeof lightboxInstance.openGallery === 'function') {
+        lightboxInstance.openGallery(startIndex);
+      }
+    };
+
+    if (multipleSlides && prevBtn) {
+      prevBtn.addEventListener('click', () =>
+        goToSlide(currentIndex - 1, { direction: -1, force: true }),
+      );
+    }
+
+    if (multipleSlides && nextBtn) {
+      nextBtn.addEventListener('click', () =>
+        goToSlide(currentIndex + 1, { direction: 1, force: true }),
+      );
+    }
+
+    indicators.forEach((indicator, idx) => {
+      indicator.addEventListener('click', (event) => {
+        event.preventDefault();
+        if (isAnimating || idx === currentIndex) return;
+        const directionGuess = idx > currentIndex ? 1 : -1;
+        goToSlide(idx, { direction: directionGuess, force: true });
       });
+    });
+
+    carousel.addEventListener('keydown', (event) => {
+      if (!multipleSlides) return;
+      if (event.key === 'ArrowLeft') {
+        goToSlide(currentIndex - 1, { direction: -1, force: true });
+      } else if (event.key === 'ArrowRight') {
+        goToSlide(currentIndex + 1, { direction: 1, force: true });
+      }
+    });
+
+    renderedSlides.forEach((slide) => {
+      slide.addEventListener('click', () => {
+        const indexAttr = slide.getAttribute('data-index');
+        const startIndex = Number(indexAttr || 0);
+        openLightbox(Number.isNaN(startIndex) ? 0 : startIndex);
+      });
+    });
+
+    if (autoplay && multipleSlides) {
+      carousel.addEventListener('mouseenter', stopAutoplay);
+      carousel.addEventListener('mouseleave', startAutoplay);
+      carousel.addEventListener('focusin', stopAutoplay);
+      carousel.addEventListener('focusout', startAutoplay);
+
+      document.addEventListener('visibilitychange', () => {
+        if (document.hidden) {
+          stopAutoplay();
+        } else {
+          startAutoplay();
+        }
+      });
+    }
+
+    startAutoplay();
+    carousel.dataset.initialized = 'true';
+  };
+
+  if (typeof window !== 'undefined') {
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', () => window.setTimeout(init, 100));
     } else {
       window.setTimeout(init, 100);
     }
-  })();
+  }
+})();
 </script>
 
 <style>
@@ -296,26 +498,28 @@ const aspectPadding = (safeAspectHeight / safeAspectWidth) * 100;
     flex-direction: column;
     background: transparent;
     border: none;
-    --carousel-arrow-color: rgba(0, 0, 0, 0.7);
-    --carousel-arrow-hover: rgba(0, 0, 0, 1);
-    --carousel-indicator-active: rgba(0, 0, 0, 0.85);
-    --carousel-indicator-inactive: rgba(0, 0, 0, 0.35);
-    --carousel-caption-color: rgba(0, 0, 0, 0.6);
+    --carousel-arrow-color: rgba(20, 20, 20, 0.75);
+    --carousel-arrow-hover: rgba(20, 20, 20, 1);
+  --carousel-indicator-active: rgba(20, 20, 20, 0.9);
+  --carousel-indicator-inactive: rgba(20, 20, 20, 0.35);
+    --carousel-caption-color: rgba(145, 145, 145, 0.95);
+    --carousel-background: rgba(255, 255, 255, 0);
   }
 
   .carousel-container.theme-dark {
-    --carousel-arrow-color: rgba(255, 255, 255, 0.85);
+    --carousel-arrow-color: rgba(255, 255, 255, 0.78);
     --carousel-arrow-hover: rgba(255, 255, 255, 1);
-    --carousel-indicator-active: rgba(255, 255, 255, 0.9);
-    --carousel-indicator-inactive: rgba(255, 255, 255, 0.4);
-    --carousel-caption-color: rgba(255, 255, 255, 0.75);
+    --carousel-indicator-active: rgba(255, 255, 255, 0.92);
+  --carousel-indicator-inactive: rgba(255, 255, 255, 0.4);
+    --carousel-caption-color: rgba(145, 145, 145, 0.95);
+    --carousel-background: rgba(0, 0, 0, 0.55);
   }
 
   .carousel-viewport {
     position: relative;
     width: 100%;
     overflow: hidden;
-    background: transparent;
+    background: var(--carousel-background);
     aspect-ratio: var(--carousel-aspect-ratio);
     border-radius: inherit;
   }
@@ -358,9 +562,10 @@ const aspectPadding = (safeAspectHeight / safeAspectWidth) * 100;
   .carousel-slide {
     width: 100%;
     height: 100%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: transparent;
   }
 
   .carousel-container.transition-slide .carousel-slide {
@@ -374,24 +579,36 @@ const aspectPadding = (safeAspectHeight / safeAspectWidth) * 100;
 
   .carousel-container.transition-fade .carousel-slide {
     position: absolute;
-    top: 0;
-    left: 0;
+    inset: 0;
     opacity: 0;
     pointer-events: none;
-    transition: opacity 0.5s linear;
+    transition: opacity 0.6s linear;
+    z-index: 1;
+  }
+
+  .carousel-container.transition-fade .carousel-slide.incoming {
+    z-index: 3;
   }
 
   .carousel-container.transition-fade .carousel-slide.active {
     opacity: 1;
     pointer-events: auto;
+    z-index: 4;
+  }
+
+  .carousel-container.transition-fade .carousel-slide.fade-underneath {
+    opacity: 1;
+    pointer-events: none;
+    z-index: 2;
   }
 
   .carousel-slide img {
     width: 100%;
     height: 100%;
-    object-fit: cover;
+    object-fit: contain;
     cursor: zoom-in;
     user-select: none;
+    background-color: transparent;
   }
 
   .carousel-control {
@@ -407,8 +624,8 @@ const aspectPadding = (safeAspectHeight / safeAspectWidth) * 100;
     align-items: center;
     justify-content: center;
     transition: color 0.2s ease, transform 0.2s ease;
-    z-index: 2;
-    transform: none;
+    z-index: 8;
+    padding: 0;
   }
 
   .carousel-control:hover,
@@ -437,7 +654,7 @@ const aspectPadding = (safeAspectHeight / safeAspectWidth) * 100;
     transform: translateX(-50%);
     display: flex;
     gap: 0.5rem;
-    z-index: 2;
+    z-index: 3;
   }
 
   .indicator {
@@ -452,7 +669,7 @@ const aspectPadding = (safeAspectHeight / safeAspectWidth) * 100;
   }
 
   .indicator.active {
-    width: 1.2rem;
+    width: 1.3rem;
     background: var(--carousel-indicator-active);
   }
 
@@ -469,14 +686,22 @@ const aspectPadding = (safeAspectHeight / safeAspectWidth) * 100;
     display: flex;
     align-items: center;
     justify-content: center;
-    text-align: center;
-    color: var(--carousel-caption-color);
-  transition: opacity 0.5s linear;
+  text-align: center;
+  color: var(--carousel-caption-color);
+    transition: opacity 0.6s linear;
     pointer-events: none;
+    z-index: 1;
   }
 
   .carousel-caption.active {
     opacity: 1;
     pointer-events: auto;
+    z-index: 2;
+  }
+
+  .carousel-empty {
+    padding: 1.5rem;
+    text-align: center;
+    color: rgba(145, 145, 145, 0.95);
   }
 </style>
