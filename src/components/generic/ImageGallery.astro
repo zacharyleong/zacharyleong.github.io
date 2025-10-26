@@ -5,9 +5,10 @@ interface Props {
 }
 
 const { images, caption } = Astro.props;
+const galleryId = 'gallery-' + crypto.randomUUID();
 ---
 
-<div class="image-gallery" id="lightGallery">
+<div class="image-gallery" id={galleryId}>
   {images.map((image) => (
     <a 
       href={image.src}
@@ -24,20 +25,33 @@ const { images, caption } = Astro.props;
 <script>
   import lightGallery from 'lightgallery';
   import lgZoom from 'lightgallery/plugins/zoom';
+  import lgThumbnail from 'lightgallery/plugins/thumbnail';
+  import lgHash from 'lightgallery/plugins/hash';
   import 'lightgallery/css/lightgallery.css';
   import 'lightgallery/css/lg-zoom.css';
+  import 'lightgallery/css/lg-thumbnail.css';
 
-  document.addEventListener('DOMContentLoaded', () => {
-    const gallery = document.getElementById('lightGallery');
-    if (gallery && !gallery.classList.contains('lg-initialized')) {
+  function initGalleries() {
+    const galleries = document.querySelectorAll('.image-gallery:not(.lg-initialized)');
+    galleries.forEach((gallery) => {
       lightGallery(gallery as HTMLElement, {
-        plugins: [lgZoom],
+        plugins: [lgZoom, lgThumbnail, lgHash],
         speed: 500,
-        zoom: true,
+        thumbnail: true,
+        animateThumb: true,
+        getCaptionFromTitleOrAlt: true,
+        galleryId: (gallery as HTMLElement).id,
       });
       gallery.classList.add('lg-initialized');
-    }
-  });
+    });
+  }
+
+  // Run on both DOMContentLoaded and immediately (for already-loaded pages)
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initGalleries);
+  } else {
+    initGalleries();
+  }
 </script>
 
 <style>

@@ -36,30 +36,28 @@ I made this C++ rasterizer with OBJ importing, Lambert shading, distance fog, 16
   { src: '/img/blog/rasterizer/tokyo_light_view.jpg', alt: 'Tokyo from light perspective' }
 ]} />
 
-## Gallery Carousel
+### Mario
 
 <ImageCarousel 
   images={[
     { src: '/img/blog/rasterizer/mario_shadow.jpg', alt: 'Mario with shadow mapping', caption: 'Mario with shadow mapping enabled' },
     { src: '/img/blog/rasterizer/mario_no_shadow.jpg', alt: 'Mario without shadows', caption: 'Mario rendered without shadow mapping' },
-    { src: '/img/blog/rasterizer/robot.jpg', alt: 'Robot rendered', caption: 'Robot model with Lambert shading' },
   ]}
-  transition="slide"
-  theme="light"
+  transition="fade"
+  theme="dark"
   aspectWidth={1}
   aspectHeight={1}
 />
 
-## Alternate Carousel (Fade Transition - Dark Theme)
+### Tokyo
 
 <ImageCarousel 
   images={[
     { src: '/img/blog/rasterizer/tokyo_foggy.jpg', alt: 'Tokyo with fog', caption: 'Tokyo scene with distance fog effect' },
-    { src: '/img/blog/rasterizer/tokyo_color_fog.jpg', alt: 'Tokyo with color fog', caption: 'Tokyo with colored fog rendering' },
     { src: '/img/blog/rasterizer/tokyo_foggy_no_shadows.jpg', alt: 'Tokyo foggy no shadows', caption: 'Tokyo foggy scene without shadow mapping' },
   ]}
   transition="fade"
-  theme="dark"
+  theme="light"
   aspectWidth={2.39}
   aspectHeight={1}
 />

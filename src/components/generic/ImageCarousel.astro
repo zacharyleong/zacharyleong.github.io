@@ -11,19 +11,21 @@ interface Props {
 
 const { 
   images, 
-  id = 'carousel-' + Math.random().toString(36).substr(2, 9), 
+  id = 'carousel-' + crypto.randomUUID(), 
   transition = 'slide',
-  theme = 'light',
+  theme = 'dark',
   aspectWidth = 16,
   aspectHeight = 9,
   interval = false
 } = Astro.props;
 
 const aspectRatio = `${aspectWidth} / ${aspectHeight}`;
-const carouselClass = transition === 'fade' ? 'carousel slide carousel-fade' : 'carousel slide';
+const darkClass = theme === 'dark' ? 'carousel-dark' : '';
+const fadeClass = transition === 'fade' ? 'carousel-fade' : '';
+const carouselClass = `carousel slide ${darkClass} ${fadeClass}`.trim();
 ---
 
-<div class="carousel-wrapper" data-theme={theme} style={`aspect-ratio: ${aspectRatio}`}>
+<div class="carousel-wrapper" style={`aspect-ratio: ${aspectRatio}`}>
   <div id={id} class={carouselClass} data-bs-ride={interval !== false ? "carousel" : false} data-bs-interval={interval || false}>
     <div class="carousel-indicators">
       {images.map((_, index) => (
@@ -74,8 +76,8 @@ const carouselClass = transition === 'fade' ? 'carousel slide carousel-fade' : '
   import lightGallery from 'lightgallery';
   import lgZoom from 'lightgallery/plugins/zoom';
 
-  document.addEventListener('DOMContentLoaded', () => {
-    const carousels = document.querySelectorAll('.carousel');
+  function initCarousels() {
+    const carousels = document.querySelectorAll('.carousel:not(.carousel-initialized)');
     
     carousels.forEach((carouselEl) => {
       const captions = Array.from(carouselEl.closest('.carousel-wrapper')?.querySelectorAll('.carousel-caption-text') || []);
@@ -109,8 +111,17 @@ const carouselClass = transition === 'fade' ? 'carousel slide carousel-fade' : '
           getCaptionFromTitleOrAlt: true,
         });
       }
+
+      carouselEl.classList.add('carousel-initialized');
     });
-  });
+  }
+
+  // Run on both DOMContentLoaded and immediately (for already-loaded pages)
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initCarousels);
+  } else {
+    initCarousels();
+  }
 </script>
 
 <style>
@@ -128,38 +139,8 @@ const carouselClass = transition === 'fade' ? 'carousel slide carousel-fade' : '
 
   /* Let Bootstrap handle all transitions - just add image styling */
   .carousel-item img {
-    object-fit: cover;
+    object-fit: contain;
     cursor: pointer;
-  }
-
-  /* Light theme indicators */
-  [data-theme="light"] .carousel-indicators [data-bs-slide-to] {
-    background-color: rgba(0, 0, 0, 0.3);
-  }
-
-  [data-theme="light"] .carousel-indicators .active {
-    background-color: rgba(0, 0, 0, 0.8);
-  }
-
-  /* Dark theme indicators */
-  [data-theme="dark"] .carousel-indicators [data-bs-slide-to] {
-    background-color: rgba(255, 255, 255, 0.4);
-  }
-
-  [data-theme="dark"] .carousel-indicators .active {
-    background-color: rgba(255, 255, 255, 0.9);
-  }
-
-  /* Light theme arrows */
-  [data-theme="light"] .carousel-control-prev-icon,
-  [data-theme="light"] .carousel-control-next-icon {
-    filter: invert(40%);
-  }
-
-  /* Dark theme arrows - default Bootstrap is already light */
-  [data-theme="dark"] .carousel-control-prev-icon,
-  [data-theme="dark"] .carousel-control-next-icon {
-    filter: invert(80%);
   }
 
   /* Captions */
@@ -175,7 +156,7 @@ const carouselClass = transition === 'fade' ? 'carousel slide carousel-fade' : '
     left: 0;
     width: 100%;
     font-size: 0.9rem;
-    color: #666;
+    color: #aaa;
     font-style: italic;
     text-align: center;
     opacity: 0;
@@ -186,9 +167,5 @@ const carouselClass = transition === 'fade' ? 'carousel slide carousel-fade' : '
   .carousel-caption-text.active {
     opacity: 1;
     pointer-events: auto;
-  }
-
-  [data-theme="dark"] .carousel-caption-text {
-    color: #aaa;
   }
 </style>
