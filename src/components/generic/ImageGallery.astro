@@ -1,95 +1,301 @@
 ---
-interface Props {
-  images: Array<{ src: string; alt: string }>;
-  caption?: string;
+export interface ImageItem {
+  src: string;
+  alt?: string;
+  thumb?: string;
+  width?: number;
+  height?: number;
+  aspectRatio?: number;
 }
 
-const { images, caption } = Astro.props;
-const galleryId = 'gallery-' + crypto.randomUUID();
+export interface Props {
+  images: ImageItem[];
+  caption?: string;
+  galleryId?: string;
+}
+
+const {
+  images = [],
+  caption,
+  galleryId,
+} = Astro.props;
+
+const uid = galleryId ?? `gallery-${Math.random().toString(36).slice(2, 10)}`;
 ---
 
-<div class="image-gallery" id={galleryId}>
-  {images.map((image) => (
-    <a 
-      href={image.src}
-      data-src={image.src}
-      class="gallery-item"
-    >
-      <img src={image.src} alt={image.alt} loading="lazy" />
-    </a>
-  ))}
-</div>
+<!-- Load CSS -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/lightgallery@2.8.3/css/lightgallery-bundle.min.css" />
 
-{caption && <figcaption class="gallery-caption">{caption}</figcaption>}
+<figure class="gallery-wrapper">
+  <div id={uid} class="image-gallery">
+    {
+      images.map((img) => {
+        const sizeAttr =
+          typeof img.width === 'number' && typeof img.height === 'number'
+            ? `${img.width}-${img.height}`
+            : undefined;
 
-<script is:inline>
-  (async function() {
-    async function initGalleries() {
-      // Dynamically import LightGallery modules
-      const { default: lightGallery } = await import('https://cdn.jsdelivr.net/npm/lightgallery@2.9.0/lightgallery.es5.js');
-      const { default: lgZoom } = await import('https://cdn.jsdelivr.net/npm/lightgallery@2.9.0/plugins/zoom/lg-zoom.es5.js');
-      const { default: lgThumbnail } = await import('https://cdn.jsdelivr.net/npm/lightgallery@2.9.0/plugins/thumbnail/lg-thumbnail.es5.js');
-      const { default: lgHash } = await import('https://cdn.jsdelivr.net/npm/lightgallery@2.9.0/plugins/hash/lg-hash.es5.js');
-      
-      const galleries = document.querySelectorAll('.image-gallery:not(.lg-initialized)');
-      galleries.forEach((gallery) => {
-        lightGallery(gallery, {
-          plugins: [lgZoom, lgThumbnail, lgHash],
-          speed: 500,
-          thumbnail: true,
-          animateThumb: true,
-          getCaptionFromTitleOrAlt: true,
-          galleryId: gallery.id,
-        });
-        gallery.classList.add('lg-initialized');
-      });
+        return (
+          <figure
+            class="gallery-item"
+            data-src={img.src}
+            data-width={img.width}
+            data-height={img.height}
+            data-aspect-ratio={img.aspectRatio}
+            {...(sizeAttr ? { 'data-lg-size': sizeAttr } : {})}
+          >
+            <img
+              src={img.thumb ?? img.src}
+              alt={img.alt ?? ''}
+              loading="lazy"
+              decoding="async"
+            />
+          </figure>
+        );
+      })
     }
-
-    // Run on both DOMContentLoaded and immediately (for already-loaded pages)
-    if (document.readyState === 'loading') {
-      document.addEventListener('DOMContentLoaded', initGalleries);
-    } else {
-      initGalleries();
-    }
-  })();
-</script>
-
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/lightgallery@2.9.0/css/lightgallery-bundle.min.css" />
+  </div>
+  {caption && <figcaption class="gallery-caption">{caption}</figcaption>}
+</figure>
 
 <style>
+  .gallery-wrapper {
+    max-width: 1200px;
+    margin: 2rem auto;
+  }
+  
+  .gallery-caption {
+    text-align: center;
+    color: var(--color-text-dim, #777);
+    font-size: 0.95rem;
+    margin-top: 1rem;
+    font-style: italic;
+  }
+  
   .image-gallery {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
-    gap: 0.5rem;
-    margin: 1rem 0;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 2px;
+    margin: 0;
+    padding: 0;
   }
-
+  
   .gallery-item {
-    position: relative;
+    margin: 0;
+    padding: 0;
+    cursor: zoom-in;
     overflow: hidden;
-    border-radius: 8px;
-    cursor: pointer;
-    display: block;
-    aspect-ratio: auto;
+    position: relative;
+    flex-grow: 1;
+    flex-shrink: 1;
+    flex-basis: 200px;
+    height: 220px;
   }
-
+  
   .gallery-item img {
+    display: block;
     width: 100%;
     height: 100%;
     object-fit: cover;
-    transition: transform 0.3s ease;
-    display: block;
+    vertical-align: bottom;
+    transition: transform 0.3s ease, opacity 0.2s ease;
   }
-
+  
   .gallery-item:hover img {
-    transform: scale(1.02);
+    transform: scale(1.05);
+    opacity: 0.95;
   }
 
-  .gallery-caption {
-    font-size: 0.9rem;
-    color: #666;
-    margin: 0 0 0 0;
-    font-style: italic;
-    text-align: center;
+  /* Responsive adjustments */
+  @media (max-width: 768px) {
+    .gallery-item {
+      flex-basis: 150px;
+      height: 180px;
+    }
+  }
+
+  @media (max-width: 500px) {
+    .image-gallery {
+      gap: 1px;
+    }
+    
+    .gallery-item {
+      flex: 1 1 100%;
+      height: auto;
+      max-height: 400px;
+    }
+    
+    .gallery-item img {
+      object-fit: contain;
+    }
   }
 </style>
+
+<script is:inline define:vars={{ uid }}>
+  window.lgGalleries = window.lgGalleries || [];
+
+  function initGallery() {
+    const el = document.getElementById(uid);
+    if (!el || el.dataset.lgInit) return;
+
+    if (!window.lightGallery || !window.lgMediumZoom || !window.lgThumbnail) {
+      setTimeout(initGallery, 100);
+      return;
+    }
+
+    el.dataset.lgInit = 'true';
+
+    // Calculate layout based on loaded images
+    const items = Array.from(el.querySelectorAll('.gallery-item'));
+    const images = items.map(item => item.querySelector('img')).filter(Boolean);
+    
+    let loadedCount = 0;
+    const totalImages = images.length;
+
+    function calculateLayout() {
+      const targetHeight = 220;
+
+      items.forEach((item) => {
+        const img = item.querySelector('img');
+        if (!img) return;
+
+        let aspectRatio;
+        
+        // Priority 1: Check if aspectRatio was directly provided
+        const providedAspectRatio = parseFloat(item.dataset.aspectRatio);
+        
+        if (providedAspectRatio) {
+          aspectRatio = providedAspectRatio;
+        } else {
+          // Priority 2: Check if width/height were provided
+          const providedWidth = parseFloat(item.dataset.width);
+          const providedHeight = parseFloat(item.dataset.height);
+          
+          if (providedWidth && providedHeight) {
+            // Use provided dimensions to calculate aspect ratio
+            aspectRatio = providedWidth / providedHeight;
+          } else {
+            // Priority 3: Fall back to loaded image dimensions
+            const naturalWidth = img.naturalWidth || 400;
+            const naturalHeight = img.naturalHeight || 300;
+            aspectRatio = naturalWidth / naturalHeight;
+          }
+        }
+        
+        // Calculate the ideal width at target height
+        const idealWidth = targetHeight * aspectRatio;
+        
+        // Set flex-grow based on aspect ratio (wider images get more space)
+        // This makes flexbox distribute space proportionally
+        item.style.flexGrow = aspectRatio.toFixed(3);
+        item.style.flexBasis = `${idealWidth}px`;
+      });
+    }
+
+    // Wait for all images to load (only if dimensions/aspectRatio not provided)
+    const needsLoading = items.some(item => 
+      !item.dataset.aspectRatio && (!item.dataset.width || !item.dataset.height)
+    );
+    
+    if (needsLoading) {
+      images.forEach(img => {
+        if (img.complete && img.naturalWidth > 0) {
+          loadedCount++;
+        } else {
+          img.addEventListener('load', () => {
+            loadedCount++;
+            if (loadedCount === totalImages) {
+              calculateLayout();
+            }
+          });
+          img.addEventListener('error', () => {
+            loadedCount++;
+            if (loadedCount === totalImages) {
+              calculateLayout();
+            }
+          });
+        }
+      });
+
+      // If all images already loaded
+      if (loadedCount === totalImages) {
+        calculateLayout();
+      }
+    } else {
+      // All dimensions provided, calculate immediately
+      calculateLayout();
+    }
+
+    // Initialize lightGallery
+    try {
+      window.lightGallery(el, {
+        selector: '.gallery-item',
+        plugins: [window.lgMediumZoom, window.lgThumbnail],
+        speed: 400,
+        thumbnail: true,
+        animateThumb: true,
+        showThumbByDefault: false,
+        thumbWidth: 100,
+        thumbHeight: '80px',
+        thumbMargin: 5,
+        mobileSettings: {
+          controls: true,
+          showCloseIcon: true,
+          download: false
+        }
+      });
+    } catch (e) {
+      console.error('Gallery init error:', e);
+    }
+
+    // Recalculate on window resize
+    let resizeTimeout;
+    window.addEventListener('resize', () => {
+      clearTimeout(resizeTimeout);
+      resizeTimeout = setTimeout(calculateLayout, 250);
+    });
+  }
+
+  window.lgGalleries.push(initGallery);
+  if (window.lightGallery) {
+    initGallery();
+  } else {
+    window.addEventListener('load', initGallery);
+  }
+</script>
+
+<script is:inline>
+  if (!window.lgScriptsLoaded) {
+    window.lgScriptsLoaded = true;
+    
+    const scripts = [
+      'https://cdn.jsdelivr.net/npm/lightgallery@2.8.3/lightgallery.umd.min.js',
+      'https://cdn.jsdelivr.net/npm/lightgallery@2.8.3/plugins/thumbnail/lg-thumbnail.umd.min.js',
+      'https://cdn.jsdelivr.net/npm/lightgallery@2.8.3/plugins/mediumZoom/lg-medium-zoom.umd.min.js'
+    ];
+
+    let loaded = 0;
+    scripts.forEach(src => {
+      if (document.querySelector(`script[src="${src}"]`)) {
+        loaded++;
+        return;
+      }
+
+      const script = document.createElement('script');
+      script.src = src;
+      script.onload = () => {
+        loaded++;
+        if (loaded === scripts.length && window.lgGalleries) {
+          window.lgGalleries.forEach(fn => fn());
+        }
+      };
+      script.onerror = () => {
+        loaded++;
+        if (loaded === scripts.length && window.lgGalleries) {
+          window.lgGalleries.forEach(fn => fn());
+        }
+      };
+      document.head.appendChild(script);
+    });
+  }
+</script>
