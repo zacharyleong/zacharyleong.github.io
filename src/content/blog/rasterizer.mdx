@@ -6,6 +6,7 @@ author: Zachary Leong
 tags: 
   - C++
 imgUrl: ../../img/rampage_thumb.png
+carouselAutoplay: false
 ---
 
 import ImageGallery from '@components/generic/ImageGallery.astro';
@@ -47,6 +48,7 @@ I made this C++ rasterizer with OBJ importing, Lambert shading, distance fog, 16
   theme="light"
   aspectWidth={1}
   aspectHeight={1}
+  autoplay={frontmatter.carouselAutoplay ?? false}
 />
 
 ### Tokyo
@@ -60,5 +62,6 @@ I made this C++ rasterizer with OBJ importing, Lambert shading, distance fog, 16
   theme="light"
   aspectWidth={2.39}
   aspectHeight={1}
+  autoplay={frontmatter.carouselAutoplay ?? false}
 />
 

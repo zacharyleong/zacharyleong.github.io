@@ -164,7 +164,7 @@ const themeClass = theme === 'dark' ? 'theme-dark' : 'theme-light';
     const isFade = transition === 'fade';
     const multipleSlides = hasMultiple && totalSlides > 1;
     const autoplayDelay = Math.max(Number(autoplaySpeed) || 0, 1000);
-    const fadeDuration = 600;
+  const fadeDuration = 300;
 
     let currentIndex = 0;
     let isAnimating = false;
@@ -498,21 +498,21 @@ const themeClass = theme === 'dark' ? 'theme-dark' : 'theme-light';
     flex-direction: column;
     background: transparent;
     border: none;
-    --carousel-arrow-color: rgba(20, 20, 20, 0.75);
-    --carousel-arrow-hover: rgba(20, 20, 20, 1);
+  --carousel-arrow-color: rgba(20, 20, 20, 0.75);
+  --carousel-arrow-hover: rgba(20, 20, 20, 1);
   --carousel-indicator-active: rgba(20, 20, 20, 0.9);
   --carousel-indicator-inactive: rgba(20, 20, 20, 0.35);
-    --carousel-caption-color: rgba(145, 145, 145, 0.95);
+  --carousel-caption-color: #666666;
     --carousel-background: rgba(255, 255, 255, 0);
   }
 
   .carousel-container.theme-dark {
-    --carousel-arrow-color: rgba(255, 255, 255, 0.78);
-    --carousel-arrow-hover: rgba(255, 255, 255, 1);
-    --carousel-indicator-active: rgba(255, 255, 255, 0.92);
+  --carousel-arrow-color: rgba(255, 255, 255, 0.78);
+  --carousel-arrow-hover: rgba(255, 255, 255, 1);
+  --carousel-indicator-active: rgba(255, 255, 255, 0.92);
   --carousel-indicator-inactive: rgba(255, 255, 255, 0.4);
-    --carousel-caption-color: rgba(145, 145, 145, 0.95);
-    --carousel-background: rgba(0, 0, 0, 0.55);
+  --carousel-caption-color: #666666;
+  --carousel-background: rgba(0, 0, 0, 0.55);
   }
 
   .carousel-viewport {
@@ -552,7 +552,7 @@ const themeClass = theme === 'dark' ? 'theme-dark' : 'theme-light';
 
   .carousel-container.transition-slide .carousel-track {
     display: flex;
-    transition: transform 0.6s ease;
+    transition: transform 0.3s ease;
   }
 
   .carousel-container.transition-fade .carousel-track {
@@ -582,7 +582,7 @@ const themeClass = theme === 'dark' ? 'theme-dark' : 'theme-light';
     inset: 0;
     opacity: 0;
     pointer-events: none;
-    transition: opacity 0.6s linear;
+    transition: opacity 0.3s linear;
     z-index: 1;
   }
 
@@ -686,9 +686,9 @@ const themeClass = theme === 'dark' ? 'theme-dark' : 'theme-light';
     display: flex;
     align-items: center;
     justify-content: center;
-  text-align: center;
-  color: var(--carousel-caption-color);
-    transition: opacity 0.6s linear;
+    text-align: center;
+    color: var(--carousel-caption-color);
+    transition: opacity 0.3s linear;
     pointer-events: none;
     z-index: 1;
   }
@@ -702,6 +702,6 @@ const themeClass = theme === 'dark' ? 'theme-dark' : 'theme-light';
   .carousel-empty {
     padding: 1.5rem;
     text-align: center;
-    color: rgba(145, 145, 145, 0.95);
+  color: #666666;
   }
 </style>
