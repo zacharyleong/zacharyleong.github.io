@@ -9,11 +9,18 @@ interface Props {
 
 const { posts } = Astro.props;
 
+const sortedPosts = posts.sort((a, b) => {
+  const dateA = new Date(a.data.pubDate).getTime();
+  const dateB = new Date(b.data.pubDate).getTime();
+  return dateB - dateA; // Descending order (newest first)
+});
+
+
 ---
 
 <ul class='grid md:grid-cols-2 lg:grid-cols-3 gap-8'>
   {
-    posts.map((post) => {
+    sortedPosts.map((post) => {
       const { externalLink } = post.data;
       return (
         <li>

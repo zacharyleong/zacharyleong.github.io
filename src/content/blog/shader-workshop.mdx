@@ -1,0 +1,32 @@
+---
+title: My Shader Workshop
+description: I hosted a pbr and stylized shader workshop for our local chapter of SIGGRAPH
+pubDate: 2025-09-13 18:54
+author: Zachary Leong
+tags:
+  - Blender
+imgUrl: ../../img/shader_workshop.png
+carouselAutoplay: false
+---
+import ImageCarousel from '@components/generic/ImageCarousel.astro';
+
+## Final Results
+
+<ImageCarousel 
+  images={[
+    { src: '/img/blog/shader-workshop/SIGGRAPH_pbr.png', caption: 'PBR demo with edge wear, dirt, and peeling' },
+    { src: '/img/blog/shader-workshop/stylized1.png', caption: 'Stylized shader that responds to light (red)' },
+    { src: '/img/blog/shader-workshop/stylized2.png', caption: "Same shader but with different base color and light" },
+    { src: '/img/blog/shader-workshop/stylized3.png', caption: "a stretch is applied to get a different brush effect" },
+    { src: '/img/blog/shader-workshop/bookshelf.png', caption: "green from the right, purple at the top, yellow at the bottom" },
+  ]}
+  transition="fade"
+  theme="dark"
+  aspectWidth={1}
+  aspectHeight={1}
+  autoplay={frontmatter.carouselAutoplay ?? false}
+/>
+
+## About
+
+I hosted a PBR and stylized shader workshop for our local chapter of SIGGRAPH with over 20 attendees. I went over concepts like layering, texture coordinates, and normals.
