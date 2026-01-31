@@ -1,6 +1,6 @@
 ---
 title: Space Minecraft
-description: Our final project for CIS 460 Introduction to Computer Graphics
+description: Our final project for CIS 460 Introduction to Computer Graphics.
 pubDate: 2025-12-20 11:41
 author: Zachary Leong
 tags:

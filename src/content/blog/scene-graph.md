@@ -1,6 +1,6 @@
 ---
 title: Walk Cycle Zoetrope
-description: My creation for the scene graph assignment for CIS 4600
+description: My creation for the scene graph assignment for CIS 460.
 pubDate: 2025-09-29 09:15
 author: Zachary Leong
 tags:
