@@ -15,6 +15,6 @@ export async function GET(context) {
       link: `/projects/${post.slug}/`,
     })),
     customData: '<language>en-us</language>',
-    canonicalUrl: 'https://zacharyleong.github.io',
+    canonicalUrl: 'https://zacharyleong.com',
   });
 }

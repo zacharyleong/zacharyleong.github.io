@@ -6,9 +6,9 @@
   "author": {
     "name": "Zachary Leong",
     "email": "zleong@seas.upenn.edu",
-    "url": "https://zacharyleong.github.io"
+    "url": "https://zacharyleong.com"
   },
-  "homepage": "https://zacharyleong.github.io",
+  "homepage": "https://zacharyleong.com",
   "scripts": {
     "dev": "astro dev",
     "start": "astro dev",

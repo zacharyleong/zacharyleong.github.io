@@ -3,4 +3,4 @@
 Original development by Elian Van Cutsem
 
 - email: zleong@seas.upenn.edu
-- website: zacharyleong.github.io
+- website: zacharyleong.com

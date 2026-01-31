@@ -5,7 +5,7 @@ import mdx from '@astrojs/mdx';
 
 export default defineConfig({
   // used to generate images
-  site: "https://zacharyleong.github.io",
+  site: "https://zacharyleong.com",
   trailingSlash: 'ignore',
   integrations: [sitemap(), UnoCSS({ injectReset: true }), mdx()],
   vite: {
