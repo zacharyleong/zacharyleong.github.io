@@ -6,10 +6,10 @@ tags:
   - Unity
   - Blender
 description: An endless, zen snowboard run down a procedurally-generated mountain.
-imgUrl: ../../img/descent.png
+imgUrl: ../../img/descent_thumb.jpg
 layout: ../../layouts/BlogPost.astro
 ---
-
+![](/img/blog/descent/descent.png)
 ## Overview
 - Carve left and right to avoid obstacles
 - Build speed on downhills and gain airtime by crouching and jumping
