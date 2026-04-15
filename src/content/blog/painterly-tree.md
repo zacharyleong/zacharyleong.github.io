@@ -5,7 +5,7 @@ author: Zachary Leong
 tags:
   - Houdini
   - Blender
-description: A tree made up of brushstrokes
+description: A tree made of brushstrokes
 imgUrl: ../../img/red_tree.jpg
 layout: ../../layouts/BlogPost.astro
 ---
