@@ -509,6 +509,7 @@ const themeClass = theme === 'dark' ? 'theme-dark' : 'theme-light';
     flex-direction: column;
     background: transparent;
     border: none;
+  --carousel-radius: var(--content-media-radius, 8px);
   --carousel-arrow-color: rgba(20, 20, 20, 0.75);
   --carousel-arrow-hover: rgba(20, 20, 20, 1);
   --carousel-indicator-active: rgba(20, 20, 20, 0.9);
@@ -532,7 +533,7 @@ const themeClass = theme === 'dark' ? 'theme-dark' : 'theme-light';
     overflow: hidden;
     background: var(--carousel-background);
     aspect-ratio: var(--carousel-aspect-ratio);
-    border-radius: inherit;
+    border-radius: var(--carousel-radius);
   }
 
   .carousel-viewport::before {
@@ -619,6 +620,7 @@ const themeClass = theme === 'dark' ? 'theme-dark' : 'theme-light';
     width: auto;
     height: auto;
     object-fit: contain;
+    border-radius: var(--carousel-radius);
     cursor: zoom-in;
     user-select: none;
     background-color: transparent;

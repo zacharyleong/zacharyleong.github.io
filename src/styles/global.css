@@ -42,7 +42,7 @@ figcaption {
 .content-video-frame {
   --video-aspect-ratio: 16 / 9;
   --video-max-width: 100%;
-  --video-radius: 8px;
+  --video-radius: var(--content-media-radius, 8px);
 
   width: min(100%, var(--video-max-width));
   margin-inline: auto;
@@ -60,13 +60,24 @@ figcaption {
 
 .content-video {
   --video-max-width: 100%;
-  --video-radius: 8px;
+  --video-radius: var(--content-media-radius, 8px);
 
   display: block;
   width: min(100%, var(--video-max-width));
   height: auto;
   margin-inline: auto;
   border-radius: var(--video-radius);
+}
+
+.content-image {
+  --image-max-width: 100%;
+  --image-radius: var(--content-media-radius, 8px);
+
+  display: block;
+  width: min(100%, var(--image-max-width));
+  height: auto;
+  margin-inline: auto;
+  border-radius: var(--image-radius);
 }
 
 .card-shadow {
@@ -88,6 +99,7 @@ figcaption {
   /* Theme Tokens */
   --primary: var(--sys-color-white);
   --secondary: var(--sys-color-black);
+  --content-media-radius: 8px;
 }
 
 html {

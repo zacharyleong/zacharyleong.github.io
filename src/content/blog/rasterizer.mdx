@@ -11,13 +11,12 @@ carouselAutoplay: false
 
 import ImageGallery from '@components/generic/ImageGallery.astro';
 import ImageCarousel from '@components/generic/ImageCarousel.astro';
+import VideoFile from '@components/generic/VideoFile.astro';
 
-<figure>
-  <video class="content-video" controls loading="lazy">
-    <source src="/videos/rasterizer.mp4" type="video/mp4" />
-  </video>
-  <figcaption>4x anti-aliasing used here</figcaption>
-</figure>
+<VideoFile
+  src="/videos/rasterizer.mp4"
+  caption="4x anti-aliasing used here"
+/>
 
 ## About
 

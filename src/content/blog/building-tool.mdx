@@ -9,17 +9,19 @@ imgUrl: ../../img/bgen-thumb.jpg
 carouselAutoplay: false
 ---
 
-<div class="content-video-frame">
-  <iframe 
-    src="https://www.youtube.com/embed/plwUCzFeK7A?autoplay=1&mute=1&controls=1&modestbranding=1&rel=0" 
-    frameborder="0"
-    allow="autoplay; fullscreen"
-    allowfullscreen>
-  </iframe>
-</div>
+import VideoEmbed from '@components/generic/VideoEmbed.astro';
+import RoundedImage from '@components/generic/RoundedImage.astro';
+
+<VideoEmbed
+  src="https://www.youtube.com/embed/plwUCzFeK7A?autoplay=1&mute=1&controls=1&modestbranding=1&rel=0"
+  title="Building Generator Tool demo"
+/>
 
 ## Reference
-![](/img/blog/building-tool/fischer-fine-arts.png)
+<RoundedImage
+  src="/img/blog/building-tool/fischer-fine-arts.png"
+  alt="Reference image for the building generator tool"
+/>
 
 ## Details
 - Modular HDA system for customizable building generation, supporting multiple roof styles

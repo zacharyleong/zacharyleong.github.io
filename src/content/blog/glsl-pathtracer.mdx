@@ -10,6 +10,9 @@ tags:
 imgUrl: ../../img/glsl-pathtracer-thumb-low.png
 carouselAutoplay: false
 ---
+
+import RoundedImage from '@components/generic/RoundedImage.astro';
+
 ## Features
 - Multiple importance sampling (MIS)
 - Next event estimation (NEE)
@@ -22,6 +25,15 @@ carouselAutoplay: false
 
 
 ## Showcase
-![](/img/blog/glsl-pathtracer/bokeh.png)
-![](/img/blog/glsl-pathtracer/glass_ball.png)
-![](/img/blog/glsl-pathtracer/microfacet_brdf.png)
+<RoundedImage
+  src="/img/blog/glsl-pathtracer/bokeh.png"
+  alt="Path traced bokeh showcase"
+/>
+<RoundedImage
+  src="/img/blog/glsl-pathtracer/glass_ball.png"
+  alt="Path traced glass ball showcase"
+/>
+<RoundedImage
+  src="/img/blog/glsl-pathtracer/microfacet_brdf.png"
+  alt="Microfacet BRDF path tracing showcase"
+/>

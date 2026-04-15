@@ -1,0 +1,46 @@
+---
+interface Props {
+  src: string;
+  alt?: string;
+  maxWidth?: string;
+  caption?: string;
+  loading?: 'lazy' | 'eager';
+  decoding?: 'sync' | 'async' | 'auto';
+  class?: string;
+}
+
+const {
+  src,
+  alt = '',
+  maxWidth = '100%',
+  caption,
+  loading = 'lazy',
+  decoding = 'async',
+  class: className,
+} = Astro.props as Props;
+---
+
+{
+  caption ? (
+    <figure>
+      <img
+        class:list={['content-image', className]}
+        src={src}
+        alt={alt}
+        loading={loading}
+        decoding={decoding}
+        style={{ '--image-max-width': maxWidth }}
+      />
+      <figcaption>{caption}</figcaption>
+    </figure>
+  ) : (
+    <img
+      class:list={['content-image', className]}
+      src={src}
+      alt={alt}
+      loading={loading}
+      decoding={decoding}
+      style={{ '--image-max-width': maxWidth }}
+    />
+  )
+}

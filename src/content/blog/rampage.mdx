@@ -11,16 +11,13 @@ carouselAutoplay: false
 
 import ImageGallery from '@components/generic/ImageGallery.astro';
 import ImageCarousel from '@components/generic/ImageCarousel.astro';
+import VideoEmbed from '@components/generic/VideoEmbed.astro';
 
-<div class="content-video-frame" style="--video-max-width: 700px;">
-  <iframe
-    src="https://player.vimeo.com/video/1124951489?background=1&autoplay=1&muted=1&byline=0&loop=1&portrait=0&title=0"
-    frameborder="0"
-    allow="autoplay; fullscreen"
-    allowfullscreen
-    title="Rampage Rally Challenge Demo"
-  ></iframe>
-</div>
+<VideoEmbed
+  src="https://player.vimeo.com/video/1124951489?background=1&autoplay=1&muted=1&byline=0&loop=1&portrait=0&title=0"
+  title="Rampage Rally Challenge Demo"
+  maxWidth="700px"
+/>
 
 ## Shot Breakdown 
 ### Shot 1
