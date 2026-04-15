@@ -12,7 +12,7 @@ layout: ../../layouts/BlogPost.astro
 
 
 <figure>
-	<video controls width="800" loading="lazy" autoplay muted>
+	<video class="content-video" controls loading="lazy" autoplay muted>
 		<source src="/videos/red_tree.mp4" type="video/mp4" />
 	</video>
 	<figcaption>4x anti-aliasing used here</figcaption>

@@ -9,7 +9,7 @@ imgUrl: ../../img/scenegraph.png
 layout: ../../layouts/BlogPost.astro
 ---
 
-<video controls width="800" loading="lazy">
+<video class="content-video" controls loading="lazy">
   <source src="/videos/scenegraph.mp4" type="video/mp4">
 </video>
 

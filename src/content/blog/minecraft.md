@@ -11,17 +11,14 @@ imgUrl: ../../img/mc_thumb.jpg
 layout: ../../layouts/BlogPost.astro
 ---
 
-<div style="aspect-ratio:16/9;max-width:700px;margin:auto;">
+<div class="content-video-frame" style="--video-max-width: 700px;">
   <iframe
     src="https://www.youtube.com/embed/u8vedHiUQ7c?autoplay=1&mute=1&loop=1&
 playlist=u8vedHiUQ7c"
-    width="100%"
-    height="100%"
     frameborder="0"
     allow="autoplay; fullscreen"
     allowfullscreen
     title="Space Minecraft — YouTube video"
-    style="width:100%;height:100%;border-radius:8px;"
   ></iframe>
 </div>
 
