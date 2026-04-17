@@ -4,7 +4,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Overview
 
-Personal website for Zachary Leong (zacharyleong.com), built on Astro 4 with the [`brutal`](https://github.com/eliancodes/brutal) template as a starting point. Static site, deployed from `dist/`.
+Personal website for Zachary Leong (zacharyleong.com), built on Astro 4 with the [`brutal`](https://github.com/eliancodes/brutal) template as a starting point. Static site, deployed from `dist/`. The style is brutalism.
 
 ## Commands
 
@@ -27,6 +27,32 @@ There is no test suite and no lint script wired up (eslint/prettier are installe
 - **Layouts.** `Default.astro` is the page shell; `BlogPost.astro` wraps MDX project entries; `ExternalLink.astro` is used for entries whose `externalLink` redirects offsite.
 - **Components** are grouped by area under `src/components/{home,projects,layout,generic,errors}`. The `@eliancodes/brutal-ui` package supplies the base "brutalist" UI primitives.
 - **Unpublished content** lives in `src/content/unpublished/` and is intentionally outside the `blog` collection so it doesn't get built.
+
+## Video components
+
+`Video.astro` (`@components/generic/Video.astro`) embeds videos from YouTube, Vimeo, or local files. Key props:
+
+- `src` — URL (YouTube/Vimeo) or path (local `.mp4`).
+- `maxWidth` — constrains width; the video is always centered horizontally.
+- `aspectRatio` — CSS aspect-ratio string, default `16 / 9`.
+- `lazy` (default `true`) — for embeds, shows a thumbnail + play button; click loads the iframe.
+- `autoplayVisible` — uses `IntersectionObserver` to autoplay when scrolled into view (pauses when out of view for local files; loads iframe on first visibility for embeds). Mutually exclusive with `lazy` thumbnail behavior.
+- `background` — shorthand that sets autoplay + loop + muted + no controls.
+- `caption` — wraps in `<figure>/<figcaption>`.
+
+Every `<Video>` is wrapped in a `.content-video-wrap` flex container that centers it.
+
+`VideoRow.astro` (`@components/generic/VideoRow.astro`) places multiple `<Video>` components side by side. Props: `gap` (default `1rem`). Example:
+
+```mdx
+import Video from '@components/generic/Video.astro';
+import VideoRow from '@components/generic/VideoRow.astro';
+
+<VideoRow>
+  <Video src="/videos/a.mp4" />
+  <Video src="/videos/b.mp4" />
+</VideoRow>
+```
 
 ## Adding a project entry
 

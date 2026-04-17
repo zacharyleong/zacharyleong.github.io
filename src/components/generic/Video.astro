@@ -7,6 +7,7 @@ interface Props {
   thumbnail?: string;
   background?: boolean;
   autoplay?: boolean;
+  autoplayVisible?: boolean;
   loop?: boolean;
   muted?: boolean;
   controls?: boolean;
@@ -26,6 +27,7 @@ const {
   thumbnail,
   background = false,
   autoplay: autoplayProp,
+  autoplayVisible = false,
   loop: loopProp,
   muted: mutedProp,
   controls: controlsProp,
@@ -39,7 +41,7 @@ const {
 
 const autoplay = background ? true : (autoplayProp ?? false);
 const loop = background ? true : (loopProp ?? false);
-const muted = background ? true : (mutedProp ?? autoplay);
+const muted = background ? true : (mutedProp ?? autoplay ?? autoplayVisible);
 const controls = background ? false : (controlsProp ?? true);
 const lazy = background ? false : (lazyProp ?? true);
 
@@ -100,7 +102,6 @@ const iframeSrc = provider === 'youtube'
     ? buildVimeoUrl(id)
     : '';
 
-// For the lazy → active swap, the click is a user gesture, so force autoplay=1
 const lazyActivateSrc = provider === 'youtube'
   ? buildYouTubeUrl(id, true)
   : provider === 'vimeo'
@@ -111,45 +112,80 @@ const containerStyle = {
   '--video-aspect-ratio': aspectRatio,
   '--video-max-width': maxWidth,
 };
+
+const fileVideoAttrs = {
+  controls,
+  muted,
+  loop,
+  playsinline,
+  preload: autoplayVisible ? 'auto' as const : preload,
+  poster,
+};
 ---
 
-{provider === 'file' ? (
-  caption ? (
-    <figure>
+<div class="content-video-wrap">
+  {provider === 'file' ? (
+    caption ? (
+      <figure>
+        <video
+          class:list={['content-video', className]}
+          style={{ '--video-max-width': maxWidth }}
+          autoplay={autoplay && !autoplayVisible}
+          data-autoplay-visible={autoplayVisible ? '' : undefined}
+          {...fileVideoAttrs}
+        >
+          <source src={src} />
+        </video>
+        <figcaption>{caption}</figcaption>
+      </figure>
+    ) : (
       <video
         class:list={['content-video', className]}
         style={{ '--video-max-width': maxWidth }}
-        controls={controls}
-        autoplay={autoplay}
-        muted={muted}
-        loop={loop}
-        playsinline={playsinline}
-        preload={preload}
-        poster={poster}
+        autoplay={autoplay && !autoplayVisible}
+        data-autoplay-visible={autoplayVisible ? '' : undefined}
+        {...fileVideoAttrs}
       >
         <source src={src} />
       </video>
+    )
+  ) : caption ? (
+    <figure>
+      <div class:list={['content-video-frame', className]} style={containerStyle}>
+        {lazy && !autoplayVisible ? (
+          <button
+            type="button"
+            class="video-lazy"
+            data-src={lazyActivateSrc}
+            data-title={title}
+            aria-label={`Play video: ${title}`}
+          >
+            <img src={thumbnailUrl()} alt="" loading="lazy" />
+            <span class="video-play-button" aria-hidden="true"></span>
+          </button>
+        ) : autoplayVisible ? (
+          <div
+            class="video-lazy-visible"
+            data-src={lazyActivateSrc}
+            data-title={title}
+          >
+            <img src={thumbnailUrl()} alt="" loading="lazy" />
+          </div>
+        ) : (
+          <iframe
+            src={iframeSrc}
+            title={title}
+            loading="lazy"
+            allow="autoplay; fullscreen; encrypted-media; picture-in-picture"
+            allowfullscreen
+          ></iframe>
+        )}
+      </div>
       <figcaption>{caption}</figcaption>
     </figure>
   ) : (
-    <video
-      class:list={['content-video', className]}
-      style={{ '--video-max-width': maxWidth }}
-      controls={controls}
-      autoplay={autoplay}
-      muted={muted}
-      loop={loop}
-      playsinline={playsinline}
-      preload={preload}
-      poster={poster}
-    >
-      <source src={src} />
-    </video>
-  )
-) : caption ? (
-  <figure>
     <div class:list={['content-video-frame', className]} style={containerStyle}>
-      {lazy ? (
+      {lazy && !autoplayVisible ? (
         <button
           type="button"
           class="video-lazy"
@@ -160,6 +196,14 @@ const containerStyle = {
           <img src={thumbnailUrl()} alt="" loading="lazy" />
           <span class="video-play-button" aria-hidden="true"></span>
         </button>
+      ) : autoplayVisible ? (
+        <div
+          class="video-lazy-visible"
+          data-src={lazyActivateSrc}
+          data-title={title}
+        >
+          <img src={thumbnailUrl()} alt="" loading="lazy" />
+        </div>
       ) : (
         <iframe
           src={iframeSrc}
@@ -170,32 +214,8 @@ const containerStyle = {
         ></iframe>
       )}
     </div>
-    <figcaption>{caption}</figcaption>
-  </figure>
-) : (
-  <div class:list={['content-video-frame', className]} style={containerStyle}>
-    {lazy ? (
-      <button
-        type="button"
-        class="video-lazy"
-        data-src={lazyActivateSrc}
-        data-title={title}
-        aria-label={`Play video: ${title}`}
-      >
-        <img src={thumbnailUrl()} alt="" loading="lazy" />
-        <span class="video-play-button" aria-hidden="true"></span>
-      </button>
-    ) : (
-      <iframe
-        src={iframeSrc}
-        title={title}
-        loading="lazy"
-        allow="autoplay; fullscreen; encrypted-media; picture-in-picture"
-        allowfullscreen
-      ></iframe>
-    )}
-  </div>
-)}
+  )}
+</div>
 
 <script>
   document.addEventListener('click', (e) => {
@@ -210,5 +230,43 @@ const containerStyle = {
     iframe.setAttribute('allowfullscreen', '');
     iframe.loading = 'eager';
     btn.replaceWith(iframe);
+  });
+
+  const observer = new IntersectionObserver(
+    (entries) => {
+      entries.forEach((entry) => {
+        const el = entry.target as HTMLElement;
+
+        if (el.tagName === 'VIDEO') {
+          const video = el as HTMLVideoElement;
+          if (entry.isIntersecting) {
+            video.play().catch(() => {});
+          } else {
+            video.pause();
+          }
+          return;
+        }
+
+        if (el.classList.contains('video-lazy-visible') && entry.isIntersecting) {
+          const iframe = document.createElement('iframe');
+          iframe.src = el.dataset.src || '';
+          iframe.title = el.dataset.title || '';
+          iframe.setAttribute('allow', 'autoplay; fullscreen; encrypted-media; picture-in-picture');
+          iframe.setAttribute('allowfullscreen', '');
+          iframe.loading = 'eager';
+          el.replaceWith(iframe);
+          observer.unobserve(el);
+        }
+      });
+    },
+    { threshold: 0.25 }
+  );
+
+  document.querySelectorAll<HTMLVideoElement>('video[data-autoplay-visible]').forEach((v) => {
+    observer.observe(v);
+  });
+
+  document.querySelectorAll<HTMLElement>('.video-lazy-visible').forEach((el) => {
+    observer.observe(el);
   });
 </script>

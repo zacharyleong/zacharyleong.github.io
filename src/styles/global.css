@@ -39,6 +39,16 @@ figcaption {
   border: 0;
 }
 
+.content-video-wrap {
+  display: flex;
+  justify-content: center;
+  margin: 1.5rem 0;
+}
+
+.content-video-wrap > figure {
+  margin: 0;
+}
+
 .content-video-frame {
   --video-aspect-ratio: 16 / 9;
   --video-max-width: 100%;
@@ -49,6 +59,8 @@ figcaption {
   aspect-ratio: var(--video-aspect-ratio);
   border-radius: var(--video-radius);
   overflow: hidden;
+  background: transparent;
+  isolation: isolate;
 }
 
 .content-video-frame > iframe {
@@ -56,6 +68,8 @@ figcaption {
   width: 100%;
   height: 100%;
   border: 0;
+  margin: 0;
+  padding: 0;
 }
 
 .content-video {
@@ -67,6 +81,21 @@ figcaption {
   height: auto;
   margin-inline: auto;
   border-radius: var(--video-radius);
+}
+
+.video-row {
+  display: flex;
+  gap: 1rem;
+  justify-content: center;
+  align-items: flex-start;
+  flex-wrap: wrap;
+  margin: 1.5rem 0;
+}
+
+.video-row > .content-video-wrap {
+  flex: 1 1 0;
+  min-width: 200px;
+  margin: 0;
 }
 
 .content-image {
@@ -122,6 +151,19 @@ figcaption {
   border-width: 10px 0 10px 16px;
   border-color: transparent transparent transparent white;
   margin-left: 4px;
+}
+
+.video-lazy-visible {
+  position: relative;
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+.video-lazy-visible img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
 }
 
 .card-shadow {
