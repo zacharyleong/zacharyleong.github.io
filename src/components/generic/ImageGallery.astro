@@ -12,12 +12,16 @@ export interface Props {
   images: ImageItem[];
   caption?: string;
   galleryId?: string;
+  aspectRatio?: number;
+  objectFit?: 'cover' | 'contain';
 }
 
 const {
   images = [],
   caption,
   galleryId,
+  aspectRatio,
+  objectFit = 'cover',
 } = Astro.props;
 
 const uid = galleryId ?? `gallery-${Math.random().toString(36).slice(2, 10)}`;
@@ -26,7 +30,12 @@ const uid = galleryId ?? `gallery-${Math.random().toString(36).slice(2, 10)}`;
 <!-- Load CSS -->
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/lightgallery@2.8.3/css/lightgallery-bundle.min.css" />
 
-<figure class="gallery-wrapper">
+<figure
+  class="gallery-wrapper"
+  style={{
+    '--gallery-object-fit': objectFit,
+  }}
+>
   <div id={uid} class="image-gallery">
     {
       images.map((img) => {
@@ -35,7 +44,7 @@ const uid = galleryId ?? `gallery-${Math.random().toString(36).slice(2, 10)}`;
             class="gallery-item"
             href={img.src}
             data-sub-html={img.alt ? `<h4>${img.alt}</h4>` : undefined}
-            data-aspect-ratio={img.aspectRatio}
+            data-aspect-ratio={img.aspectRatio ?? aspectRatio}
             data-width={img.width}
             data-height={img.height}
           >
@@ -95,7 +104,7 @@ const uid = galleryId ?? `gallery-${Math.random().toString(36).slice(2, 10)}`;
     display: block;
     width: 100%;
     height: 100%;
-    object-fit: cover;
+    object-fit: var(--gallery-object-fit, cover);
     border-radius: inherit;
     vertical-align: bottom;
     transition: opacity 0.2s ease;

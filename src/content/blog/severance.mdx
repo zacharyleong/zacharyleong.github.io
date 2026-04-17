@@ -10,6 +10,7 @@ carouselAutoplay: false
 ---
 
 import Video from '@components/generic/Video.astro';
+import ImageGallery from '@components/generic/ImageGallery.astro';
 
 <Video
   src="https://youtu.be/CP5IoiYxyy4"
@@ -19,4 +20,14 @@ import Video from '@components/generic/Video.astro';
   maxWidth="600px"
 />
 
-Breakdown soooooonnnnnn!!!!!!
+## Gallery
+
+<ImageGallery 
+  images={[
+    { src: '/img/blog/severance/me6.png', alt: 'Portrait View 1' },
+    { src: '/img/blog/severance/me5.png', alt: 'Portrait View 2' },
+    { src: '/img/blog/severance/me3.png', alt: 'Portrait View 3' },
+  ]}
+  objectFit="contain"
+  caption="Renders of severance head"
+/>
