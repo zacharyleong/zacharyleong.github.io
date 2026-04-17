@@ -1,0 +1,214 @@
+---
+interface Props {
+  src: string;
+  maxWidth?: string;
+  aspectRatio?: string;
+  lazy?: boolean;
+  thumbnail?: string;
+  background?: boolean;
+  autoplay?: boolean;
+  loop?: boolean;
+  muted?: boolean;
+  controls?: boolean;
+  title?: string;
+  caption?: string;
+  poster?: string;
+  preload?: 'none' | 'metadata' | 'auto';
+  playsinline?: boolean;
+  class?: string;
+}
+
+const {
+  src,
+  maxWidth = '100%',
+  aspectRatio = '16 / 9',
+  lazy: lazyProp,
+  thumbnail,
+  background = false,
+  autoplay: autoplayProp,
+  loop: loopProp,
+  muted: mutedProp,
+  controls: controlsProp,
+  title = 'Embedded video',
+  caption,
+  poster,
+  preload = 'metadata',
+  playsinline = true,
+  class: className,
+} = Astro.props as Props;
+
+const autoplay = background ? true : (autoplayProp ?? false);
+const loop = background ? true : (loopProp ?? false);
+const muted = background ? true : (mutedProp ?? autoplay);
+const controls = background ? false : (controlsProp ?? true);
+const lazy = background ? false : (lazyProp ?? true);
+
+type Provider = 'youtube' | 'vimeo' | 'file';
+const YT_RE = /(?:youtube\.com\/(?:watch\?v=|embed\/|shorts\/)|youtu\.be\/|youtube-nocookie\.com\/embed\/)([\w-]+)/;
+const VIMEO_RE = /(?:player\.vimeo\.com\/video\/|vimeo\.com\/(?:video\/)?)(\d+)/;
+
+let provider: Provider = 'file';
+let id = '';
+const ytMatch = src.match(YT_RE);
+const vimeoMatch = src.match(VIMEO_RE);
+if (ytMatch) {
+  provider = 'youtube';
+  id = ytMatch[1];
+} else if (vimeoMatch) {
+  provider = 'vimeo';
+  id = vimeoMatch[1];
+}
+
+function buildYouTubeUrl(videoId: string, forceAutoplay = false): string {
+  const params = new URLSearchParams();
+  params.set('autoplay', (autoplay || forceAutoplay) ? '1' : '0');
+  params.set('mute', muted ? '1' : '0');
+  params.set('controls', controls ? '1' : '0');
+  if (loop) {
+    params.set('loop', '1');
+    params.set('playlist', videoId);
+  }
+  params.set('modestbranding', '1');
+  params.set('rel', '0');
+  params.set('playsinline', '1');
+  return `https://www.youtube.com/embed/${videoId}?${params.toString()}`;
+}
+
+function buildVimeoUrl(videoId: string, forceAutoplay = false): string {
+  const params = new URLSearchParams();
+  if (background) params.set('background', '1');
+  params.set('autoplay', (autoplay || forceAutoplay) ? '1' : '0');
+  params.set('muted', muted ? '1' : '0');
+  params.set('loop', loop ? '1' : '0');
+  if (!controls) params.set('controls', '0');
+  params.set('byline', '0');
+  params.set('portrait', '0');
+  params.set('title', '0');
+  return `https://player.vimeo.com/video/${videoId}?${params.toString()}`;
+}
+
+function thumbnailUrl(): string {
+  if (thumbnail) return thumbnail;
+  if (provider === 'youtube') return `https://i.ytimg.com/vi/${id}/hqdefault.jpg`;
+  if (provider === 'vimeo') return `https://vumbnail.com/${id}.jpg`;
+  return '';
+}
+
+const iframeSrc = provider === 'youtube'
+  ? buildYouTubeUrl(id)
+  : provider === 'vimeo'
+    ? buildVimeoUrl(id)
+    : '';
+
+// For the lazy → active swap, the click is a user gesture, so force autoplay=1
+const lazyActivateSrc = provider === 'youtube'
+  ? buildYouTubeUrl(id, true)
+  : provider === 'vimeo'
+    ? buildVimeoUrl(id, true)
+    : '';
+
+const containerStyle = {
+  '--video-aspect-ratio': aspectRatio,
+  '--video-max-width': maxWidth,
+};
+---
+
+{provider === 'file' ? (
+  caption ? (
+    <figure>
+      <video
+        class:list={['content-video', className]}
+        style={{ '--video-max-width': maxWidth }}
+        controls={controls}
+        autoplay={autoplay}
+        muted={muted}
+        loop={loop}
+        playsinline={playsinline}
+        preload={preload}
+        poster={poster}
+      >
+        <source src={src} />
+      </video>
+      <figcaption>{caption}</figcaption>
+    </figure>
+  ) : (
+    <video
+      class:list={['content-video', className]}
+      style={{ '--video-max-width': maxWidth }}
+      controls={controls}
+      autoplay={autoplay}
+      muted={muted}
+      loop={loop}
+      playsinline={playsinline}
+      preload={preload}
+      poster={poster}
+    >
+      <source src={src} />
+    </video>
+  )
+) : caption ? (
+  <figure>
+    <div class:list={['content-video-frame', className]} style={containerStyle}>
+      {lazy ? (
+        <button
+          type="button"
+          class="video-lazy"
+          data-src={lazyActivateSrc}
+          data-title={title}
+          aria-label={`Play video: ${title}`}
+        >
+          <img src={thumbnailUrl()} alt="" loading="lazy" />
+          <span class="video-play-button" aria-hidden="true"></span>
+        </button>
+      ) : (
+        <iframe
+          src={iframeSrc}
+          title={title}
+          loading="lazy"
+          allow="autoplay; fullscreen; encrypted-media; picture-in-picture"
+          allowfullscreen
+        ></iframe>
+      )}
+    </div>
+    <figcaption>{caption}</figcaption>
+  </figure>
+) : (
+  <div class:list={['content-video-frame', className]} style={containerStyle}>
+    {lazy ? (
+      <button
+        type="button"
+        class="video-lazy"
+        data-src={lazyActivateSrc}
+        data-title={title}
+        aria-label={`Play video: ${title}`}
+      >
+        <img src={thumbnailUrl()} alt="" loading="lazy" />
+        <span class="video-play-button" aria-hidden="true"></span>
+      </button>
+    ) : (
+      <iframe
+        src={iframeSrc}
+        title={title}
+        loading="lazy"
+        allow="autoplay; fullscreen; encrypted-media; picture-in-picture"
+        allowfullscreen
+      ></iframe>
+    )}
+  </div>
+)}
+
+<script>
+  document.addEventListener('click', (e) => {
+    const target = e.target as HTMLElement | null;
+    const btn = target?.closest<HTMLButtonElement>('.video-lazy');
+    if (!btn) return;
+    e.preventDefault();
+    const iframe = document.createElement('iframe');
+    iframe.src = btn.dataset.src || '';
+    iframe.title = btn.dataset.title || '';
+    iframe.setAttribute('allow', 'autoplay; fullscreen; encrypted-media; picture-in-picture');
+    iframe.setAttribute('allowfullscreen', '');
+    iframe.loading = 'eager';
+    btn.replaceWith(iframe);
+  });
+</script>

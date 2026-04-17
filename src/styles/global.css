@@ -80,6 +80,50 @@ figcaption {
   border-radius: var(--image-radius);
 }
 
+.video-lazy {
+  position: relative;
+  display: block;
+  width: 100%;
+  height: 100%;
+  padding: 0;
+  margin: 0;
+  border: 0;
+  background: #000;
+  cursor: pointer;
+  overflow: hidden;
+}
+.video-lazy img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+.video-lazy .video-play-button {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 68px;
+  height: 48px;
+  border-radius: 14px;
+  background: rgba(0, 0, 0, 0.75);
+  display: grid;
+  place-items: center;
+  transition: background 0.15s ease;
+}
+.video-lazy:hover .video-play-button,
+.video-lazy:focus-visible .video-play-button {
+  background: rgb(230, 33, 23);
+}
+.video-lazy .video-play-button::after {
+  content: "";
+  display: block;
+  border-style: solid;
+  border-width: 10px 0 10px 16px;
+  border-color: transparent transparent transparent white;
+  margin-left: 4px;
+}
+
 .card-shadow {
   filter: drop-shadow(7px 7px 0 rgb(0 0 0 / 1));
   transition: all;

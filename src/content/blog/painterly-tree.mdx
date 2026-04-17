@@ -7,16 +7,16 @@ tags:
   - Blender
 description: A tree made of brushstrokes
 imgUrl: ../../img/red_tree.jpg
-layout: ../../layouts/BlogPost.astro
 ---
 
+import Video from '@components/generic/Video.astro';
 
-<figure>
-	<video class="content-video" controls loading="lazy" autoplay muted>
-		<source src="/videos/red_tree.mp4" type="video/mp4" />
-	</video>
-	<figcaption>4x anti-aliasing used here</figcaption>
-</figure>
+<Video
+  src="/videos/red_tree.mp4"
+  autoplay
+  muted
+  caption="4x anti-aliasing used here"
+/>
 
 
 ![](/img/blog/painterly-tree/tree_purple.png)

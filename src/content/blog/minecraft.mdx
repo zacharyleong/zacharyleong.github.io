@@ -8,19 +8,15 @@ tags:
   - GLSL
   - Qt
 imgUrl: ../../img/mc_thumb.jpg
-layout: ../../layouts/BlogPost.astro
 ---
 
-<div class="content-video-frame" style="--video-max-width: 700px;">
-  <iframe
-    src="https://www.youtube.com/embed/u8vedHiUQ7c?autoplay=1&mute=1&loop=1&
-playlist=u8vedHiUQ7c"
-    frameborder="0"
-    allow="autoplay; fullscreen"
-    allowfullscreen
-    title="Space Minecraft — YouTube video"
-  ></iframe>
-</div>
+import Video from '@components/generic/Video.astro';
+
+<Video
+  src="https://youtu.be/u8vedHiUQ7c"
+  title="Space Minecraft"
+  maxWidth="700px"
+/>
 
 ## About
 
