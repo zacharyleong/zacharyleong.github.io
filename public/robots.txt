@@ -1,4 +1,8 @@
+User-agent: ia_archiver
+Disallow: /
+
 User-agent: *
-Disallow: 
+Disallow: /pdf/
+
 Host: https://zacharyleong.com/
-Sitemap: https://brutal.elian.codes/sitemap-index.xml
+Sitemap: https://zacharyleong.com/sitemap-index.xml
