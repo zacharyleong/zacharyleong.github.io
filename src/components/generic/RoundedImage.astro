@@ -1,4 +1,6 @@
 ---
+import ImageLightbox from './ImageLightbox.astro';
+
 interface Props {
   src: string;
   alt?: string;
@@ -20,6 +22,8 @@ const {
 } = Astro.props as Props;
 ---
 
+<ImageLightbox />
+
 {
   caption ? (
     <figure>
@@ -30,6 +34,7 @@ const {
         loading={loading}
         decoding={decoding}
         style={{ '--image-max-width': maxWidth }}
+        data-zoomable
       />
       <figcaption>{caption}</figcaption>
     </figure>
@@ -41,6 +46,13 @@ const {
       loading={loading}
       decoding={decoding}
       style={{ '--image-max-width': maxWidth }}
+      data-zoomable
     />
   )
 }
+
+<style>
+  .content-image {
+    cursor: zoom-in;
+  }
+</style>

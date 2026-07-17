@@ -12,7 +12,10 @@ interface Props {
 
 const { count, filter } = Astro.props;
 
-const posts = await getCollection('blog').then((posts) => {
+const posts = await getCollection(
+  'blog',
+  ({ data }) => import.meta.env.DEV || !data.draft,
+).then((posts) => {
   const filteredPosts = filter ? posts.filter(post => !post.data.title.includes(filter)) : posts;
   const sortedPosts = filteredPosts.sort((a, b) => new Date(b.data.pubDate).getTime() - new Date(a.data.pubDate).getTime())
   return sortedPosts.slice(0, count ?? 3)

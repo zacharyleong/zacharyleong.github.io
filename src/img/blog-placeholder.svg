@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 630" role="img" aria-labelledby="title description">
+  <title id="title">Blog post placeholder</title>
+  <desc id="description">A temporary brutalist cover for an unpublished blog post.</desc>
+  <rect width="1200" height="630" fill="#d7b65b" />
+  <rect x="36" y="36" width="1128" height="558" rx="18" fill="#fff" stroke="#000" stroke-width="12" />
+  <text x="600" y="290" text-anchor="middle" font-family="Arial, sans-serif" font-size="96" font-weight="700" fill="#000">NEW BLOG POST</text>
+  <text x="600" y="380" text-anchor="middle" font-family="Arial, sans-serif" font-size="38" fill="#000">Replace this cover before publishing</text>
+</svg>

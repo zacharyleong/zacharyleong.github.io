@@ -11,29 +11,28 @@ imgUrl: ../../img/pathtracer-tokyo-thumb.png
 carouselAutoplay: false
 ---
 
-import RoundedImage from '@components/generic/RoundedImage.astro';
+import ImageGallery from '@components/generic/ImageGallery.astro';
 
 ## Features
-- Multiple importance sampling (MIS)
-- Next event estimation (NEE)
-- Microfacet BRDF + BTDF
-- Thin Lens depth of field
-- Russian Roulette path termination
+- multiple importance sampling (MIS)
+- next event estimation (NEE)
+- microfacet BRDF + BTDF
+- thin lens depth of field
+- russian roulette
 - BVH acceleration structure (SAH construction)
-- Quasi-Monte Carlo low-discrepancy sampling with Sobol sequences
+- quasi-monte carlo low-discrepancy sampling with Sobol sequences
 - OpenImageDenoise (OIDN)
+- per-triangle materials
 
 
 ## Showcase
-<RoundedImage
-  src="/img/blog/glsl-pathtracer/bokeh.png"
-  alt="Path traced bokeh showcase"
-/>
-<RoundedImage
-  src="/img/blog/glsl-pathtracer/glass_ball.png"
-  alt="Path traced glass ball showcase"
-/>
-<RoundedImage
-  src="/img/blog/glsl-pathtracer/microfacet_brdf.png"
-  alt="Microfacet BRDF path tracing showcase"
+
+<ImageGallery 
+  images={[
+    { src: '/img/blog/glsl-pathtracer/pathtracer-tokyo.png', alt: 'Tokyo Scene from Sketchfab', asepct: 1},
+    { src: '/img/blog/glsl-pathtracer/bokeh.png', alt: 'Path traced bokeh', asepct: 1},
+    { src: '/img/blog/glsl-pathtracer/glass_ball.png', alt: 'Path traced glass ball', asepct: 1 },
+    { src: '/img/blog/glsl-pathtracer/microfacet_brdf.png', alt: 'Microfacet BRDF path tracing', asepct: 1 },
+  ]}
+  caption="Render Showcase"
 />

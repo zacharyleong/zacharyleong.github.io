@@ -2,7 +2,10 @@ import rss from '@astrojs/rss';
 import { getCollection } from 'astro:content';
 
 export async function GET(context) {
-  const blog = await getCollection('blog');
+  const blog = await getCollection(
+    'blog',
+    ({ data }) => import.meta.env.DEV || !data.draft,
+  );
   return rss({
     title: 'Zachary Leong',
     description: 'Zachary Leong\'s personal website',

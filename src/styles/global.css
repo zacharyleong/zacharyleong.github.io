@@ -8,8 +8,8 @@ figure {
 }
 
 figcaption {
-  font-size: 0.9rem;
-  color: #666;
+  font-size: var(--caption-font-size, 0.9rem);
+  color: var(--caption-color, #666);
   margin-top: 0.5rem;
   font-style: italic;
 }
@@ -186,6 +186,8 @@ figcaption {
   --primary: var(--sys-color-white);
   --secondary: var(--sys-color-black);
   --content-media-radius: 8px;
+  --caption-color: #666;
+  --caption-font-size: 0.9rem;
 }
 
 html {

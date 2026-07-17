@@ -54,6 +54,44 @@ import VideoRow from '@components/generic/VideoRow.astro';
 </VideoRow>
 ```
 
+## Image components
+
+### Unified lightbox (`ImageLightbox.astro`)
+
+Custom zoom modal shared by `RoundedImage` and `ImageCarousel`. No external dependencies (replaces previous medium-zoom CDN usage).
+
+- **API:** `window.__lightbox.open(imgElement)` / `window.__lightbox.close()`
+- **Auto-wire:** Any `<img data-zoomable>` gets click-to-zoom automatically via event delegation.
+- **Dismiss:** Click overlay/image, press Escape, or scroll (wheel event).
+- The script self-guards — including `<ImageLightbox />` multiple times is safe.
+
+### `RoundedImage.astro`
+
+Single image with optional caption. Click-to-zoom via the unified lightbox.
+
+- `src`, `alt`, `maxWidth`, `caption`, `loading`, `decoding`, `class`
+- Adds `data-zoomable` to the `<img>` so the lightbox handles it.
+
+### `ImageCarousel.astro`
+
+Multi-image carousel with fade/slide transitions. Click any slide to open in the unified lightbox.
+
+- `images` (array of `{ src, alt, caption? }`), `transition` (`'fade'` | `'slide'`), `autoplay`, `autoplaySpeed`, `aspectWidth`, `aspectHeight`, `theme` (`'light'` | `'dark'`)
+- Keyboard navigation (arrow keys), dot indicators, prev/next arrows.
+
+### `ImageGallery.astro`
+
+Multi-image gallery using lightGallery for its own lightbox (separate from the unified lightbox — provides multi-image navigation with thumbnails).
+
+- `images` (array of `{ src, alt?, thumb?, width?, height?, aspectRatio? }`)
+- `layout`: `'grid'` (default, justified Google Photos style), `'horizontal'` (single scrollable row), `'vertical'` (stacked column)
+- `caption`, `objectFit` (`'cover'` | `'contain'`), `galleryId`, `aspectRatio`
+- On small screens (`<500px`), grid layout stacks items vertically with rounded corners only on first/last items.
+
+### Caption styling
+
+All components share global CSS variables `--caption-color` and `--caption-font-size` (defined in `:root` in `global.css`). The global `figcaption` rule uses these variables. Component-specific caption styles (`carousel-caption`, `gallery-caption`) also reference them for consistency.
+
 ## Adding a project entry
 
 Create `src/content/blog/<slug>.{md,mdx}` with frontmatter matching the schema in `src/content/config.ts`. `imgUrl` must point to a local image file (it goes through Astro's image pipeline). Set `draft: true` to keep it out of listings, or `externalLink` to redirect to an offsite URL.

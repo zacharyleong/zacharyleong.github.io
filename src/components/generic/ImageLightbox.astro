@@ -1,0 +1,146 @@
+<!--
+  Unified image lightbox/zoom modal.
+  Include this component anywhere — the script self-guards so it only initializes once.
+
+  API:
+    window.__lightbox.open(imgElement)  — zoom an <img> to center screen
+    window.__lightbox.close()           — dismiss
+
+  Auto-wires: any <img data-zoomable> gets click-to-zoom automatically.
+  Dismiss: click overlay/image, Escape, or scroll (wheel).
+-->
+
+<script is:inline>
+(function () {
+  if (window.__lightbox) return;
+
+  var MARGIN = 48;
+  var BG = 'rgba(0, 0, 0, 0.82)';
+  var DUR = 280;
+
+  var overlay, clone, srcImg;
+  var st = { open: false, anim: false };
+
+  function target(img) {
+    var vw = window.innerWidth - MARGIN * 2;
+    var vh = window.innerHeight - MARGIN * 2;
+    var nw = img.naturalWidth || img.width;
+    var nh = img.naturalHeight || img.height;
+    if (!nw || !nh) { nw = 800; nh = 600; }
+    var r = nw / nh;
+    var w, h;
+    if (r > vw / vh) { w = Math.min(vw, nw); h = w / r; }
+    else { h = Math.min(vh, nh); w = h * r; }
+    return {
+      top: (window.innerHeight - h) / 2,
+      left: (window.innerWidth - w) / 2,
+      width: w,
+      height: h,
+    };
+  }
+
+  function open(img) {
+    if (st.open || st.anim) return;
+    st.anim = true;
+    srcImg = img;
+
+    var rect = img.getBoundingClientRect();
+    var t = target(img);
+
+    overlay = document.createElement('div');
+    overlay.className = 'lightbox-overlay';
+    overlay.style.cssText =
+      'position:fixed;inset:0;z-index:10000;background:' + BG +
+      ';opacity:0;transition:opacity ' + DUR + 'ms ease;cursor:zoom-out;';
+
+    clone = document.createElement('img');
+    clone.src = img.currentSrc || img.src;
+    clone.className = 'lightbox-clone';
+    clone.style.cssText =
+      'position:fixed;z-index:10001;cursor:zoom-out;object-fit:contain;border-radius:0;' +
+      'max-width:none;max-height:none;' +
+      'top:' + rect.top + 'px;left:' + rect.left + 'px;' +
+      'width:' + rect.width + 'px;height:' + rect.height + 'px;' +
+      'transition:top ' + DUR + 'ms ease,left ' + DUR + 'ms ease,' +
+      'width ' + DUR + 'ms ease,height ' + DUR + 'ms ease;';
+
+    document.body.style.overflow = 'hidden';
+    document.body.appendChild(overlay);
+    document.body.appendChild(clone);
+
+    void clone.offsetWidth;
+
+    overlay.style.opacity = '1';
+    clone.style.top = t.top + 'px';
+    clone.style.left = t.left + 'px';
+    clone.style.width = t.width + 'px';
+    clone.style.height = t.height + 'px';
+
+    srcImg.style.visibility = 'hidden';
+
+    overlay.addEventListener('click', close);
+    clone.addEventListener('click', close);
+    document.addEventListener('keydown', onKey);
+    window.addEventListener('wheel', close, { once: true, passive: true });
+
+    setTimeout(function () {
+      st.open = true;
+      st.anim = false;
+    }, DUR);
+  }
+
+  function close() {
+    if (!st.open || st.anim) return;
+    st.anim = true;
+
+    var rect = srcImg.getBoundingClientRect();
+
+    overlay.style.opacity = '0';
+    clone.style.top = rect.top + 'px';
+    clone.style.left = rect.left + 'px';
+    clone.style.width = rect.width + 'px';
+    clone.style.height = rect.height + 'px';
+
+    document.removeEventListener('keydown', onKey);
+    window.removeEventListener('wheel', close);
+
+    setTimeout(function () {
+      srcImg.style.visibility = '';
+      document.body.style.overflow = '';
+      if (overlay && overlay.parentNode) overlay.remove();
+      if (clone && clone.parentNode) clone.remove();
+      overlay = null;
+      clone = null;
+      srcImg = null;
+      st.open = false;
+      st.anim = false;
+    }, DUR);
+  }
+
+  function onKey(e) {
+    if (e.key === 'Escape') close();
+  }
+
+  window.addEventListener('resize', function () {
+    if (!st.open || st.anim || !clone || !srcImg) return;
+    var t = target(srcImg);
+    clone.style.transition = 'none';
+    clone.style.top = t.top + 'px';
+    clone.style.left = t.left + 'px';
+    clone.style.width = t.width + 'px';
+    clone.style.height = t.height + 'px';
+    void clone.offsetWidth;
+    clone.style.transition = '';
+  });
+
+  document.addEventListener('click', function (e) {
+    var img = e.target.closest ? e.target.closest('img[data-zoomable]') : null;
+    if (img) {
+      e.preventDefault();
+      open(img);
+    }
+  });
+
+  window.__lightbox = { open: open, close: close };
+})();
+</script>

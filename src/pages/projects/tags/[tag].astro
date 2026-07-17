@@ -6,8 +6,11 @@ import BlogList from '@components/projects/BlogList.astro';
 import { Button } from '@eliancodes/brutal-ui';
 
 export async function getStaticPaths() {
-  const allPosts = await getCollection('blog').then((collection) =>
-    collection.reverse()
+  const allPosts = await getCollection(
+    'blog',
+    ({ data }) => import.meta.env.DEV || !data.draft,
+  ).then((collection) =>
+    collection.reverse(),
   );
 
   const tags: string[] = [];

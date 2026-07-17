@@ -1,0 +1,24 @@
+---
+title: "Katara Engine"
+description: "A water simulation engine."
+pubDate: "2026-07-17 11:08"
+author: "Zachary Leong"
+tags:
+  - "Rust"
+  - "WebGPU"
+imgUrl: ../../img/katara-engine-thumb.png
+---
+
+import Video from '@components/generic/Video.astro';
+
+## About
+
+I've been working on a water simulation engine, named after Katara from Avatar: The Last Airbender. So far, the engine features both CPU and GPU implementations of Smoothed Particle Hydrodynamics (SPH) and is capable of simulating 1M+ particles in real-time on my laptop 4060 GPU. I plan to implement a hybrid Langrangian-Eulerian approach in the future, and work on more realistic rendering.
+
+![Katara water bending](/media/blog/katara-engine/katara-engine-2026-07-17-11-29-41.png)
+
+## Showcase
+
+<Video src="/videos/katara-engine-1.mp4" autoplay/>
+<Video src="/videos/katara-engine-2.mp4" autoplay/>
+

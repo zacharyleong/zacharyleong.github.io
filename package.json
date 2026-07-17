@@ -14,6 +14,7 @@
     "start": "astro dev",
     "build": "astro check && astro build",
     "preview": "astro preview",
+    "blog:new": "node scripts/new-blog.mjs",
     "astro": "astro"
   },
   "dependencies": {

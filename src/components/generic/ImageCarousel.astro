@@ -1,4 +1,6 @@
 ---
+import ImageLightbox from './ImageLightbox.astro';
+
 interface Props {
   images: Array<{
     src: string;
@@ -31,6 +33,9 @@ const aspectPadding = `${(aspectHeight / aspectWidth) * 100}%`;
 const transitionClass = transition === 'slide' ? 'transition-slide' : 'transition-fade';
 const themeClass = theme === 'dark' ? 'theme-dark' : 'theme-light';
 ---
+
+<ImageLightbox />
+
 {images.length === 0 ? (
   <div class="carousel-empty">No images provided.</div>
 ) : (
@@ -164,7 +169,7 @@ const themeClass = theme === 'dark' ? 'theme-dark' : 'theme-light';
     const isFade = transition === 'fade';
     const multipleSlides = hasMultiple && totalSlides > 1;
     const autoplayDelay = Math.max(Number(autoplaySpeed) || 0, 1000);
-  const fadeDuration = 300;
+    const fadeDuration = 300;
 
     let currentIndex = 0;
     let isAnimating = false;
@@ -386,31 +391,6 @@ const themeClass = theme === 'dark' ? 'theme-dark' : 'theme-light';
       track.addEventListener('transitionend', handleTransitionEnd);
     };
 
-    const openLightbox = (startIndex) => {
-      if (!window.mediumZoom) return;
-
-      // Initialize medium-zoom on first use with only base slide images (no clones)
-      if (!carousel._mediumZoom) {
-        const baseImages = baseSlides.map(slide => slide.querySelector('img')).filter(Boolean);
-        
-        carousel._mediumZoom = window.mediumZoom(baseImages, {
-          margin: 48,
-          background: 'rgba(0, 0, 0, 0.80)',
-          scrollOffset: 0,
-        });
-      }
-
-      // Get the base slide image at the current index
-      const targetSlide = baseSlides[startIndex];
-      if (!targetSlide) return;
-      
-      const img = targetSlide.querySelector('img');
-      if (!img) return;
-
-      // Trigger zoom on the specific base slide image
-      carousel._mediumZoom.open({ target: img });
-    };
-
     if (multipleSlides && prevBtn) {
       prevBtn.addEventListener('click', () =>
         goToSlide(currentIndex - 1, { direction: -1, force: true }),
@@ -443,9 +423,9 @@ const themeClass = theme === 'dark' ? 'theme-dark' : 'theme-light';
 
     renderedSlides.forEach((slide) => {
       slide.addEventListener('click', () => {
-        const indexAttr = slide.getAttribute('data-index');
-        const startIndex = Number(indexAttr || 0);
-        openLightbox(Number.isNaN(startIndex) ? 0 : startIndex);
+        if (!window.__lightbox) return;
+        const img = baseSlides[currentIndex]?.querySelector('img');
+        if (img) window.__lightbox.open(img);
       });
     });
 
@@ -478,29 +458,7 @@ const themeClass = theme === 'dark' ? 'theme-dark' : 'theme-light';
 })();
 </script>
 
-<script is:inline>
-  if (!window.mediumZoomLoaded) {
-    window.mediumZoomLoaded = true;
-    
-    const script = document.createElement('script');
-    script.src = 'https://cdn.jsdelivr.net/npm/medium-zoom@1.1.0/dist/medium-zoom.min.js';
-    script.onerror = () => {
-      console.error('Failed to load medium-zoom');
-    };
-    document.head.appendChild(script);
-  }
-</script>
-
 <style>
-  /* Ensure medium-zoom appears above everything */
-  :global(.medium-zoom-overlay) {
-    z-index: 10000 !important;
-  }
-
-  :global(.medium-zoom-image--opened) {
-    z-index: 10001 !important;
-  }
-
   .carousel-container {
     position: relative;
     width: 100%;
@@ -509,22 +467,20 @@ const themeClass = theme === 'dark' ? 'theme-dark' : 'theme-light';
     flex-direction: column;
     background: transparent;
     border: none;
-  --carousel-radius: var(--content-media-radius, 8px);
-  --carousel-arrow-color: rgba(20, 20, 20, 0.75);
-  --carousel-arrow-hover: rgba(20, 20, 20, 1);
-  --carousel-indicator-active: rgba(20, 20, 20, 0.9);
-  --carousel-indicator-inactive: rgba(20, 20, 20, 0.35);
-  --carousel-caption-color: #666666;
+    --carousel-radius: var(--content-media-radius, 8px);
+    --carousel-arrow-color: rgba(20, 20, 20, 0.75);
+    --carousel-arrow-hover: rgba(20, 20, 20, 1);
+    --carousel-indicator-active: rgba(20, 20, 20, 0.9);
+    --carousel-indicator-inactive: rgba(20, 20, 20, 0.35);
     --carousel-background: rgba(255, 255, 255, 0);
   }
 
   .carousel-container.theme-dark {
-  --carousel-arrow-color: rgba(255, 255, 255, 0.78);
-  --carousel-arrow-hover: rgba(255, 255, 255, 1);
-  --carousel-indicator-active: rgba(255, 255, 255, 0.92);
-  --carousel-indicator-inactive: rgba(255, 255, 255, 0.4);
-  --carousel-caption-color: #666666;
-  --carousel-background: rgba(0, 0, 0, 0.55);
+    --carousel-arrow-color: rgba(255, 255, 255, 0.78);
+    --carousel-arrow-hover: rgba(255, 255, 255, 1);
+    --carousel-indicator-active: rgba(255, 255, 255, 0.92);
+    --carousel-indicator-inactive: rgba(255, 255, 255, 0.4);
+    --carousel-background: rgba(0, 0, 0, 0.55);
   }
 
   .carousel-viewport {
@@ -574,10 +530,10 @@ const themeClass = theme === 'dark' ? 'theme-dark' : 'theme-light';
   .carousel-slide {
     width: 100%;
     height: 100%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background: transparent;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: transparent;
   }
 
   .carousel-container.transition-slide .carousel-slide {
@@ -702,7 +658,9 @@ const themeClass = theme === 'dark' ? 'theme-dark' : 'theme-light';
     align-items: center;
     justify-content: center;
     text-align: center;
-    color: var(--carousel-caption-color);
+    color: var(--caption-color, #666);
+    font-size: var(--caption-font-size, 0.9rem);
+    font-style: italic;
     transition: opacity 0.3s linear;
     pointer-events: none;
     z-index: 1;
@@ -717,6 +675,6 @@ const themeClass = theme === 'dark' ? 'theme-dark' : 'theme-light';
   .carousel-empty {
     padding: 1.5rem;
     text-align: center;
-  color: #666666;
+    color: var(--caption-color, #666);
   }
 </style>

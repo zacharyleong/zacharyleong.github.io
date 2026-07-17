@@ -6,14 +6,24 @@ export interface ImageItem {
   width?: number;
   height?: number;
   aspectRatio?: number;
+  objectFit?: 'cover' | 'contain';
+}
+
+export interface ImageDetails {
+  width?: number;
+  height?: number;
+  aspectRatio?: number;
+  objectFit?: 'cover' | 'contain';
 }
 
 export interface Props {
-  images: ImageItem[];
+  images?: ImageItem[];
   caption?: string;
   galleryId?: string;
   aspectRatio?: number;
   objectFit?: 'cover' | 'contain';
+  layout?: 'grid' | 'horizontal' | 'vertical';
+  details?: Record<string, ImageDetails>;
 }
 
 const {
@@ -22,6 +32,8 @@ const {
   galleryId,
   aspectRatio,
   objectFit = 'cover',
+  layout = 'grid',
+  details = {},
 } = Astro.props;
 
 const uid = galleryId ?? `gallery-${Math.random().toString(36).slice(2, 10)}`;
@@ -36,7 +48,7 @@ const uid = galleryId ?? `gallery-${Math.random().toString(36).slice(2, 10)}`;
     '--gallery-object-fit': objectFit,
   }}
 >
-  <div id={uid} class="image-gallery">
+  <div id={uid} class={`image-gallery layout-${layout}`} data-layout={layout}>
     {
       images.map((img) => {
         return (
@@ -47,6 +59,7 @@ const uid = galleryId ?? `gallery-${Math.random().toString(36).slice(2, 10)}`;
             data-aspect-ratio={img.aspectRatio ?? aspectRatio}
             data-width={img.width}
             data-height={img.height}
+            data-object-fit={img.objectFit}
           >
             <img
               src={img.thumb ?? img.src}
@@ -58,6 +71,7 @@ const uid = galleryId ?? `gallery-${Math.random().toString(36).slice(2, 10)}`;
         );
       })
     }
+    <slot />
   </div>
   {caption && <figcaption class="gallery-caption">{caption}</figcaption>}
 </figure>
@@ -68,39 +82,32 @@ const uid = galleryId ?? `gallery-${Math.random().toString(36).slice(2, 10)}`;
     margin: 2rem auto;
     --media-radius: var(--content-media-radius, 8px);
   }
-  
+
   .gallery-caption {
     text-align: center;
-    color: var(--color-text-dim, #777);
-    font-size: 0.95rem;
+    color: var(--caption-color, #666);
+    font-size: var(--caption-font-size, 0.9rem);
     margin-top: 1rem;
     font-style: italic;
   }
-  
+
   .image-gallery {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 2px;
     margin: 0;
     padding: 0;
   }
-  
-  .gallery-item {
+
+  .image-gallery :global(.gallery-item) {
     margin: 0;
     padding: 0;
     cursor: pointer;
     overflow: hidden;
     border-radius: var(--media-radius);
     position: relative;
-    flex-grow: 1;
-    flex-shrink: 1;
-    flex-basis: 200px;
-    height: 220px;
     text-decoration: none;
     display: block;
   }
-  
-  .gallery-item img {
+
+  .image-gallery :global(.gallery-item img) {
     display: block;
     width: 100%;
     height: 100%;
@@ -109,41 +116,113 @@ const uid = galleryId ?? `gallery-${Math.random().toString(36).slice(2, 10)}`;
     vertical-align: bottom;
     transition: opacity 0.2s ease;
   }
-  
-  .gallery-item:hover img {
+
+  .image-gallery :global(.gallery-item:hover img) {
     opacity: 0.9;
   }
 
-  /* Responsive adjustments */
+  /* ---- Grid (justified) layout ---- */
+  .layout-grid {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 2px;
+  }
+
+  .layout-grid :global(.gallery-item) {
+    flex-grow: 1;
+    flex-shrink: 1;
+    flex-basis: 200px;
+    height: 220px;
+  }
+
   @media (max-width: 768px) {
-    .gallery-item {
+    .layout-grid :global(.gallery-item) {
       flex-basis: 150px;
       height: 180px;
     }
   }
 
   @media (max-width: 500px) {
-    .image-gallery {
-      gap: 1px;
+    .layout-grid {
+      gap: 2px;
     }
-    
-    .gallery-item {
-      flex: 1 1 100%;
-      height: auto;
+
+    .layout-grid :global(.gallery-item) {
+      flex: 1 1 100% !important;
+      height: auto !important;
       max-height: 400px;
+      border-radius: 0;
     }
-    
-    .gallery-item img {
+
+    .layout-grid :global(.gallery-item img) {
       object-fit: contain;
     }
+
+    .layout-grid :global(.gallery-item:first-child) {
+      border-top-left-radius: var(--media-radius);
+      border-top-right-radius: var(--media-radius);
+    }
+
+    .layout-grid :global(.gallery-item:last-child) {
+      border-bottom-left-radius: var(--media-radius);
+      border-bottom-right-radius: var(--media-radius);
+    }
+  }
+
+  /* ---- Horizontal layout ---- */
+  .layout-horizontal {
+    display: flex;
+    flex-wrap: nowrap;
+    gap: 2px;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: thin;
+  }
+
+  .layout-horizontal :global(.gallery-item) {
+    flex: 0 0 auto;
+    height: 220px;
+    width: auto;
+  }
+
+  .layout-horizontal :global(.gallery-item img) {
+    height: 100%;
+    width: auto;
+    object-fit: cover;
+  }
+
+  @media (max-width: 768px) {
+    .layout-horizontal :global(.gallery-item) {
+      height: 180px;
+    }
+  }
+
+  /* ---- Vertical layout ---- */
+  .layout-vertical {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+  }
+
+  .layout-vertical :global(.gallery-item) {
+    flex: none;
+    height: auto;
+    width: 100%;
+  }
+
+  .layout-vertical :global(.gallery-item img) {
+    width: 100%;
+    height: auto;
+    max-height: 500px;
+    object-fit: var(--gallery-object-fit, cover);
   }
 </style>
 
-<script is:inline define:vars={{ uid }}>
+<script is:inline define:vars={{ uid, details, aspectRatio }}>
   window.lgGalleries = window.lgGalleries || [];
 
   function initGallery() {
-    const el = document.getElementById(uid);
+    var el = document.getElementById(uid);
     if (!el || el.dataset.lgInit) return;
 
     if (!window.lightGallery || !window.lgThumbnail) {
@@ -151,90 +230,133 @@ const uid = galleryId ?? `gallery-${Math.random().toString(36).slice(2, 10)}`;
       return;
     }
 
+    Array.from(el.querySelectorAll('img')).forEach(function (img) {
+      var item = img.closest('.gallery-item');
+
+      if (!item) {
+        var parent = img.parentElement;
+        var visibleChildren = parent
+          ? Array.from(parent.children).filter(function (child) { return child.tagName !== 'SCRIPT'; })
+          : [];
+        var isPlainMarkdownImage =
+          parent &&
+          parent.parentElement === el &&
+          parent.tagName === 'P' &&
+          visibleChildren.length === 1;
+
+        if (isPlainMarkdownImage) {
+          item = document.createElement('a');
+          parent.replaceWith(item);
+          item.appendChild(img);
+        } else {
+          item = document.createElement('a');
+          img.parentNode.insertBefore(item, img);
+          item.appendChild(img);
+        }
+
+        item.classList.add('gallery-item');
+        item.setAttribute('href', img.currentSrc || img.getAttribute('src') || '');
+
+        var alt = img.getAttribute('alt');
+        if (alt) item.setAttribute('data-sub-html', '<h4>' + alt + '</h4>');
+      }
+
+      img.removeAttribute('data-zoomable');
+
+      var source = img.getAttribute('src') || '';
+      var cleanSource = source.split('?')[0].split('#')[0];
+      var fileName = cleanSource.split('/').pop();
+      var imageDetails = details[source] || details[cleanSource] || details[fileName] || {};
+
+      if (!item.dataset.aspectRatio && imageDetails.aspectRatio) {
+        item.dataset.aspectRatio = imageDetails.aspectRatio;
+      } else if (!item.dataset.aspectRatio && aspectRatio) {
+        item.dataset.aspectRatio = aspectRatio;
+      }
+      if (!item.dataset.width && imageDetails.width) item.dataset.width = imageDetails.width;
+      if (!item.dataset.height && imageDetails.height) item.dataset.height = imageDetails.height;
+
+      var imageObjectFit = imageDetails.objectFit || item.dataset.objectFit;
+      if (imageObjectFit) img.style.objectFit = imageObjectFit;
+    });
+
     el.dataset.lgInit = 'true';
 
-    // Calculate layout based on loaded images
-    const items = Array.from(el.querySelectorAll('.gallery-item'));
-    const images = items.map(item => item.querySelector('img')).filter(Boolean);
-    
-    let loadedCount = 0;
-    const totalImages = images.length;
+    var layout = el.dataset.layout || 'grid';
+    var items = Array.from(el.querySelectorAll('.gallery-item'));
+    var images = items.map(function (item) { return item.querySelector('img'); }).filter(Boolean);
+
+    var loadedCount = 0;
+    var totalImages = images.length;
 
     function calculateLayout() {
-      const targetHeight = 220;
+      if (layout !== 'grid') return;
 
-      items.forEach((item) => {
-        const img = item.querySelector('img');
+      var containerWidth = el.offsetWidth;
+
+      if (containerWidth < 500) {
+        items.forEach(function (item) {
+          item.style.flexGrow = '';
+          item.style.flexBasis = '';
+        });
+        return;
+      }
+
+      var targetHeight = containerWidth < 768 ? 180 : 220;
+
+      items.forEach(function (item) {
+        var img = item.querySelector('img');
         if (!img) return;
 
-        let aspectRatio;
-        
-        // Priority 1: Check if aspectRatio was directly provided
-        const providedAspectRatio = parseFloat(item.dataset.aspectRatio);
-        
-        if (providedAspectRatio) {
-          aspectRatio = providedAspectRatio;
+        var ar;
+        var provided = parseFloat(item.dataset.aspectRatio);
+
+        if (provided) {
+          ar = provided;
         } else {
-          // Priority 2: Check if width/height were provided
-          const providedWidth = parseFloat(item.dataset.width);
-          const providedHeight = parseFloat(item.dataset.height);
-          
-          if (providedWidth && providedHeight) {
-            // Use provided dimensions to calculate aspect ratio
-            aspectRatio = providedWidth / providedHeight;
+          var pw = parseFloat(item.dataset.width);
+          var ph = parseFloat(item.dataset.height);
+
+          if (pw && ph) {
+            ar = pw / ph;
           } else {
-            // Priority 3: Fall back to loaded image dimensions
-            const naturalWidth = img.naturalWidth || 400;
-            const naturalHeight = img.naturalHeight || 300;
-            aspectRatio = naturalWidth / naturalHeight;
+            var nw = img.naturalWidth || 400;
+            var nh = img.naturalHeight || 300;
+            ar = nw / nh;
           }
         }
-        
-        // Calculate the ideal width at target height
-        const idealWidth = targetHeight * aspectRatio;
-        
-        // Set flex-grow based on aspect ratio (wider images get more space)
-        // This makes flexbox distribute space proportionally
-        item.style.flexGrow = aspectRatio.toFixed(3);
-        item.style.flexBasis = `${idealWidth}px`;
+
+        var idealWidth = targetHeight * ar;
+        item.style.flexGrow = ar.toFixed(3);
+        item.style.flexBasis = idealWidth + 'px';
       });
     }
 
-    // Wait for all images to load (only if dimensions/aspectRatio not provided)
-    const needsLoading = items.some(item => 
-      !item.dataset.aspectRatio && (!item.dataset.width || !item.dataset.height)
-    );
-    
+    var needsLoading = items.some(function (item) {
+      return !item.dataset.aspectRatio && (!item.dataset.width || !item.dataset.height);
+    });
+
     if (needsLoading) {
-      images.forEach(img => {
+      images.forEach(function (img) {
         if (img.complete && img.naturalWidth > 0) {
           loadedCount++;
         } else {
-          img.addEventListener('load', () => {
+          img.addEventListener('load', function () {
             loadedCount++;
-            if (loadedCount === totalImages) {
-              calculateLayout();
-            }
+            if (loadedCount === totalImages) calculateLayout();
           });
-          img.addEventListener('error', () => {
+          img.addEventListener('error', function () {
             loadedCount++;
-            if (loadedCount === totalImages) {
-              calculateLayout();
-            }
+            if (loadedCount === totalImages) calculateLayout();
           });
         }
       });
 
-      // If all images already loaded
-      if (loadedCount === totalImages) {
-        calculateLayout();
-      }
+      if (loadedCount === totalImages) calculateLayout();
     } else {
-      // All dimensions provided, calculate immediately
       calculateLayout();
     }
 
-    // Initialize lightGallery
     try {
       window.lightGallery(el, {
         selector: '.gallery-item',
@@ -250,16 +372,15 @@ const uid = galleryId ?? `gallery-${Math.random().toString(36).slice(2, 10)}`;
         mobileSettings: {
           controls: true,
           showCloseIcon: true,
-          download: false
-        }
+          download: false,
+        },
       });
     } catch (e) {
       console.error('Gallery init error:', e);
     }
 
-    // Recalculate on window resize
-    let resizeTimeout;
-    window.addEventListener('resize', () => {
+    var resizeTimeout;
+    window.addEventListener('resize', function () {
       clearTimeout(resizeTimeout);
       resizeTimeout = setTimeout(calculateLayout, 250);
     });
@@ -276,31 +397,31 @@ const uid = galleryId ?? `gallery-${Math.random().toString(36).slice(2, 10)}`;
 <script is:inline>
   if (!window.lgScriptsLoaded) {
     window.lgScriptsLoaded = true;
-    
-    const scripts = [
+
+    var scripts = [
       'https://cdn.jsdelivr.net/npm/lightgallery@2.8.3/lightgallery.umd.min.js',
-      'https://cdn.jsdelivr.net/npm/lightgallery@2.8.3/plugins/thumbnail/lg-thumbnail.umd.min.js'
+      'https://cdn.jsdelivr.net/npm/lightgallery@2.8.3/plugins/thumbnail/lg-thumbnail.umd.min.js',
     ];
 
-    let loaded = 0;
-    scripts.forEach(src => {
-      if (document.querySelector(`script[src="${src}"]`)) {
+    var loaded = 0;
+    scripts.forEach(function (src) {
+      if (document.querySelector('script[src="' + src + '"]')) {
         loaded++;
         return;
       }
 
-      const script = document.createElement('script');
+      var script = document.createElement('script');
       script.src = src;
-      script.onload = () => {
+      script.onload = function () {
         loaded++;
         if (loaded === scripts.length && window.lgGalleries) {
-          window.lgGalleries.forEach(fn => fn());
+          window.lgGalleries.forEach(function (fn) { fn(); });
         }
       };
-      script.onerror = () => {
+      script.onerror = function () {
         loaded++;
         if (loaded === scripts.length && window.lgGalleries) {
-          window.lgGalleries.forEach(fn => fn());
+          window.lgGalleries.forEach(function (fn) { fn(); });
         }
       };
       document.head.appendChild(script);

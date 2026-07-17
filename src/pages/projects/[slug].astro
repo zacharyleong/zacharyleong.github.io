@@ -2,9 +2,13 @@
 import { getCollection } from 'astro:content';
 import type { CollectionEntry } from 'astro:content';
 import BlogPost from '../../layouts/BlogPost.astro';
+import RoundedImage from '../../components/generic/RoundedImage.astro';
 
 export async function getStaticPaths() {
-  const blogEntries = await getCollection('blog');
+  const blogEntries = await getCollection(
+    'blog',
+    ({ data }) => import.meta.env.DEV || !data.draft,
+  );
   return blogEntries.map((blogpost) => ({
     params: { slug: blogpost.slug },
     props: { blogpost },
@@ -24,7 +28,7 @@ const isMDX = blogpost.id.endsWith('.mdx');
 
 {isMDX ? (
   <BlogPost content={blogpost.data} headings={headings}>
-    <Content />
+    <Content components={{ img: RoundedImage }} />
   </BlogPost>
 ) : (
   <Content />

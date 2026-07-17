@@ -3,6 +3,7 @@ import Layout from './Default.astro';
 import BlogSideBar from '@components/projects/BlogSideBar.astro';
 import BlogContent from '@components/projects/BlogContent.astro';
 import RecentBlogPosts from '@components/generic/RecentBlogPosts.astro';
+import ImageLightbox from '@components/generic/ImageLightbox.astro';
 
 const ogImage = new URL(`/v1/generate/og/${Astro.params.slug}.png`, Astro.url);
 
@@ -15,6 +16,8 @@ const description = content?.description || Astro.props.description;
 const tableOfContents = headings || [];
 
 ---
+
+<ImageLightbox />
 
 <Layout
   title={title as string}
@@ -31,3 +34,14 @@ const tableOfContents = headings || [];
     <RecentBlogPosts count={6} filter={title}/>
   </section>
 </Layout>
+
+<script>
+  document.querySelectorAll<HTMLImageElement>('article.prose-slate img').forEach((image) => {
+    if (image.closest('.image-gallery, .carousel-container, .video-lazy, .video-lazy-visible')) {
+      return;
+    }
+
+    image.classList.add('content-image');
+    image.dataset.zoomable = '';
+  });
+</script>
