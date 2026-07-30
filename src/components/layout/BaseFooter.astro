@@ -65,6 +65,14 @@ const socialIcons = [
   </p>
 
   <ul class="flex gap-4 mt-2">
+      <li>
+        <button
+          type="button"
+          class="project-status-toggle block w-6 h-6 border border-black bg-black"
+          aria-label="Toggle project status view"
+          aria-pressed="false"
+        />
+      </li>
       {
         socialIcons.map(item => (
           <li>
@@ -110,5 +118,16 @@ const socialIcons = [
     });
 
     window.addEventListener('scroll', toggleBackToTopButton);
+
+    const statusToggle = document.querySelector<HTMLButtonElement>(
+      '.project-status-toggle',
+    );
+
+    statusToggle?.addEventListener('click', () => {
+      const enabled = document.documentElement.classList.toggle(
+        'project-status-view',
+      );
+      statusToggle.setAttribute('aria-pressed', String(enabled));
+    });
   });
 </script>

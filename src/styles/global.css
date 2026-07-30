@@ -176,6 +176,18 @@ figcaption {
   filter: drop-shadow(5px 5px 0 rgb(0 0 0 / 1));
 }
 
+html.project-status-view [data-project-status='finished'] .brutal-card {
+  background-color: #86efac !important;
+}
+
+html.project-status-view [data-project-status='wip'] .brutal-card {
+  background-color: #fde047 !important;
+}
+
+html.project-status-view [data-project-status='archived'] .brutal-card {
+  background-color: #a3a3a3 !important;
+}
+
 :root 
 {  /* ---- ⚫️ Colors ⚪️ ---- */
   /* Base Tokens */

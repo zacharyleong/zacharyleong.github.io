@@ -23,7 +23,7 @@ const sortedPosts = posts.sort((a, b) => {
     sortedPosts.map((post) => {
       const { externalLink } = post.data;
       return (
-        <li>
+        <li data-project-status={post.data.projectStatus}>
           {externalLink ? (
             <LinkSummaryCard post={post} />
           ) : (
