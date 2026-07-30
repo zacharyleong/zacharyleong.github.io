@@ -177,15 +177,15 @@ figcaption {
 }
 
 html.project-status-view [data-project-status='finished'] .brutal-card {
-  background-color: #86efac !important;
+  background-color: #c4edd3 !important;
 }
 
 html.project-status-view [data-project-status='wip'] .brutal-card {
-  background-color: #fde047 !important;
+  background-color: #fbeda9 !important;
 }
 
 html.project-status-view [data-project-status='archived'] .brutal-card {
-  background-color: #a3a3a3 !important;
+  background-color: #cccccc !important;
 }
 
 :root 
