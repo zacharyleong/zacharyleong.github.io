@@ -3,3 +3,5 @@ node_modules
 dist
 workspace.json
 src/.obsidian/plugins/**
+public/pdf/resume/**
+!resume-public.pdf
