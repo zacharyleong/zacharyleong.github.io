@@ -1,5 +1,4 @@
 ---
-import { getCollection } from 'astro:content';
 import Layout from '@layouts/Default.astro';
 import { Card } from '@eliancodes/brutal-ui';
 import RecentBlogPosts from '@components/generic/RecentBlogPosts.astro';
@@ -23,12 +22,40 @@ import { email } from '@config';
        <div class='col-span-6'>
            <Card>
              <h2 class="mt-4 outfit text-2xl md:text-5xl lg:text-7xl">Hi, I'm Zachary, </h2>
+             <!-- <p class="mt-4 outfit text-xl md:text-2xl lg:text-3xl">
+               a computer graphics student at UPenn, driven by a deep love for visual storytelling and the tools that bring it to life. 
+               I enjoy exploring the intersection of art and code—whether that's proceduralism, music animations, or stylization. 
+               My dream is to contribute to animated feature films, where creative problem solving can elevate emotion, story, and craft.
+             </p> -->
              <p class="mt-4 outfit text-xl md:text-2xl lg:text-3xl">
-               a computer graphics student at UPenn, driven by a deep love for visual storytelling and the tools that bring it to life. I enjoy exploring the intersection of art and code—whether that's proceduralism, music animations, or stylization. My dream is to contribute to animated feature films, where creative problem solving can elevate emotion, story, and craft.
+               a student in the 
+               <a href="https://cg.cis.upenn.edu/dmd.html" target="_blank" rel="noopener noreferrer" class="hover:underline">Digital Media Design</a> 
+               program at UPenn studying 
+               <a href="https://en.wikipedia.org/wiki/Computer_graphics_(computer_science)" target="_blank" rel="noopener noreferrer"class="hover:underline">computer graphics</a>. 
              </p>
 
-             <h2 class="mt-8 outfit text-xl md:text-2xl lg:text-3xl">Contact</h2>
-             <p class="mt-2 outfit text-base md:text-lg lg:text-xl">
+              <p class="mt-6 outfit text-base md:text-lg lg:text-xl">
+                 I grew up learning to code in school, and made art in my free time, so I'm interested in everything within graphics: geometry, rendering, animation... forever learning!
+              </p>
+
+              <p class="mt-3 outfit text-base md:text-lg lg:text-xl">
+               Outside of classes, I TA for computer graphics (before that, discrete math), and I run public relations as part of the CG@Penn student board.
+             </p>
+
+             <p class="mt-3 outfit text-base md:text-lg lg:text-xl">
+               Last summer, I interned at NASA and worked on autonomous drone traffic management. Before that, I was working in an origami robotics research lab.
+             </p>
+
+             <p class="mt-3 outfit text-base md:text-lg lg:text-xl">
+               I also fold origami, run, play table tennis and ultimate frisbee, watch tv, make videos, and hike.
+             </p>
+
+             <p class="mt-3 outfit text-base md:text-lg lg:text-xl">
+              Other things I like: The Strokes, Hans Zimmer, How to Train Your Dragon, Whiplash, Andor, Avatar: the Last Airbender, Outer Wilds, Splatoon.
+             </p>
+
+             <p class="mt-8 outfit text-base md:text-lg lg:text-xl">
+                  Thanks for stopping by! You can email me at: 
                   <a id="email-container" href="#" class="hover:underline">
                       Enable JavaScript to view email
                   </a>
@@ -51,7 +78,7 @@ import { email } from '@config';
     </section> -->
   </main>
   <script define:vars={{ email }}>
-    document.addEventListener('DOMContentLoaded', () => {
+    document.addEventListener('astro:page-load', () => {
       const emailLink = document.getElementById('email-container');
       if (emailLink) {
         emailLink.textContent = email;
