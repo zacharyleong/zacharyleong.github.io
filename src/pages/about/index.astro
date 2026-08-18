@@ -13,21 +13,11 @@ import RecentBlogPosts from '@components/generic/RecentBlogPosts.astro';
 
   <main class='bg-green p-6'>
     <section id='about-me' class='grid md:grid-cols-8 gap-8 mt-4'>
-        
-       <div class='md:col-span-2 flex flex-col gap-8'>
-           <img
+        <img
             src="/img/mario_profile.jpg"
             alt="Photo of Zachary"
-            class=" card-shadow border-3 rounded-lg border-black"
+            class="col-span-2 card-shadow border-3 rounded-lg border-black"
             />
-
-           <Card>
-              <h2 class="mt-3 outfit text-xl md:text-2xl lg:text-3xl">Contact</h2>
-              <p class="mt-2 outfit text-base md:text-lg lg:text-xl">
-                  zachary &lt;dot&gt; j &lt;dot&gt; leong &lt;at&gt; gmail &lt;dot&gt; com
-              </p>
-          </Card>
-       </div>
 
        <div class='col-span-6'>
            <Card>
@@ -35,6 +25,13 @@ import RecentBlogPosts from '@components/generic/RecentBlogPosts.astro';
              <p class="mt-4 outfit text-xl md:text-2xl lg:text-3xl">
                a computer graphics student at UPenn, driven by a deep love for visual storytelling and the tools that bring it to life. I enjoy exploring the intersection of art and code—whether that's proceduralism, music animations, or stylization. My dream is to contribute to animated feature films, where creative problem solving can elevate emotion, story, and craft.
              </p>
+
+             <h2 class="mt-8 outfit text-xl md:text-2xl lg:text-3xl">Contact</h2>
+             <p class="mt-2 outfit text-base md:text-lg lg:text-xl">
+                  <a id="email-container" href="#" class="hover:underline">
+                      Enable JavaScript to view email
+                  </a>
+              </p>
            </Card>
        </div>
     </section>
@@ -52,4 +49,17 @@ import RecentBlogPosts from '@components/generic/RecentBlogPosts.astro';
        </div>
     </section> -->
   </main>
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const user = "zachary.j.leong";
+      const domain = "gmail.com";
+      const email = user + "@" + domain;
+
+      const emailLink = document.getElementById('email-container') as HTMLAnchorElement;
+      if (emailLink) {
+        emailLink.textContent = email;
+        emailLink.href = "mailto:" + email;
+      }
+    });
+  </script>
 </Layout>
