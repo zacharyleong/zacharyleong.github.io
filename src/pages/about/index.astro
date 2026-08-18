@@ -3,6 +3,7 @@ import { getCollection } from 'astro:content';
 import Layout from '@layouts/Default.astro';
 import { Card } from '@eliancodes/brutal-ui';
 import RecentBlogPosts from '@components/generic/RecentBlogPosts.astro';
+import { email } from '@config';
 ---
 
 <Layout
@@ -49,13 +50,9 @@ import RecentBlogPosts from '@components/generic/RecentBlogPosts.astro';
        </div>
     </section> -->
   </main>
-  <script>
+  <script define:vars={{ email }}>
     document.addEventListener('DOMContentLoaded', () => {
-      const user = "zachary.j.leong";
-      const domain = "gmail.com";
-      const email = user + "@" + domain;
-
-      const emailLink = document.getElementById('email-container') as HTMLAnchorElement;
+      const emailLink = document.getElementById('email-container');
       if (emailLink) {
         emailLink.textContent = email;
         emailLink.href = "mailto:" + email;

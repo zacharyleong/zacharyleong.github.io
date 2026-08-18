@@ -18,3 +18,9 @@ const blogCollection = defineCollection({
 export const collections = {
   blog: blogCollection,
 };
+
+
+const user = "me";
+const domain = "zacharyleong.com";
+
+export const email = user + "@" + domain;
