@@ -20,7 +20,7 @@ export const collections = {
 };
 
 
-const user = "me";
+const user = "contact";
 const domain = "zacharyleong.com";
 
 export const email = user + "@" + domain;
