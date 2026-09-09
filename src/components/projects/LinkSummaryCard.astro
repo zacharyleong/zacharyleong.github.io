@@ -9,7 +9,18 @@ interface Props {
 }
 
 const { post } = Astro.props;
-const externalLink = post.data.externalLink;
+const externalLink = post.data.externalLink ?? `/projects/${post.slug}/`;
+const sites = [
+  { domain: 'github.com', name: 'GitHub', icon: 'i-uil-github' },
+  { domain: 'itch.io', name: 'itch.io', icon: 'itch-icon' },
+];
+let hostname = '';
+try {
+  hostname = new URL(externalLink).hostname;
+} catch {}
+const site = sites.find(({ domain }) =>
+  hostname === domain || hostname.endsWith(`.${domain}`)
+);
 ---
 
 <SummaryCard
@@ -19,7 +30,12 @@ const externalLink = post.data.externalLink;
   description={post.data.description}
 >
   <div class='flex justify-end my-4'>
-    <Button href={externalLink} target="_blank">Explore &rarr;</Button>
+    <Button href={externalLink} target="_blank">
+      <span class="inline-flex items-center gap-2">
+        {site ? site.name : "Explore"}
+        {site ? <span class={`${site.icon} inline-block w-6 h-6`} role="img" aria-label={site.name} /> : <span>&rarr;</span>}
+      </span>
+    </Button>
   </div>
 
   <div class='hidden sm:inline-block'>
@@ -48,3 +64,10 @@ const externalLink = post.data.externalLink;
     </div>
   </div>
 </SummaryCard>
+
+<style>
+  .itch-icon {
+    background-color: currentColor;
+    mask: url('/icons/itch.svg') center / contain no-repeat;
+  }
+</style>
