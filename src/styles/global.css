@@ -360,6 +360,10 @@ html[data-theme='dark'] .related-projects {
   background-color: var(--theme-page-background);
 }
 
+html[data-theme='dark'] .featured-projects {
+  background-color: var(--theme-page-background);
+}
+
 html[data-theme='dark'] .blog-reading {
   color: var(--theme-text-primary);
   background-color: var(--theme-surface);
@@ -453,11 +457,16 @@ footer {
 }
 
 html[data-theme='dark'] footer a {
+  color: var(--theme-footer-text);
+}
+
+html[data-theme='dark'] footer a:hover,
+html[data-theme='dark'] footer a:focus-visible {
   color: var(--theme-accent);
 }
 
 html[data-theme='dark'] .project-status-toggle {
-  background-color: var(--theme-accent);
+  background-color: var(--theme-footer-background);
   border-color: var(--theme-border);
 }
 
