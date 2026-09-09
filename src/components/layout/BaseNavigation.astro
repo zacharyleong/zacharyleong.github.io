@@ -15,7 +15,7 @@ const navigationItems = [
 const { pageTitle } = Astro.props;
 ---
 
-<header class="border-b-4 border-black flex justify-between p-6 items-center">
+<header class="site-header border-b-4 border-black flex justify-between p-6 items-center">
   {pageTitle && <h1 class="hidden">{pageTitle}</h1>}
 
   <!-- Brand -->
@@ -24,10 +24,10 @@ const { pageTitle } = Astro.props;
   </a>
 
 
-  <!-- Main navigation -->
-  <nav class="hidden md:inline-block">
-    <h2 class="hidden">Navigation</h2>
-    <ul class="flex gap-8 poppins">
+  <div class="flex items-center gap-4 md:gap-8">
+    <nav class="hidden md:inline-block">
+      <h2 class="hidden">Navigation</h2>
+      <ul class="flex gap-8 poppins">
       {navigationItems.map(item => (
         <li>
           <a
@@ -40,15 +40,57 @@ const { pageTitle } = Astro.props;
           </a>
         </li>
       ))}
-    </ul>
-  </nav>
+      </ul>
+    </nav>
 
-  <!-- Mobile nav stays the same -->
-  <nav class="md:hidden flex">
-    <h2 class="hidden">Mobile Navigation</h2>
-    <ul class="flex gap-4 poppins">
-      <li><a href="/projects/">PROJECTS</a></li>
-      <li><a href="/about/">ABOUT</a></li>
-    </ul>
-  </nav>
+    <nav class="md:hidden flex">
+      <h2 class="hidden">Mobile Navigation</h2>
+      <ul class="flex gap-4 poppins">
+        <li><a href="/projects/">PROJECTS</a></li>
+        <li><a href="/about/">ABOUT</a></li>
+      </ul>
+    </nav>
+
+    <button class="theme-toggle" type="button" aria-label="Switch to dark theme" title="Switch to dark theme">
+      <span class="theme-icon theme-icon-sun i-uil-sun" aria-hidden="true" />
+      <span class="theme-icon theme-icon-moon i-uil-moon" aria-hidden="true" />
+    </button>
+  </div>
 </header>
+
+<script>
+  import { themes, type ThemeName } from '../../config/theme';
+
+  const applyTheme = (theme: ThemeName, persist = false) => {
+    document.documentElement.dataset.theme = theme;
+    document.querySelectorAll<HTMLElement>('[data-hover-index]').forEach((element) => {
+      const index = Number(element.dataset.hoverIndex);
+      element.style.setProperty('--random-hover', themes[theme].accent.hover[index % themes[theme].accent.hover.length]);
+    });
+    const toggle = document.querySelector<HTMLButtonElement>('.theme-toggle');
+    const nextTheme = theme === 'dark' ? 'light' : 'dark';
+    toggle?.setAttribute('aria-label', `Switch to ${nextTheme} theme`);
+    toggle?.setAttribute('title', `Switch to ${nextTheme} theme`);
+    if (persist) {
+      try {
+        localStorage.setItem('theme', theme);
+      } catch {}
+    }
+  };
+
+  const initializeTheme = () => {
+    const root = document.documentElement;
+    const theme = (root.dataset.theme === 'dark' ? 'dark' : 'light') as ThemeName;
+    document.querySelectorAll<HTMLElement>('.brutal-btn, .brutal-pill, .random-accent').forEach((element) => {
+      const index = Math.floor(Math.random() * themes.light.accent.hover.length);
+      element.dataset.hoverIndex = String(index);
+    });
+    applyTheme(theme);
+    const toggle = document.querySelector<HTMLButtonElement>('.theme-toggle');
+    if (toggle) {
+      toggle.onclick = () => applyTheme(root.dataset.theme === 'dark' ? 'light' : 'dark', true);
+    }
+  };
+
+  document.addEventListener('astro:page-load', initializeTheme);
+</script>

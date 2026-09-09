@@ -24,13 +24,13 @@ const tableOfContents = headings || [];
   description={description as string}
   ogImage={ogImage}
 >
-  <main class='p-6 lg:grid lg:grid-cols-3 flex justify-center'>
+  <main class='blog-reading p-6 lg:grid lg:grid-cols-3 flex justify-center'>
     <BlogSideBar headings={tableOfContents} />
     <BlogContent content={content || Astro.props}>
       <slot />
     </BlogContent>
   </main>
-  <section class='p-6'>
+  <section class='related-projects p-6'>
     <RecentBlogPosts count={6} filter={title}/>
   </section>
 </Layout>

@@ -177,15 +177,15 @@ figcaption {
 }
 
 html.project-status-view [data-project-status='finished'] .brutal-card {
-  background-color: #c4edd3 !important;
+  background-color: var(--theme-status-finished) !important;
 }
 
 html.project-status-view [data-project-status='wip'] .brutal-card {
-  background-color: #fbeda9 !important;
+  background-color: var(--theme-status-wip) !important;
 }
 
 html.project-status-view [data-project-status='archived'] .brutal-card {
-  background-color: #cccccc !important;
+  background-color: var(--theme-status-archived) !important;
 }
 
 :root 
@@ -296,5 +296,224 @@ html {
 
 ::selection
 {
-  background-color: aliceblue;
+  background-color: var(--theme-selection-background);
+}
+
+body {
+  color: var(--theme-text-primary);
+  background-color: var(--theme-page-background, var(--theme-surface));
+}
+
+.site-header {
+  color: var(--theme-text-primary);
+  background-color: var(--theme-surface);
+  border-color: var(--theme-border);
+}
+
+.theme-toggle {
+  position: relative;
+  flex: 0 0 auto;
+  width: 2.5rem;
+  height: 2.5rem;
+  color: var(--theme-control-text);
+  background-color: var(--theme-control-background);
+  border: 2px solid var(--theme-border);
+  border-radius: 0.25rem;
+  filter: drop-shadow(3px 3px 0 var(--theme-shadow));
+  cursor: pointer;
+}
+
+.theme-toggle:hover {
+  color: var(--theme-hover-text);
+  background-color: var(--theme-accent);
+  filter: drop-shadow(2px 2px 0 var(--theme-shadow));
+}
+
+.theme-icon {
+  position: absolute;
+  inset: 0.45rem;
+  width: auto;
+  height: auto;
+  transition: opacity 180ms ease, transform 180ms ease;
+}
+
+.theme-icon-moon,
+html[data-theme='dark'] .theme-icon-sun {
+  opacity: 0;
+  transform: rotate(-35deg) scale(0.7);
+}
+
+html[data-theme='dark'] .theme-icon-moon {
+  opacity: 1;
+  transform: rotate(0) scale(1);
+}
+
+.site-header a:hover,
+.site-header a:focus-visible,
+.resume-link:hover,
+.resume-link:focus-visible {
+  color: var(--theme-accent);
+}
+
+html[data-theme='dark'] main:not(.blog-reading),
+html[data-theme='dark'] .related-projects {
+  background-color: var(--theme-page-background);
+}
+
+html[data-theme='dark'] .blog-reading {
+  color: var(--theme-text-primary);
+  background-color: var(--theme-surface);
+}
+
+html[data-theme='dark'] div.brutal-card {
+  color: var(--theme-text-primary);
+  background-color: var(--theme-surface) !important;
+  border-color: var(--theme-border);
+  filter: drop-shadow(7px 7px 0 var(--theme-shadow));
+}
+
+html[data-theme='dark'] div.brutal-card:hover {
+  filter: drop-shadow(5px 5px 0 var(--theme-shadow));
+}
+
+html[data-theme='dark'] a.brutal-btn,
+html[data-theme='dark'] span.brutal-pill,
+html[data-theme='dark'] .themed-control {
+  color: var(--theme-control-text);
+  background-color: var(--theme-control-background);
+  border-color: var(--theme-border);
+}
+
+a.brutal-btn:hover,
+a.brutal-btn:focus-visible,
+span.brutal-pill:hover,
+a:focus-visible span.brutal-pill,
+.random-accent:hover,
+.random-accent:focus-visible {
+  color: var(--theme-hover-text) !important;
+  background-color: var(--random-hover, var(--theme-accent)) !important;
+}
+
+a:focus-visible,
+button:focus-visible,
+[tabindex]:focus-visible {
+  outline: 3px solid var(--theme-focus);
+  outline-offset: 3px;
+}
+
+html[data-theme='dark'] .prose-slate,
+html[data-theme='dark'] .prose-slate :where(h1, h2, h3, h4, h5, h6, p, li, strong, em, th, td) {
+  color: var(--theme-text-primary);
+}
+
+html[data-theme='dark'] .prose-slate :where(a) {
+  color: var(--theme-accent);
+}
+
+html[data-theme='dark'] .prose-slate :where(blockquote) {
+  color: var(--theme-text-secondary);
+  border-color: var(--theme-accent);
+}
+
+html[data-theme='dark'] .prose-slate :where(hr, th, td) {
+  border-color: var(--theme-divider);
+}
+
+html[data-theme='dark'] .prose-slate :where(code):not(pre code) {
+  color: var(--theme-text-primary);
+  background-color: var(--theme-inline-code-background);
+}
+
+html[data-theme='dark'] .prose-slate :where(pre) {
+  background-color: var(--theme-code-background) !important;
+  border: 1px solid var(--theme-divider);
+}
+
+html[data-theme='dark'] .text-slate,
+html[data-theme='dark'] .text-dark,
+html[data-theme='dark'] figcaption {
+  color: var(--theme-text-secondary);
+}
+
+html[data-theme='dark'] [class*='border-black'] {
+  border-color: var(--theme-border);
+}
+
+.card-shadow {
+  filter: drop-shadow(7px 7px 0 var(--theme-shadow));
+}
+
+.card-shadow:hover {
+  filter: drop-shadow(5px 5px 0 var(--theme-shadow));
+}
+
+footer {
+  color: var(--theme-footer-text) !important;
+  background-color: var(--theme-footer-background) !important;
+}
+
+html[data-theme='dark'] footer a {
+  color: var(--theme-accent);
+}
+
+html[data-theme='dark'] .project-status-toggle {
+  background-color: var(--theme-accent);
+  border-color: var(--theme-border);
+}
+
+::-webkit-scrollbar,
+.window-pane::-webkit-scrollbar {
+  background-color: var(--theme-scrollbar-track);
+}
+
+::-webkit-scrollbar-track,
+.window-pane::-webkit-scrollbar-track {
+  background-color: var(--theme-scrollbar-track);
+  background-image: linear-gradient(45deg, var(--theme-scrollbar-pattern) 25%, transparent 25%, transparent 75%, var(--theme-scrollbar-pattern) 75%, var(--theme-scrollbar-pattern)), linear-gradient(45deg, var(--theme-scrollbar-pattern) 25%, transparent 25%, transparent 75%, var(--theme-scrollbar-pattern) 75%, var(--theme-scrollbar-pattern));
+  border-color: var(--theme-border);
+}
+
+::-webkit-scrollbar-thumb,
+.window-pane::-webkit-scrollbar-thumb {
+  background-color: var(--theme-scrollbar-thumb);
+  border-color: var(--theme-border);
+}
+
+::-webkit-scrollbar-button:vertical:start {
+  background-image: var(--theme-scrollbar-up);
+}
+
+::-webkit-scrollbar-button:vertical:end {
+  background-image: var(--theme-scrollbar-down);
+}
+
+::-webkit-scrollbar-button:horizontal:start {
+  background-image: var(--theme-scrollbar-left);
+}
+
+::-webkit-scrollbar-button:horizontal:end {
+  background-image: var(--theme-scrollbar-right);
+}
+
+html[data-theme='dark'] body,
+html[data-theme='dark'] main,
+html[data-theme='dark'] section,
+html[data-theme='dark'] header,
+html[data-theme='dark'] footer,
+html[data-theme='dark'] div.brutal-card,
+html[data-theme='dark'] a.brutal-btn,
+html[data-theme='dark'] span.brutal-pill {
+  transition: color 180ms ease, background-color 180ms ease, border-color 180ms ease;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html,
+  .theme-icon,
+  .theme-toggle,
+  .brutal-card,
+  .brutal-btn,
+  .brutal-pill {
+    scroll-behavior: auto;
+    transition-duration: 0.01ms !important;
+  }
 }
