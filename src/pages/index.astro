@@ -42,28 +42,23 @@ const skills = [
         
         <style>
           .iframe-container {
-            position:relative;
-            background-color: rgba(0, 0, 0, 0.5);
             position: relative;
             overflow: hidden;
-            padding:56.5% 0 0 0;
-            
+            aspect-ratio: 16 / 9;
+            background-color: #000000;
+            border: 3px solid var(--theme-border, #000000);
             border-radius: 8px;
           }
 
           .iframe-container iframe {
-            background-color: rgba(0, 0, 0, 0.5);
+            display: block;
+            background-color: #000000;
+            color-scheme: light;
             position: absolute;
-            top: 0;
-            left: 0;
+            inset: 0;
             width: 100%;
             height: 100%;
-            /* box-sizing: border-box; */
-
-            
-            /* border-radius: 8px; */
-            border-radius: 8px;
-            border: 3px solid #000000;
+            border: 0;
           }
         </style>
 
