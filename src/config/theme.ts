@@ -22,7 +22,7 @@ export interface ThemeColors {
     selection: string;
   };
   text: {
-    site: { primary: string; secondary: string };
+    site: { primary: string };
     article: {
       body: string;
       heading: string;
@@ -91,7 +91,7 @@ export const themes = {
       selection: '#F0F8FF',
     },
     text: {
-      site: { primary: '#000000', secondary: '#222222' },
+      site: { primary: '#000000' },
       article: {
         body: '#334155',
         heading: '#0F172A',
@@ -144,7 +144,7 @@ export const themes = {
       selection: '#315A4B',
     },
     text: {
-      site: { primary: '#F3F4F6', secondary: '#B8BDC7' },
+      site: { primary: '#F3F4F6' },
       article: {
         body: '#E2E8F0',
         heading: '#F1F5F9',
@@ -179,7 +179,7 @@ export const themes = {
       scrollbarThumb: '#26282D',
       scrollbarArrow: '#4ADE80',
     },
-    footer: { background: '#141619', text: '#F3F4F6', hover: '#8DE2BE', statusControl: '#141619' },
+    footer: { background: '#141619', text: '#F3F4F6', hover: '#4ADE80', statusControl: '#141619' },
     status: { finished: '#244435', wip: '#494022', archived: '#363A42' },
   },
 } as const satisfies Record<ThemeName, ThemeColors>;
@@ -197,7 +197,6 @@ const variableNames = {
   'backgrounds.soft': 'soft-background',
   'backgrounds.selection': 'selection-background',
   'text.site.primary': 'site-text-primary',
-  'text.site.secondary': 'site-text-secondary',
   'text.article.body': 'article-text',
   'text.article.heading': 'article-heading',
   'text.article.link': 'article-link',

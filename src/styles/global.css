@@ -535,7 +535,7 @@ footer {
   background-color: var(--theme-footer-background) !important;
 }
 
-html[data-theme='dark'] footer a {
+footer a {
   color: var(--theme-footer-text);
 }
 
@@ -567,19 +567,23 @@ footer a:focus-visible {
   border-color: var(--theme-border);
 }
 
-::-webkit-scrollbar-button:vertical:start {
+::-webkit-scrollbar-button:vertical:start,
+::-webkit-scrollbar-button:vertical:start:active {
   background-image: var(--theme-scrollbar-up);
 }
 
-::-webkit-scrollbar-button:vertical:end {
+::-webkit-scrollbar-button:vertical:end,
+::-webkit-scrollbar-button:vertical:end:active {
   background-image: var(--theme-scrollbar-down);
 }
 
-::-webkit-scrollbar-button:horizontal:start {
+::-webkit-scrollbar-button:horizontal:start,
+::-webkit-scrollbar-button:horizontal:start:active {
   background-image: var(--theme-scrollbar-left);
 }
 
-::-webkit-scrollbar-button:horizontal:end {
+::-webkit-scrollbar-button:horizontal:end,
+::-webkit-scrollbar-button:horizontal:end:active {
   background-image: var(--theme-scrollbar-right);
 }
 
