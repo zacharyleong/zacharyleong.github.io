@@ -583,25 +583,22 @@ footer a:focus-visible {
   background-image: var(--theme-scrollbar-right);
 }
 
-body,
-main,
-section,
-header,
-footer,
+.site-brand-link,
+.site-nav-link,
+.article-sidebar-link,
+footer a,
+.theme-toggle,
+.themed-control {
+  transition:
+    color 180ms ease-in-out,
+    background-color 180ms ease-in-out,
+    border-color 180ms ease-in-out,
+    filter 180ms ease-in-out;
+}
+
+.card-shadow,
 div.brutal-card,
 a.brutal-btn,
 span.brutal-pill {
-  transition: color 180ms ease, background-color 180ms ease, border-color 180ms ease;
-}
-
-@media (prefers-reduced-motion: reduce) {
-  html,
-  .theme-icon,
-  .theme-toggle,
-  .brutal-card,
-  .brutal-btn,
-  .brutal-pill {
-    scroll-behavior: auto;
-    transition-duration: 0.01ms !important;
-  }
+  transition: all 0.3s ease-in-out !important;
 }
