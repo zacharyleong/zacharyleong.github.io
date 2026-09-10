@@ -1,151 +1,238 @@
 export type ThemeName = 'light' | 'dark';
 
+type ControlColors = {
+  background: string;
+  text: string;
+  hoverText: string;
+  hover: readonly string[];
+};
+
 export interface ThemeColors {
   backgrounds: {
-    page: readonly string[];
-    surface: string;
-    control: string;
+    site: string;
+    home: string;
+    about: string;
+    projects: string;
+    tags: string;
+    article: string;
+    relatedProjects: string;
     code: string;
     inlineCode: string;
+    soft: string;
     selection: string;
   };
   text: {
-    primary: string;
-    secondary: string;
-    caption: string;
-    control: string;
-    hover: string;
+    site: { primary: string; secondary: string };
+    article: {
+      body: string;
+      heading: string;
+      link: string;
+      linkHover: string;
+      metadata: string;
+      caption: string;
+      code: string;
+      listMarker: string;
+      sidebar: string;
+      sidebarHover: string;
+    };
   };
-  accent: {
-    primary: string;
-    hover: readonly string[];
-    focus: string;
+  cards: {
+    standard: { background: string; text: string };
+    highlight: { backgrounds: readonly string[]; text: string };
   };
+  controls: {
+    tag: ControlColors;
+    projectButton: ControlColors;
+    projectsButton: ControlColors;
+    themeToggle: Omit<ControlColors, 'hover'> & { hover: string };
+    generic: ControlColors;
+  };
+  accent: { navigation: string; focus: string };
   structure: {
     border: string;
     shadow: string;
-    divider: string;
+    articleDivider: string;
     scrollbarTrack: string;
     scrollbarPattern: string;
     scrollbarThumb: string;
     scrollbarArrow: string;
   };
-  footer: {
-    background: string;
-    text: string;
-  };
-  status: {
-    finished: string;
-    wip: string;
-    archived: string;
-  };
+  footer: { background: string; text: string; hover: string; statusControl: string };
+  status: { finished: string; wip: string; archived: string };
 }
+
+const brightColors = [
+  '#C084FC', '#F472B6', '#FB7185', '#E879F9',
+  '#A78BFA', '#818CF8', '#60A5FA', '#38BDF8',
+  '#22D3EE', '#2DD4BF', '#34D399', '#4ADE80',
+  '#A3E635', '#FACC15', '#FB923C', '#F87171',
+] as const;
 
 export const themes = {
   light: {
     backgrounds: {
-      page: ['#60A5FA', '#4ADE80', '#C084FC'],
-      surface: '#FFFFFF',
-      control: '#FFFFFF',
-      code: '#F1F5F9',
-      inlineCode: '#E2E8F0',
+      site: '#FFFFFF',
+      home: '#60A5FA',
+      about: '#4ADE80',
+      projects: '#4ADE80',
+      tags: '#C084FC',
+      article: '#FFFFFF',
+      relatedProjects: '#FFFFFF',
+      code: 'transparent',
+      inlineCode: 'transparent',
+      soft: '#F1F5F9',
       selection: '#F0F8FF',
     },
     text: {
-      primary: '#000000',
-      secondary: '#475569',
-      caption: '#666666',
-      control: '#000000',
-      hover: '#17191D',
+      site: { primary: '#000000', secondary: '#222222' },
+      article: {
+        body: '#334155',
+        heading: '#0F172A',
+        link: '#0F172A',
+        linkHover: '#0F172A',
+        metadata: '#94A3B8',
+        caption: '#64748B',
+        code: '#0F172A',
+        listMarker: '#94A3B8',
+        sidebar: '#222222',
+        sidebarHover: '#A8A29E',
+      },
     },
-    accent: {
-      primary: '#22C55E',
-      hover: ['#C084FC', '#F472B6', '#FB7185', '#E879F9', '#A78BFA', '#818CF8', '#60A5FA', '#38BDF8', '#22D3EE', '#2DD4BF', '#34D399', '#4ADE80', '#A3E635', '#FACC15', '#FB923C', '#F87171'],
-      focus: '#000000',
+    cards: {
+      standard: { background: '#FFFFFF', text: '#000000' },
+      highlight: { backgrounds: brightColors, text: '#000000' },
     },
+    controls: {
+      tag: { background: '#FFFFFF', text: '#000000', hoverText: '#000000', hover: brightColors },
+      projectButton: { background: '#FFFFFF', text: '#000000', hoverText: '#000000', hover: brightColors },
+      projectsButton: { background: '#FFFFFF', text: '#000000', hoverText: '#000000', hover: brightColors },
+      themeToggle: { background: '#FFFFFF', text: '#000000', hoverText: '#000000', hover: '#22C55E' },
+      generic: { background: '#FFFFFF', text: '#000000', hoverText: '#000000', hover: brightColors },
+    },
+    accent: { navigation: '#4ADE80', focus: '#000000' },
     structure: {
       border: '#000000',
       shadow: '#000000',
-      divider: '#CBD5E1',
+      articleDivider: '#E2E8F0',
       scrollbarTrack: '#FFFFFF',
       scrollbarPattern: '#000000',
       scrollbarThumb: '#FFFFFF',
       scrollbarArrow: '#000000',
     },
-    footer: {
-      background: '#000000',
-      text: '#FFFFFF',
-    },
-    status: {
-      finished: '#C4EDD3',
-      wip: '#FBEDA9',
-      archived: '#CCCCCC',
-    },
+    footer: { background: '#000000', text: '#FFFFFF', hover: '#4ADE80', statusControl: '#000000' },
+    status: { finished: '#C4EDD3', wip: '#FBEDA9', archived: '#CCCCCC' },
   },
   dark: {
     backgrounds: {
-      page: ['#151C28', '#231B29', '#17251F', '#152529'],
-      surface: '#26282D',
-      control: '#34383F',
+      site: '#151C28',
+      home: '#151C28',
+      about: '#17251F',
+      projects: '#17251F',
+      tags: '#231B29',
+      article: '#26282D',
+      relatedProjects: '#151C28',
       code: '#1B1D22',
       inlineCode: '#34383F',
+      soft: '#1E293B',
       selection: '#315A4B',
     },
     text: {
-      primary: '#F3F4F6',
-      secondary: '#B8BDC7',
-      caption: '#A8AFBA',
-      control: '#F3F4F6',
-      hover: '#17191D',
+      site: { primary: '#F3F4F6', secondary: '#B8BDC7' },
+      article: {
+        body: '#E2E8F0',
+        heading: '#F1F5F9',
+        link: '#F1F5F9',
+        linkHover: '#8DE2BE',
+        metadata: '#94A3B8',
+        caption: '#94A3B8',
+        code: '#F1F5F9',
+        listMarker: '#64748B',
+        sidebar: '#B8BDC7',
+        sidebarHover: '#8DE2BE',
+      },
     },
-    accent: {
-      primary: '#8DE2BE',
-      hover: ['#8DE2BE', '#C4B5FD', '#93C5FD', '#F9A8D4', '#FCD34D'],
-      focus: '#8DE2BE',
+    cards: {
+      standard: { background: '#26282D', text: '#F3F4F6' },
+      highlight: { backgrounds: brightColors, text: '#000000' },
     },
+    controls: {
+      tag: { background: '#34383F', text: '#F3F4F6', hoverText: '#17191D', hover: brightColors },
+      projectButton: { background: '#34383F', text: '#F3F4F6', hoverText: '#17191D', hover: brightColors },
+      projectsButton: { background: '#34383F', text: '#F3F4F6', hoverText: '#17191D', hover: brightColors },
+      themeToggle: { background: '#34383F', text: '#F3F4F6', hoverText: '#17191D', hover: '#8DE2BE' },
+      generic: { background: '#34383F', text: '#F3F4F6', hoverText: '#17191D', hover: brightColors },
+    },
+    accent: { navigation: '#8DE2BE', focus: '#8DE2BE' },
     structure: {
       border: '#101215',
       shadow: '#000000',
-      divider: '#4A4E56',
+      articleDivider: '#334155',
       scrollbarTrack: '#151C28',
       scrollbarPattern: '#101215',
       scrollbarThumb: '#26282D',
       scrollbarArrow: '#8DE2BE',
     },
-    footer: {
-      background: '#141619',
-      text: '#F3F4F6',
-    },
-    status: {
-      finished: '#244435',
-      wip: '#494022',
-      archived: '#363A42',
-    },
+    footer: { background: '#141619', text: '#F3F4F6', hover: '#8DE2BE', statusControl: '#141619' },
+    status: { finished: '#244435', wip: '#494022', archived: '#363A42' },
   },
 } as const satisfies Record<ThemeName, ThemeColors>;
 
 const variableNames = {
-  'backgrounds.surface': 'surface',
-  'backgrounds.control': 'control-background',
+  'backgrounds.site': 'site-background',
+  'backgrounds.home': 'home-background',
+  'backgrounds.about': 'about-background',
+  'backgrounds.projects': 'projects-background',
+  'backgrounds.tags': 'tags-background',
+  'backgrounds.article': 'article-background',
+  'backgrounds.relatedProjects': 'related-projects-background',
   'backgrounds.code': 'code-background',
   'backgrounds.inlineCode': 'inline-code-background',
+  'backgrounds.soft': 'soft-background',
   'backgrounds.selection': 'selection-background',
-  'text.primary': 'text-primary',
-  'text.secondary': 'text-secondary',
-  'text.caption': 'caption-color',
-  'text.control': 'control-text',
-  'text.hover': 'hover-text',
-  'accent.primary': 'accent',
+  'text.site.primary': 'site-text-primary',
+  'text.site.secondary': 'site-text-secondary',
+  'text.article.body': 'article-text',
+  'text.article.heading': 'article-heading',
+  'text.article.link': 'article-link',
+  'text.article.linkHover': 'article-link-hover',
+  'text.article.metadata': 'article-metadata',
+  'text.article.caption': 'article-caption',
+  'text.article.code': 'article-code',
+  'text.article.listMarker': 'article-list-marker',
+  'text.article.sidebar': 'article-sidebar',
+  'text.article.sidebarHover': 'article-sidebar-hover',
+  'cards.standard.background': 'standard-card-background',
+  'cards.standard.text': 'standard-card-text',
+  'cards.highlight.text': 'highlight-card-text',
+  'controls.tag.background': 'tag-background',
+  'controls.tag.text': 'tag-text',
+  'controls.tag.hoverText': 'tag-hover-text',
+  'controls.projectButton.background': 'project-button-background',
+  'controls.projectButton.text': 'project-button-text',
+  'controls.projectButton.hoverText': 'project-button-hover-text',
+  'controls.projectsButton.background': 'projects-button-background',
+  'controls.projectsButton.text': 'projects-button-text',
+  'controls.projectsButton.hoverText': 'projects-button-hover-text',
+  'controls.themeToggle.background': 'theme-toggle-background',
+  'controls.themeToggle.text': 'theme-toggle-text',
+  'controls.themeToggle.hoverText': 'theme-toggle-hover-text',
+  'controls.themeToggle.hover': 'theme-toggle-hover',
+  'controls.generic.background': 'generic-control-background',
+  'controls.generic.text': 'generic-control-text',
+  'controls.generic.hoverText': 'generic-control-hover-text',
+  'accent.navigation': 'navigation-accent',
   'accent.focus': 'focus',
   'structure.border': 'border',
   'structure.shadow': 'shadow',
-  'structure.divider': 'divider',
+  'structure.articleDivider': 'article-divider',
   'structure.scrollbarTrack': 'scrollbar-track',
   'structure.scrollbarPattern': 'scrollbar-pattern',
   'structure.scrollbarThumb': 'scrollbar-thumb',
   'structure.scrollbarArrow': 'scrollbar-arrow',
   'footer.background': 'footer-background',
   'footer.text': 'footer-text',
+  'footer.hover': 'footer-hover',
+  'footer.statusControl': 'footer-status-control',
   'status.finished': 'status-finished',
   'status.wip': 'status-wip',
   'status.archived': 'status-archived',
@@ -154,21 +241,18 @@ const variableNames = {
 const getValue = (theme: ThemeColors, path: string) =>
   path.split('.').reduce<unknown>((value, key) => (value as Record<string, unknown>)[key], theme) as string;
 
-const declarations = (theme: ThemeColors) =>
-  [
-    ...Object.entries(variableNames)
-    .map(([path, name]) => `--theme-${name}:${getValue(theme, path)}`)
-    ,
-    ...(['up', 'down', 'left', 'right'] as const).map((direction) => {
-      const points = {
-        up: '11,6 5,15 17,15',
-        down: '5,8 17,8 11,17',
-        left: '7,11 16,5 16,17',
-        right: '8,5 17,11 8,17',
-      }[direction];
-      const svg = `<svg xmlns="http://www.w3.org/2000/svg" width="22" height="23" viewBox="0 0 22 23"><rect x=".5" y=".5" width="21" height="22" fill="${theme.structure.scrollbarThumb}" stroke="${theme.structure.border}"/><path d="M${points.replaceAll(' ', ' L')} Z" fill="${theme.structure.scrollbarArrow}"/></svg>`;
-      return `--theme-scrollbar-${direction}:url("data:image/svg+xml,${encodeURIComponent(svg)}")`;
-    }),
-  ].join(';');
+const declarations = (theme: ThemeColors) => [
+  ...Object.entries(variableNames).map(([path, name]) => `--theme-${name}:${getValue(theme, path)}`),
+  ...(['up', 'down', 'left', 'right'] as const).map((direction) => {
+    const points = {
+      up: '11,6 5,15 17,15',
+      down: '5,8 17,8 11,17',
+      left: '7,11 16,5 16,17',
+      right: '8,5 17,11 8,17',
+    }[direction];
+    const svg = `<svg xmlns="http://www.w3.org/2000/svg" width="22" height="23" viewBox="0 0 22 23"><rect x=".5" y=".5" width="21" height="22" fill="${theme.structure.scrollbarThumb}" stroke="${theme.structure.border}"/><path d="M${points.replaceAll(' ', ' L')} Z" fill="${theme.structure.scrollbarArrow}"/></svg>`;
+    return `--theme-scrollbar-${direction}:url("data:image/svg+xml,${encodeURIComponent(svg)}")`;
+  }),
+].join(';');
 
 export const themeStyles = `:root{color-scheme:light;${declarations(themes.light)}}html[data-theme="dark"]{color-scheme:dark;${declarations(themes.dark)}}`;

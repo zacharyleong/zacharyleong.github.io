@@ -198,7 +198,7 @@ html.project-status-view [data-project-status='archived'] .brutal-card {
   --primary: var(--sys-color-white);
   --secondary: var(--sys-color-black);
   --content-media-radius: 8px;
-  --caption-color: #666;
+  --caption-color: var(--theme-article-caption);
   --caption-font-size: 0.9rem;
 }
 
@@ -300,14 +300,39 @@ html {
 }
 
 body {
-  color: var(--theme-text-primary);
-  background-color: var(--theme-page-background, var(--theme-surface));
+  color: var(--theme-site-text-primary);
+  background-color: var(--theme-site-background);
 }
 
 .site-header {
-  color: var(--theme-text-primary);
-  background-color: var(--theme-surface);
+  color: var(--theme-site-text-primary);
+  background-color: var(--theme-site-background);
   border-color: var(--theme-border);
+}
+
+.page-home {
+  background-color: var(--theme-home-background);
+}
+
+.page-about {
+  background-color: var(--theme-about-background);
+}
+
+.page-projects {
+  background-color: var(--theme-projects-background);
+}
+
+.page-tags {
+  background-color: var(--theme-tags-background);
+}
+
+.blog-reading {
+  color: var(--theme-article-text);
+  background-color: var(--theme-article-background);
+}
+
+.related-projects {
+  background-color: var(--theme-related-projects-background);
 }
 
 .theme-toggle {
@@ -315,8 +340,8 @@ body {
   flex: 0 0 auto;
   width: 2.5rem;
   height: 2.5rem;
-  color: var(--theme-control-text);
-  background-color: var(--theme-control-background);
+  color: var(--theme-theme-toggle-text);
+  background-color: var(--theme-theme-toggle-background);
   border: 2px solid var(--theme-border);
   border-radius: 0.25rem;
   filter: drop-shadow(3px 3px 0 var(--theme-shadow));
@@ -324,8 +349,8 @@ body {
 }
 
 .theme-toggle:hover {
-  color: var(--theme-hover-text);
-  background-color: var(--theme-accent);
+  color: var(--theme-theme-toggle-hover-text);
+  background-color: var(--theme-theme-toggle-hover);
   filter: drop-shadow(2px 2px 0 var(--theme-shadow));
 }
 
@@ -352,50 +377,74 @@ html[data-theme='dark'] .theme-icon-moon {
 .site-header a:focus-visible,
 .resume-link:hover,
 .resume-link:focus-visible {
-  color: var(--theme-accent);
+  color: var(--theme-navigation-accent);
 }
 
-html[data-theme='dark'] main:not(.blog-reading),
-html[data-theme='dark'] .related-projects {
-  background-color: var(--theme-page-background);
-}
-
-html[data-theme='dark'] .featured-projects {
-  background-color: var(--theme-page-background);
-}
-
-html[data-theme='dark'] .blog-reading {
-  color: var(--theme-text-primary);
-  background-color: var(--theme-surface);
-}
-
-html[data-theme='dark'] div.brutal-card {
-  color: var(--theme-text-primary);
-  background-color: var(--theme-surface) !important;
+.project-card > div.brutal-card {
+  color: var(--theme-standard-card-text);
+  background-color: var(--theme-standard-card-background) !important;
   border-color: var(--theme-border);
   filter: drop-shadow(7px 7px 0 var(--theme-shadow));
 }
 
-html[data-theme='dark'] div.brutal-card:hover {
+.highlight-card > div.brutal-card {
+  color: var(--theme-highlight-card-text);
+  background-color: var(--theme-highlight-card-background, var(--color)) !important;
+  border-color: var(--theme-border);
+  filter: drop-shadow(7px 7px 0 var(--theme-shadow));
+}
+
+.project-card > div.brutal-card:hover,
+.highlight-card > div.brutal-card:hover {
   filter: drop-shadow(5px 5px 0 var(--theme-shadow));
 }
 
-html[data-theme='dark'] a.brutal-btn,
-html[data-theme='dark'] span.brutal-pill,
-html[data-theme='dark'] .themed-control {
-  color: var(--theme-control-text);
-  background-color: var(--theme-control-background);
+.project-tags span.brutal-pill {
+  color: var(--theme-tag-text);
+  background-color: var(--theme-tag-background);
   border-color: var(--theme-border);
 }
 
-a.brutal-btn:hover,
-a.brutal-btn:focus-visible,
-span.brutal-pill:hover,
-a:focus-visible span.brutal-pill,
+.project-tags span.brutal-pill:hover,
+.project-tags a:focus-visible span.brutal-pill {
+  color: var(--theme-tag-hover-text) !important;
+  background-color: var(--theme-tag-hover) !important;
+}
+
+.project-action a.brutal-btn {
+  color: var(--theme-project-button-text);
+  background-color: var(--theme-project-button-background);
+  border-color: var(--theme-border);
+}
+
+.project-action a.brutal-btn:hover,
+.project-action a.brutal-btn:focus-visible {
+  color: var(--theme-project-button-hover-text) !important;
+  background-color: var(--theme-project-button-hover) !important;
+}
+
+.projects-action a.brutal-btn {
+  color: var(--theme-projects-button-text);
+  background-color: var(--theme-projects-button-background);
+  border-color: var(--theme-border);
+}
+
+.projects-action a.brutal-btn:hover,
+.projects-action a.brutal-btn:focus-visible {
+  color: var(--theme-projects-button-hover-text) !important;
+  background-color: var(--theme-projects-button-hover) !important;
+}
+
+.themed-control {
+  color: var(--theme-generic-control-text);
+  background-color: var(--theme-generic-control-background);
+  border-color: var(--theme-border);
+}
+
 .random-accent:hover,
 .random-accent:focus-visible {
-  color: var(--theme-hover-text) !important;
-  background-color: var(--random-hover, var(--theme-accent)) !important;
+  color: var(--theme-generic-control-hover-text) !important;
+  background-color: var(--theme-generic-control-hover) !important;
 }
 
 a:focus-visible,
@@ -405,38 +454,47 @@ button:focus-visible,
   outline-offset: 3px;
 }
 
-html[data-theme='dark'] .prose-slate,
-html[data-theme='dark'] .prose-slate :where(h1, h2, h3, h4, h5, h6, p, li, strong, em, th, td) {
-  color: var(--theme-text-primary);
+.prose-slate {
+  --un-prose-body: var(--theme-article-text);
+  --un-prose-headings: var(--theme-article-heading);
+  --un-prose-links: var(--theme-article-link);
+  --un-prose-lists: var(--theme-article-list-marker);
+  --un-prose-hr: var(--theme-article-divider);
+  --un-prose-captions: var(--theme-article-caption);
+  --un-prose-code: var(--theme-article-code);
+  --un-prose-borders: var(--theme-article-divider);
+  --un-prose-bg-soft: var(--theme-soft-background);
 }
 
-html[data-theme='dark'] .prose-slate :where(a) {
-  color: var(--theme-accent);
-}
-
-html[data-theme='dark'] .prose-slate :where(blockquote) {
-  color: var(--theme-text-secondary);
-  border-color: var(--theme-accent);
-}
-
-html[data-theme='dark'] .prose-slate :where(hr, th, td) {
-  border-color: var(--theme-divider);
-}
-
-html[data-theme='dark'] .prose-slate :where(code):not(pre code) {
-  color: var(--theme-text-primary);
+.prose-slate :where(code):not(pre code) {
   background-color: var(--theme-inline-code-background);
 }
 
-html[data-theme='dark'] .prose-slate :where(pre) {
-  background-color: var(--theme-code-background) !important;
-  border: 1px solid var(--theme-divider);
+.prose-slate :where(a):hover,
+.prose-slate :where(a):focus-visible {
+  color: var(--theme-article-link-hover);
 }
 
-html[data-theme='dark'] .text-slate,
-html[data-theme='dark'] .text-dark,
-html[data-theme='dark'] figcaption {
-  color: var(--theme-text-secondary);
+.prose-slate :where(pre) {
+  background-color: var(--theme-code-background) !important;
+  border: 1px solid var(--theme-article-divider);
+}
+
+.article-metadata {
+  color: var(--theme-article-metadata);
+}
+
+.article-sidebar-link {
+  color: var(--theme-article-sidebar);
+}
+
+.article-sidebar-link:hover,
+.article-sidebar-link:focus-visible {
+  color: var(--theme-article-sidebar-hover);
+}
+
+figcaption {
+  color: var(--theme-article-caption);
 }
 
 html[data-theme='dark'] [class*='border-black'] {
@@ -460,13 +518,13 @@ html[data-theme='dark'] footer a {
   color: var(--theme-footer-text);
 }
 
-html[data-theme='dark'] footer a:hover,
-html[data-theme='dark'] footer a:focus-visible {
-  color: var(--theme-accent);
+footer a:hover,
+footer a:focus-visible {
+  color: var(--theme-footer-hover);
 }
 
-html[data-theme='dark'] .project-status-toggle {
-  background-color: var(--theme-footer-background);
+.project-status-toggle {
+  background-color: var(--theme-footer-status-control);
   border-color: var(--theme-border);
 }
 
@@ -504,14 +562,14 @@ html[data-theme='dark'] .project-status-toggle {
   background-image: var(--theme-scrollbar-right);
 }
 
-html[data-theme='dark'] body,
-html[data-theme='dark'] main,
-html[data-theme='dark'] section,
-html[data-theme='dark'] header,
-html[data-theme='dark'] footer,
-html[data-theme='dark'] div.brutal-card,
-html[data-theme='dark'] a.brutal-btn,
-html[data-theme='dark'] span.brutal-pill {
+body,
+main,
+section,
+header,
+footer,
+div.brutal-card,
+a.brutal-btn,
+span.brutal-pill {
   transition: color 180ms ease, background-color 180ms ease, border-color 180ms ease;
 }
 

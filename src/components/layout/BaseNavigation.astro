@@ -61,12 +61,50 @@ const { pageTitle } = Astro.props;
 <script>
   import { themes, type ThemeName } from '../../config/theme';
 
+  const colorTargets = (theme: ThemeName) => [
+    {
+      selector: '.highlight-card > .brutal-card',
+      colors: themes[theme].cards.highlight.backgrounds,
+      property: '--theme-highlight-card-background',
+    },
+    {
+      selector: '.project-tags .brutal-pill',
+      colors: themes[theme].controls.tag.hover,
+      property: '--theme-tag-hover',
+    },
+    {
+      selector: '.project-action .brutal-btn',
+      colors: themes[theme].controls.projectButton.hover,
+      property: '--theme-project-button-hover',
+    },
+    {
+      selector: '.projects-action .brutal-btn',
+      colors: themes[theme].controls.projectsButton.hover,
+      property: '--theme-projects-button-hover',
+    },
+    {
+      selector: '.random-accent',
+      colors: themes[theme].controls.generic.hover,
+      property: '--theme-generic-control-hover',
+    },
+  ] as const;
+
+  const applyRandomColors = (theme: ThemeName) => {
+    colorTargets(theme).forEach(({ selector, colors, property }) => {
+      document.querySelectorAll<HTMLElement>(selector).forEach((element) => {
+        const storedIndex = Number(element.dataset.themeColorIndex);
+        const index = Number.isInteger(storedIndex)
+          ? storedIndex
+          : Math.floor(Math.random() * colors.length);
+        element.dataset.themeColorIndex = String(index);
+        element.style.setProperty(property, colors[index % colors.length]);
+      });
+    });
+  };
+
   const applyTheme = (theme: ThemeName, persist = false) => {
     document.documentElement.dataset.theme = theme;
-    document.querySelectorAll<HTMLElement>('[data-hover-index]').forEach((element) => {
-      const index = Number(element.dataset.hoverIndex);
-      element.style.setProperty('--random-hover', themes[theme].accent.hover[index % themes[theme].accent.hover.length]);
-    });
+    applyRandomColors(theme);
     const toggle = document.querySelector<HTMLButtonElement>('.theme-toggle');
     const nextTheme = theme === 'dark' ? 'light' : 'dark';
     toggle?.setAttribute('aria-label', `Switch to ${nextTheme} theme`);
@@ -81,10 +119,6 @@ const { pageTitle } = Astro.props;
   const initializeTheme = () => {
     const root = document.documentElement;
     const theme = (root.dataset.theme === 'dark' ? 'dark' : 'light') as ThemeName;
-    document.querySelectorAll<HTMLElement>('.brutal-btn, .brutal-pill, .random-accent').forEach((element) => {
-      const index = Math.floor(Math.random() * themes.light.accent.hover.length);
-      element.dataset.hoverIndex = String(index);
-    });
     applyTheme(theme);
     const toggle = document.querySelector<HTMLButtonElement>('.theme-toggle');
     if (toggle) {

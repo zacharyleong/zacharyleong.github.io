@@ -1,7 +1,7 @@
 ---
 import LocalFont from '../generic/LocalFont.astro';
 import { ViewTransitions } from 'astro:transitions';
-import { themes, themeStyles } from '../../config/theme';
+import { themeStyles } from '../../config/theme';
 
 interface Props {
   title: string;
@@ -20,7 +20,7 @@ const { title, description, ogImage } = Astro.props;
 
 <head>
   <style is:inline set:html={themeStyles} />
-  <script is:inline define:vars={{ darkBackgrounds: themes.dark.backgrounds.page }} data-astro-rerun>
+  <script is:inline data-astro-rerun>
     (() => {
       let theme;
       try {
@@ -30,8 +30,6 @@ const { title, description, ogImage } = Astro.props;
         theme = matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
       }
       document.documentElement.dataset.theme = theme;
-      const pageBackground = darkBackgrounds[Math.floor(Math.random() * darkBackgrounds.length)];
-      document.documentElement.style.setProperty('--theme-page-background', pageBackground);
     })();
   </script>
   <LocalFont />

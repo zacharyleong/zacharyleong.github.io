@@ -22,16 +22,16 @@ const posts = await getCollection(
 });
 ---
 
-<section class='featured-projects mt-8'>
+<section class='featured-projects highlight-card mt-8'>
   <Card>
     <div class='flex justify-between items-start'>
       <h2 class='text-2xl md:text-4xl lg:text-6xl mb-8 dm-serif'>
         Featured Projects
       </h2>
-      <div class='hidden md:block'>
+      <div class='projects-action hidden md:block'>
         <Button href='/projects/'>Go to projects &rarr;</Button>
       </div>
-      <div class='block md:hidden'>
+      <div class='projects-action block md:hidden'>
         <Button href='/projects/'>to projects</Button>
       </div>
     </div>

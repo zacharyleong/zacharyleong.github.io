@@ -47,8 +47,8 @@ const { tag, blogposts } = Astro.props;
   description={`Projects | All posts tagged with ${tag}`}
   pageTitle={`Projects | Blogposts tagged with ${tag}`}
 >
-  <main class='p-6 bg-purple grid gap-4'>
-    <div>
+  <main class='page-tags p-6 grid gap-4'>
+    <div class='projects-action'>
       <Button href='/projects/'>&larr; Back to projects</Button>
     </div>
     <BlogList posts={blogposts} />
