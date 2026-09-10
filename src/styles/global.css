@@ -25,11 +25,6 @@ figcaption {
   position: relative;
 }
 
-.resume-link {
-  color: #fb923c; /* Change to your desired color */
-  font-weight: bold; /* Optional: make it bold */
-}
-
 .iframe-container iframe {
   position: absolute;
   top: 0;
@@ -304,6 +299,26 @@ body {
   background-color: var(--theme-site-background);
 }
 
+/* Theme colors animate only after an explicit toggle. Keeping these transitions
+   off during startup and Astro page swaps prevents a saved dark theme from
+   visibly animating from the light defaults. */
+html.theme-transitioning body,
+html.theme-transitioning .site-header,
+html.theme-transitioning main,
+html.theme-transitioning footer,
+html.theme-transitioning .brutal-card,
+html.theme-transitioning .brutal-btn,
+html.theme-transitioning .brutal-pill,
+html.theme-transitioning .themed-control,
+html.theme-transitioning .theme-toggle,
+html.theme-transitioning .site-nav-link,
+html.theme-transitioning .blog-reading,
+html.theme-transitioning .related-projects {
+  transition-property: color, background-color, border-color, filter;
+  transition-duration: 220ms;
+  transition-timing-function: ease-in-out;
+}
+
 .site-header {
   color: var(--theme-site-text-primary);
   background-color: var(--theme-site-background);
@@ -373,11 +388,17 @@ html[data-theme='dark'] .theme-icon-moon {
   transform: rotate(0) scale(1);
 }
 
-.site-header a:hover,
-.site-header a:focus-visible,
-.resume-link:hover,
-.resume-link:focus-visible {
+.site-brand-link:hover,
+.site-brand-link:focus-visible,
+.site-nav-link:hover,
+.site-nav-link:focus-visible {
   color: var(--theme-navigation-accent);
+}
+
+.site-brand-link,
+.site-nav-link {
+  color: var(--theme-site-text-primary);
+  transition: color 220ms linear;
 }
 
 .project-card > div.brutal-card {

@@ -19,7 +19,7 @@ const { pageTitle } = Astro.props;
   {pageTitle && <h1 class="hidden">{pageTitle}</h1>}
 
   <!-- Brand -->
-  <a href="/" title="Back to Home">
+  <a class="site-brand-link" href="/" title="Back to Home">
     <p class="righteous md:text-5xl">ZACHARY LEONG</p>
   </a>
 
@@ -31,7 +31,7 @@ const { pageTitle } = Astro.props;
       {navigationItems.map(item => (
         <li>
           <a
-            class={`text-2xl font-medium hover:text-green hover:underline transition-all duration-150 ease-in-out ${item.name === 'Resume' ? 'resume-link' : ''}`}
+            class="site-nav-link text-2xl font-medium hover:underline"
             href={item.url}
             title={`Go to ${item.name}`}
             target={item.name === 'REEL' || item.name === 'RESUME' ? '_blank' : '_self'}
@@ -102,8 +102,18 @@ const { pageTitle } = Astro.props;
     });
   };
 
+  let transitionTimer: number | undefined;
+
   const applyTheme = (theme: ThemeName, persist = false) => {
-    document.documentElement.dataset.theme = theme;
+    const root = document.documentElement;
+    if (persist) {
+      root.classList.add('theme-transitioning');
+      window.clearTimeout(transitionTimer);
+      transitionTimer = window.setTimeout(() => {
+        root.classList.remove('theme-transitioning');
+      }, 260);
+    }
+    root.dataset.theme = theme;
     applyRandomColors(theme);
     const toggle = document.querySelector<HTMLButtonElement>('.theme-toggle');
     const nextTheme = theme === 'dark' ? 'light' : 'dark';

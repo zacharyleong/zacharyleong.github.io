@@ -20,7 +20,7 @@ const { title, description, ogImage } = Astro.props;
 
 <head>
   <style is:inline set:html={themeStyles} />
-  <script is:inline data-astro-rerun>
+  <script is:inline>
     (() => {
       let theme;
       try {
@@ -30,6 +30,11 @@ const { title, description, ogImage } = Astro.props;
         theme = matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
       }
       document.documentElement.dataset.theme = theme;
+
+      document.addEventListener('astro:before-swap', (event) => {
+        event.newDocument.documentElement.dataset.theme =
+          document.documentElement.dataset.theme || theme;
+      });
     })();
   </script>
   <LocalFont />
