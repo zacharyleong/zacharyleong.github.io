@@ -5,9 +5,9 @@
   "pasteImage.namePrefix": "${currentFileNameWithoutExt}-",
   "pasteImage.forceUnixStyleSeparator": true,
   "workbench.colorCustomizations": {
-    "titleBar.activeBackground": "#d7b65b",
+    "titleBar.activeBackground": "#89743a",
     "titleBar.activeForeground": "#383838",
-    "titleBar.inactiveBackground": "#d7b65b",
+    "titleBar.inactiveBackground": "#7a6634",
     "titleBar.inactiveForeground": "#383838"
   }
 }
