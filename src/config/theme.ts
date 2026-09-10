@@ -68,6 +68,13 @@ const brightColors = [
   '#A3E635', '#FACC15', '#FB923C', '#F87171',
 ] as const;
 
+const darkColors = [
+  '#7E22CE', '#BE185D', '#BE123C', '#A21CAF',
+  '#6D28D9', '#4338CA', '#1D4ED8', '#0369A1',
+  '#0E7490', '#0F766E', '#047857', '#15803D',
+  '#4D7C0F', '#A16207', '#C2410C', '#B91C1C',
+] as const;
+
 export const themes = {
   light: {
     backgrounds: {
@@ -103,11 +110,11 @@ export const themes = {
       highlight: { backgrounds: brightColors, text: '#000000' },
     },
     controls: {
-      tag: { background: '#FFFFFF', text: '#000000', hoverText: '#000000', hover: brightColors },
-      projectButton: { background: '#FFFFFF', text: '#000000', hoverText: '#000000', hover: brightColors },
-      projectsButton: { background: '#FFFFFF', text: '#000000', hoverText: '#000000', hover: brightColors },
+      tag: { background: '#FFFFFF', text: '#000000', hoverText: '#FFFFFF', hover: darkColors },
+      projectButton: { background: '#FFFFFF', text: '#000000', hoverText: '#FFFFFF', hover: darkColors },
+      projectsButton: { background: '#FFFFFF', text: '#000000', hoverText: '#FFFFFF', hover: darkColors },
       themeToggle: { background: '#FFFFFF', text: '#000000', hoverText: '#000000', hover: '#22C55E' },
-      generic: { background: '#FFFFFF', text: '#000000', hoverText: '#000000', hover: brightColors },
+      generic: { background: '#FFFFFF', text: '#000000', hoverText: '#FFFFFF', hover: darkColors },
     },
     accent: { navigation: '#4ADE80', focus: '#000000' },
     structure: {
@@ -153,7 +160,7 @@ export const themes = {
     },
     cards: {
       standard: { background: '#26282D', text: '#F3F4F6' },
-      highlight: { backgrounds: brightColors, text: '#000000' },
+      highlight: { backgrounds: darkColors, text: '#000000' },
     },
     controls: {
       tag: { background: '#34383F', text: '#F3F4F6', hoverText: '#17191D', hover: brightColors },
