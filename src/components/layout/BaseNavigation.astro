@@ -4,6 +4,8 @@ interface Props {
 }
 
 import { VIMEO_ID } from "../../globals";
+import { HEADER_BREAKPOINTS } from "../../config/header";
+import BrandLogo from "./BrandLogo.astro";
 
 const navigationItems = [
   { name: 'PROJECTS', url: '/projects/' },
@@ -13,19 +15,55 @@ const navigationItems = [
 ];
 
 const { pageTitle } = Astro.props;
+
+const headerResponsiveStyles = `
+  .brand-logo {
+    display: block;
+    width: 100%;
+    font-size: 1rem;
+  }
+
+  .brand-logo svg { width: auto; }
+  .brand-logo__horizontal { display: none; height: 0.672em; }
+  .brand-logo__stacked { display: block; height: 1.727em; }
+
+  @media (min-width: ${HEADER_BREAKPOINTS.smallHorizontal}px) {
+    .site-brand-link { flex-basis: 7.625rem; }
+    .brand-logo__horizontal { display: block; }
+    .brand-logo__stacked { display: none; }
+  }
+
+  @media (min-width: ${HEADER_BREAKPOINTS.large}px) {
+    .site-brand-link { flex-basis: 7.78rem; }
+    .brand-logo { font-size: 3rem; }
+    .brand-logo__horizontal { display: none; }
+    .brand-logo__stacked { display: block; }
+    .header-actions { gap: 2rem; }
+    .header-nav-large { display: inline-block; }
+    .header-nav-small { display: none; }
+  }
+
+  @media (min-width: ${HEADER_BREAKPOINTS.largeHorizontal}px) {
+    .site-brand-link { flex-basis: 22.8125rem; }
+    .brand-logo__horizontal { display: block; }
+    .brand-logo__stacked { display: none; }
+  }
+`;
 ---
+
+<style is:global set:html={headerResponsiveStyles} />
 
 <header class="site-header border-b-4 border-black flex justify-between p-6 items-center">
   {pageTitle && <h1 class="hidden">{pageTitle}</h1>}
 
   <!-- Brand -->
-  <a class="site-brand-link" href="/" title="Back to Home">
-    <p class="righteous md:text-5xl">ZACHARY LEONG</p>
+  <a class="site-brand-link" href="/" title="Back to Home" aria-label="Zachary Leong — Back to Home">
+    <BrandLogo />
   </a>
 
 
-  <div class="flex items-center gap-4 md:gap-8">
-    <nav class="hidden md:inline-block">
+  <div class="header-actions flex items-center">
+    <nav class="header-nav-large">
       <h2 class="hidden">Navigation</h2>
       <ul class="flex gap-8 poppins">
       {navigationItems.map(item => (
@@ -43,7 +81,7 @@ const { pageTitle } = Astro.props;
       </ul>
     </nav>
 
-    <nav class="md:hidden flex">
+    <nav class="header-nav-small">
       <h2 class="hidden">Mobile Navigation</h2>
       <ul class="flex gap-4 poppins">
         <li><a href="/projects/">PROJECTS</a></li>

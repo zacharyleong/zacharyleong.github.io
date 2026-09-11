@@ -401,6 +401,23 @@ html[data-theme='dark'] .theme-icon-moon {
   transition: color 220ms linear;
 }
 
+.site-brand-link {
+  flex: 0 1 2.58rem;
+  min-width: 0;
+}
+
+.header-actions {
+  gap: 1rem;
+}
+
+.header-nav-large {
+  display: none;
+}
+
+.header-nav-small {
+  display: flex;
+}
+
 .project-card > div.brutal-card {
   color: var(--theme-standard-card-text);
   background-color: var(--theme-standard-card-background) !important;
