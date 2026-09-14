@@ -16,12 +16,19 @@ const categories = [
 ] as const;
 ---
 
-<nav aria-label='Project categories' class='mb-8'>
-  <ul class='flex flex-wrap gap-4'>
-    {categories.map(({ id, label }) => (
-      <li class='projects-action'>
-        <a class='category-link poppins font-medium underline' href={`#${id}`}>
-          {label}
+<nav aria-labelledby='project-category-heading' class='project-category-index mb-10'>
+  <div class='project-category-index__intro'>
+    <p class='poppins font-medium uppercase'>Projects</p>
+    <h2 id='project-category-heading' class='dm-serif'>Browse by discipline</h2>
+  </div>
+
+  <ul class='project-category-index__links'>
+    {categories.map(({ id, label }, index) => (
+      <li>
+        <a class='category-link poppins font-medium' href={`#${id}`}>
+          <span class='category-link__number' aria-hidden='true'>0{index + 1}</span>
+          <span>{label}</span>
+          <span class='category-link__arrow' aria-hidden='true'>&darr;</span>
         </a>
       </li>
     ))}
@@ -29,8 +36,10 @@ const categories = [
 </nav>
 
 <div class='grid gap-12'>
-  {categories.map(({ id, label }) => {
+  {categories.map(({ id, label }, index) => {
     const categoryProjects = projects.filter(({ data }) => data.category === id);
+    const previousCategory = categories[index - 1];
+    const nextCategory = categories[index + 1];
 
     return (
       <section id={id} class='project-category scroll-mt-6'>
@@ -39,6 +48,36 @@ const categories = [
             <a class='category-heading-link' href={`#${id}`}>{label}</a>
           </h2>
           <ProjectGrid projects={categoryProjects} />
+
+          <nav aria-label={`${label} category navigation`} class='category-pagination'>
+            {previousCategory ? (
+              <a class='category-pagination__link category-pagination__link--previous poppins font-medium' href={`#${previousCategory.id}`}>
+                <span aria-hidden='true'>&larr;</span>
+                <span>
+                  <small>Previous discipline</small>
+                  {previousCategory.label}
+                </span>
+              </a>
+            ) : <span />}
+
+            {nextCategory ? (
+              <a class='category-pagination__link category-pagination__link--next poppins font-medium' href={`#${nextCategory.id}`}>
+                <span>
+                  <small>Next discipline</small>
+                  {nextCategory.label}
+                </span>
+                <span aria-hidden='true'>&rarr;</span>
+              </a>
+            ) : (
+              <a class='category-pagination__link category-pagination__link--next poppins font-medium' href='#project-category-heading'>
+                <span>
+                  <small>Finished browsing?</small>
+                  Back to disciplines
+                </span>
+                <span aria-hidden='true'>&uarr;</span>
+              </a>
+            )}
+          </nav>
         </Card>
       </section>
     );
@@ -46,7 +85,69 @@ const categories = [
 </div>
 
 <style>
-  .category-link,
+  .project-category-index {
+    color: var(--theme-site-text-primary);
+    background: var(--theme-site-background);
+    border: 3px solid var(--theme-border);
+    border-radius: 0.5rem;
+    filter: drop-shadow(7px 7px 0 var(--theme-shadow));
+  }
+
+  .project-category-index__intro {
+    padding: 1.25rem 1.5rem;
+    border-bottom: 3px solid var(--theme-border);
+  }
+
+  .project-category-index__intro p {
+    margin-bottom: 0.2rem;
+    font-size: 0.75rem;
+    letter-spacing: 0.12em;
+  }
+
+  .project-category-index__intro h2 {
+    font-size: clamp(1.75rem, 4vw, 3rem);
+    line-height: 1.1;
+  }
+
+  .project-category-index__links {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+
+  .project-category-index__links li + li {
+    border-left: 3px solid var(--theme-border);
+  }
+
+  .category-link {
+    display: grid;
+    grid-template-columns: auto 1fr auto;
+    align-items: center;
+    gap: 0.75rem;
+    min-height: 5rem;
+    padding: 1rem 1.25rem;
+    color: inherit;
+    text-decoration: none;
+  }
+
+  .category-link:hover,
+  .category-link:focus-visible,
+  .category-pagination__link:hover,
+  .category-pagination__link:focus-visible {
+    color: var(--theme-project-button-text);
+    background: var(--theme-project-button-background);
+    text-decoration: underline;
+    text-underline-offset: 0.2em;
+  }
+
+  .category-link__number {
+    font-size: 0.75rem;
+  }
+
+  .category-link__arrow {
+    font-size: 1.5rem;
+    line-height: 1;
+  }
+
   .category-heading-link {
     color: inherit;
   }
@@ -54,5 +155,63 @@ const categories = [
   .category-heading-link:hover,
   .category-heading-link:focus-visible {
     text-decoration: underline;
+  }
+
+  .category-pagination {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 1rem;
+    margin-top: 2rem;
+    padding-top: 1.5rem;
+    border-top: 3px solid var(--theme-border);
+  }
+
+  .category-pagination__link {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    min-height: 4.5rem;
+    padding: 0.75rem 1rem;
+    color: inherit;
+    border: 2px solid var(--theme-border);
+    border-radius: 0.35rem;
+    text-decoration: none;
+  }
+
+  .category-pagination__link--next {
+    justify-content: flex-end;
+    text-align: right;
+  }
+
+  .category-pagination__link small {
+    display: block;
+    margin-bottom: 0.15rem;
+    font-size: 0.7rem;
+    font-weight: 400;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+  }
+
+  @media (max-width: 767px) {
+    .project-category-index__links {
+      grid-template-columns: 1fr;
+    }
+
+    .project-category-index__links li + li {
+      border-top: 3px solid var(--theme-border);
+      border-left: 0;
+    }
+
+    .category-link {
+      min-height: 3.75rem;
+    }
+
+    .category-pagination {
+      grid-template-columns: 1fr;
+    }
+
+    .category-pagination > span {
+      display: none;
+    }
   }
 </style>
