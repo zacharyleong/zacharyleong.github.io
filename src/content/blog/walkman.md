@@ -7,6 +7,8 @@ tags:
   - Blender
   - Plasticity
 imgUrl: ../../img/walkman_stylized_low.png
+category: animation
+projectOrder: 110
 projectStatus: finished
 layout: ../../layouts/BlogPost.astro
 ---

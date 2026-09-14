@@ -94,4 +94,4 @@ All components share global CSS variables `--caption-color` and `--caption-font-
 
 ## Adding a project entry
 
-Create `src/content/blog/<slug>.{md,mdx}` with frontmatter matching the schema in `src/content/config.ts`. `imgUrl` must point to a local image file (it goes through Astro's image pipeline). Set `draft: true` to keep it out of listings, or `externalLink` to redirect to an offsite URL.
+Create `src/content/blog/<slug>.{md,mdx}` with frontmatter matching the schema in `src/content/config.ts`. `imgUrl` must point to a local image file (it goes through Astro's image pipeline). Set `category` to `graphics-programming`, `animation`, or `games`. Use an optional low `projectOrder` to pin/order it ahead of unnumbered projects in that category; ties and unnumbered projects fall back to newest first. Set `draft: true` to keep it out of listings, or `externalLink` to redirect to an offsite URL.

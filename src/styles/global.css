@@ -432,8 +432,16 @@ html[data-theme='dark'] .theme-icon-moon {
   filter: drop-shadow(7px 7px 0 var(--theme-shadow));
 }
 
+.project-category > div.brutal-card {
+  color: var(--theme-category-card-text);
+  background-color: var(--theme-category-card-background, var(--color)) !important;
+  border-color: var(--theme-border);
+  filter: drop-shadow(7px 7px 0 var(--theme-shadow));
+}
+
 .project-card > div.brutal-card:hover,
-.highlight-card > div.brutal-card:hover {
+.highlight-card > div.brutal-card:hover,
+.project-category > div.brutal-card:hover {
   filter: drop-shadow(5px 5px 0 var(--theme-shadow));
 }
 

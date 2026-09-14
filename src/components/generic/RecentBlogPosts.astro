@@ -1,9 +1,8 @@
 ---
 import { getCollection } from 'astro:content';
-import BlogList from '../projects/BlogList.astro';
+import ProjectGrid from '../projects/ProjectGrid.astro';
 import { Card } from '@eliancodes/brutal-ui';
 import { Button } from '@eliancodes/brutal-ui';
-import type { CollectionEntry } from 'astro:content';
 
 interface Props {
   count?: number;
@@ -35,6 +34,6 @@ const posts = await getCollection(
         <Button href='/projects/'>to projects</Button>
       </div>
     </div>
-    <BlogList posts={posts} />
+    <ProjectGrid projects={posts} />
   </Card>
 </section>

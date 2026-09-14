@@ -1,0 +1,33 @@
+---
+import type { CollectionEntry } from 'astro:content';
+import BlogSummaryCard from './BlogSummaryCard.astro';
+import LinkSummaryCard from './LinkSummaryCard.astro';
+
+interface Props {
+  projects: CollectionEntry<'blog'>[];
+}
+
+const { projects } = Astro.props;
+
+const sortedProjects = [...projects].sort((a, b) => {
+  const orderA = a.data.projectOrder ?? Number.POSITIVE_INFINITY;
+  const orderB = b.data.projectOrder ?? Number.POSITIVE_INFINITY;
+
+  if (orderA !== orderB) return orderA - orderB;
+  return b.data.pubDate.getTime() - a.data.pubDate.getTime();
+});
+---
+
+<ul class='grid md:grid-cols-2 lg:grid-cols-3 gap-8'>
+  {
+    sortedProjects.map((project) => (
+      <li data-project-status={project.data.projectStatus}>
+        {project.data.externalLink ? (
+          <LinkSummaryCard post={project} />
+        ) : (
+          <BlogSummaryCard post={project} />
+        )}
+      </li>
+    ))
+  }
+</ul>

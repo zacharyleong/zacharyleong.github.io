@@ -7,6 +7,8 @@ tags:
   - Blender
 description: An endless, zen snowboard run down a procedurally-generated mountain.
 imgUrl: ../../img/descent_thumb.jpg
+category: games
+projectOrder: 10
 projectStatus: finished
 layout: ../../layouts/BlogPost.astro
 ---

@@ -7,6 +7,8 @@ tags:
   - C++
   - CUDA
 imgUrl: ../../img/boids-donut.jpg
+category: graphics-programming
+projectOrder: 10
 projectStatus: finished
 layout: ../../layouts/ExternalLink.astro
 externalLink: https://github.com/zdragonite21/Project1-CUDA-Flocking

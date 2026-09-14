@@ -39,6 +39,7 @@ export interface ThemeColors {
   cards: {
     standard: { background: string; text: string };
     highlight: { backgrounds: readonly string[]; text: string };
+    category: { backgrounds: readonly string[]; text: string };
   };
   controls: {
     tag: ControlColors;
@@ -108,6 +109,7 @@ export const themes = {
     cards: {
       standard: { background: '#FFFFFF', text: '#000000' },
       highlight: { backgrounds: brightColors, text: '#000000' },
+      category: { backgrounds: brightColors, text: '#000000' },
     },
     controls: {
       tag: { background: '#FFFFFF', text: '#000000', hoverText: '#000000', hover: brightColors },
@@ -161,6 +163,7 @@ export const themes = {
     cards: {
       standard: { background: '#26282D', text: '#F3F4F6' },
       highlight: { backgrounds: darkColors, text: '#000000' },
+      category: { backgrounds: darkColors, text: '#F3F4F6' },
     },
     controls: {
       tag: { background: '#34383F', text: '#F3F4F6', hoverText: '#F3F4F6', hover: darkColors },
@@ -210,6 +213,7 @@ const variableNames = {
   'cards.standard.background': 'standard-card-background',
   'cards.standard.text': 'standard-card-text',
   'cards.highlight.text': 'highlight-card-text',
+  'cards.category.text': 'category-card-text',
   'controls.tag.background': 'tag-background',
   'controls.tag.text': 'tag-text',
   'controls.tag.hoverText': 'tag-hover-text',

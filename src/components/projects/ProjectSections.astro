@@ -1,0 +1,58 @@
+---
+import type { CollectionEntry } from 'astro:content';
+import { Card } from '@eliancodes/brutal-ui';
+import ProjectGrid from './ProjectGrid.astro';
+
+interface Props {
+  projects: CollectionEntry<'blog'>[];
+}
+
+const { projects } = Astro.props;
+
+const categories = [
+  { id: 'graphics-programming', label: 'Graphics Programming' },
+  { id: 'animation', label: 'Animation' },
+  { id: 'games', label: 'Games' },
+] as const;
+---
+
+<nav aria-label='Project categories' class='mb-8'>
+  <ul class='flex flex-wrap gap-4'>
+    {categories.map(({ id, label }) => (
+      <li class='projects-action'>
+        <a class='category-link poppins font-medium underline' href={`#${id}`}>
+          {label}
+        </a>
+      </li>
+    ))}
+  </ul>
+</nav>
+
+<div class='grid gap-12'>
+  {categories.map(({ id, label }) => {
+    const categoryProjects = projects.filter(({ data }) => data.category === id);
+
+    return (
+      <section id={id} class='project-category scroll-mt-6'>
+        <Card>
+          <h2 class='text-2xl md:text-4xl lg:text-6xl mb-8 dm-serif'>
+            <a class='category-heading-link' href={`#${id}`}>{label}</a>
+          </h2>
+          <ProjectGrid projects={categoryProjects} />
+        </Card>
+      </section>
+    );
+  })}
+</div>
+
+<style>
+  .category-link,
+  .category-heading-link {
+    color: inherit;
+  }
+
+  .category-heading-link:hover,
+  .category-heading-link:focus-visible {
+    text-decoration: underline;
+  }
+</style>

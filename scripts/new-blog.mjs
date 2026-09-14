@@ -9,8 +9,9 @@ const blogDirectory = path.join(projectRoot, 'src', 'content', 'blog');
 const imageDirectory = path.join(projectRoot, 'src', 'img');
 const mediaDirectory = path.join(projectRoot, 'public', 'media', 'blog');
 
-const valueOptions = new Set(['title', 'description', 'tags', 'cover', 'author']);
+const valueOptions = new Set(['title', 'description', 'tags', 'cover', 'author', 'category']);
 const booleanOptions = new Set(['gallery', 'video', 'dry-run', 'help']);
+const categories = new Set(['graphics-programming', 'animation', 'games']);
 
 function usage() {
   console.log(`Create a new blog post.
@@ -25,6 +26,7 @@ Options:
   --tags <tag,tag>             Add comma-separated tags
   --cover <file>               Copy a cover image into src/img
   --author <name>              Override the default author
+  --category <category>        graphics-programming, animation, or games
   --gallery                    Include the ImageGallery import
   --video                      Include the Video import
   --dry-run                    Preview without creating files
@@ -120,6 +122,7 @@ async function collectInteractiveOptions(initialOptions) {
     const title = (await prompt.question(`Title [${defaultTitle}]: `)).trim() || defaultTitle;
     const description = (await prompt.question('Description [TODO]: ')).trim();
     const tags = (await prompt.question('Tags, comma-separated [none]: ')).trim();
+    const category = (await prompt.question('Category [graphics-programming]: ')).trim();
     const cover = (await prompt.question('Cover image path [placeholder]: ')).trim();
     const gallery = yes(await prompt.question('Include ImageGallery import? [y/N]: '));
     const video = yes(await prompt.question('Include Video import? [y/N]: '));
@@ -131,6 +134,7 @@ async function collectInteractiveOptions(initialOptions) {
         title,
         description: description || undefined,
         tags: tags || undefined,
+        category: category || undefined,
         cover: cover || undefined,
         gallery,
         video,
@@ -150,7 +154,7 @@ async function exists(filePath) {
   }
 }
 
-function buildPost({ title, description, tags, author, coverPath, gallery, video }) {
+function buildPost({ title, description, tags, author, category, coverPath, gallery, video }) {
   const tagFrontmatter = tags.length
     ? `tags:\n${tags.map((tag) => `  - ${JSON.stringify(tag)}`).join('\n')}`
     : 'tags: []';
@@ -168,6 +172,7 @@ pubDate: ${JSON.stringify(currentLocalDate())}
 author: ${JSON.stringify(author)}
 ${tagFrontmatter}
 imgUrl: ${coverPath}
+category: ${category}
 draft: true
 ---
 
@@ -197,6 +202,10 @@ async function main() {
   const description = options.description?.trim() || 'TODO: Add a description.';
   const tags = parseTags(options.tags);
   const author = options.author?.trim() || 'Zachary Leong';
+  const category = options.category?.trim() || 'graphics-programming';
+  if (!categories.has(category)) {
+    throw new Error(`Category must be one of: ${Array.from(categories).join(', ')}.`);
+  }
   const postPath = path.join(blogDirectory, `${slug}.mdx`);
   const postMediaDirectory = path.join(mediaDirectory, slug);
 
@@ -231,6 +240,7 @@ async function main() {
     description,
     tags,
     author,
+    category,
     coverPath,
     gallery: options.gallery,
     video: options.video,

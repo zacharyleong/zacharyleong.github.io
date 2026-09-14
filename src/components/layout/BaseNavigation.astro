@@ -104,36 +104,53 @@ const headerResponsiveStyles = `
       selector: '.highlight-card > .brutal-card',
       colors: themes[theme].cards.highlight.backgrounds,
       property: '--theme-highlight-card-background',
+      unique: false,
+    },
+    {
+      selector: '.project-category > .brutal-card',
+      colors: themes[theme].cards.category.backgrounds,
+      property: '--theme-category-card-background',
+      unique: true,
     },
     {
       selector: '.project-tags .brutal-pill',
       colors: themes[theme].controls.tag.hover,
       property: '--theme-tag-hover',
+      unique: false,
     },
     {
       selector: '.project-action .brutal-btn',
       colors: themes[theme].controls.projectButton.hover,
       property: '--theme-project-button-hover',
+      unique: false,
     },
     {
       selector: '.projects-action .brutal-btn',
       colors: themes[theme].controls.projectsButton.hover,
       property: '--theme-projects-button-hover',
+      unique: false,
     },
     {
       selector: '.random-accent',
       colors: themes[theme].controls.generic.hover,
       property: '--theme-generic-control-hover',
+      unique: false,
     },
   ] as const;
 
   const applyRandomColors = (theme: ThemeName) => {
-    colorTargets(theme).forEach(({ selector, colors, property }) => {
+    colorTargets(theme).forEach(({ selector, colors, property, unique = false }) => {
+      const usedIndices = new Set<number>();
       document.querySelectorAll<HTMLElement>(selector).forEach((element) => {
         const storedIndex = Number(element.dataset.themeColorIndex);
-        const index = Number.isInteger(storedIndex)
-          ? storedIndex
-          : Math.floor(Math.random() * colors.length);
+        let index = Number.isInteger(storedIndex) ? storedIndex : Math.floor(Math.random() * colors.length);
+
+        if (unique && usedIndices.has(index % colors.length)) {
+          const availableIndices = colors.map((_, colorIndex) => colorIndex).filter((colorIndex) => !usedIndices.has(colorIndex));
+          index = availableIndices[Math.floor(Math.random() * availableIndices.length)] ?? index;
+        }
+
+        usedIndices.add(index % colors.length);
         element.dataset.themeColorIndex = String(index);
         element.style.setProperty(property, colors[index % colors.length]);
       });

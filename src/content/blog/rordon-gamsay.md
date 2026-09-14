@@ -7,6 +7,8 @@ tags:
   - Unity
   - Blender
 imgUrl: ../../img/gamsayweb.png
+category: games
+projectOrder: 30
 projectStatus: finished
 layout: ../../layouts/ExternalLink.astro
 externalLink: https://organicbran.itch.io/cooking-with-rordon-gamsay
