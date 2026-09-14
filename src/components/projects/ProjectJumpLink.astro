@@ -1,0 +1,50 @@
+---
+interface Props {
+  href: string;
+  label: string;
+  direction?: 'previous' | 'next' | 'top';
+}
+
+const { href, label, direction = 'next' } = Astro.props;
+const arrow = direction === 'previous' ? '\u2190' : direction === 'top' ? '\u2191' : '\u2192';
+---
+
+<a class:list={['project-jump-link', `project-jump-link--${direction}`, 'poppins', 'font-medium']} href={href}>
+  {direction === 'previous' && <span aria-hidden='true'>{arrow}</span>}
+  <span class='project-jump-link__label'>{label}</span>
+  {direction !== 'previous' && <span aria-hidden='true'>{arrow}</span>}
+</a>
+
+<style>
+  .project-jump-link {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    min-height: 4.5rem;
+    padding: 0.85rem 1rem;
+    color: inherit;
+    border: 2px solid var(--theme-border);
+    border-radius: 0.35rem;
+    font-size: 1.25rem;
+    line-height: 1.2;
+    text-decoration: none;
+  }
+
+  .project-jump-link--next,
+  .project-jump-link--top {
+    justify-content: flex-end;
+    text-align: right;
+  }
+
+  .project-jump-link:hover,
+  .project-jump-link:focus-visible {
+    color: var(--theme-project-button-text);
+    background: var(--project-section-color, var(--theme-project-button-background));
+  }
+
+  .project-jump-link:hover .project-jump-link__label,
+  .project-jump-link:focus-visible .project-jump-link__label {
+    text-decoration: underline;
+    text-underline-offset: 0.2em;
+  }
+</style>

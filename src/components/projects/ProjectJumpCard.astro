@@ -1,0 +1,97 @@
+---
+interface JumpLink {
+  href: string;
+  label: string;
+}
+
+interface Props {
+  heading: string;
+  headingId: string;
+  links: readonly JumpLink[];
+}
+
+const { heading, headingId, links } = Astro.props;
+---
+
+<nav aria-labelledby={headingId} class='project-jump-card card-shadow'>
+  <h2 id={headingId} class='project-jump-card__heading project-section-heading dm-serif'>{heading}</h2>
+
+  <ul class='project-jump-card__links'>
+    {links.map(({ href, label }) => (
+      <li>
+        <a class='project-jump-card__link poppins font-medium' href={href}>
+          <span class='project-jump-card__label'>{label}</span>
+          <span class='project-jump-card__arrow' aria-hidden='true'>&darr;</span>
+        </a>
+      </li>
+    ))}
+  </ul>
+</nav>
+
+<style>
+  .project-jump-card {
+    color: var(--theme-site-text-primary);
+    background: var(--theme-site-background);
+    border: 3px solid var(--theme-border);
+    border-radius: 0.5rem;
+    overflow: hidden;
+  }
+
+  .project-jump-card__heading {
+    padding: 1.25rem 1.5rem;
+    border-bottom: 3px solid var(--theme-border);
+  }
+
+  .project-jump-card__links {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+
+  .project-jump-card__links li + li {
+    border-left: 3px solid var(--theme-border);
+  }
+
+  .project-jump-card__link {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.75rem;
+    min-height: 5rem;
+    padding: 1rem 1.25rem;
+    color: inherit;
+    font-size: 1.25rem;
+    text-decoration: none;
+  }
+
+  .project-jump-card__link:hover,
+  .project-jump-card__link:focus-visible {
+    color: var(--theme-project-button-text);
+    background: var(--project-section-color, var(--theme-project-button-background));
+  }
+
+  .project-jump-card__link:hover .project-jump-card__label,
+  .project-jump-card__link:focus-visible .project-jump-card__label {
+    text-decoration: underline;
+    text-underline-offset: 0.2em;
+  }
+
+  .project-jump-card__arrow {
+    font-size: 1.5rem;
+    line-height: 1;
+  }
+
+  @media (max-width: 767px) {
+    .project-jump-card__links {
+      grid-template-columns: 1fr;
+    }
+
+    .project-jump-card__links li + li {
+      border-top: 3px solid var(--theme-border);
+      border-left: 0;
+    }
+
+    .project-jump-card__link {
+      min-height: 3.75rem;
+    }
+  }
+</style>

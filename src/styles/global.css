@@ -439,6 +439,23 @@ html[data-theme='dark'] .theme-icon-moon {
   filter: drop-shadow(7px 7px 0 var(--theme-shadow));
 }
 
+.project-section-heading {
+  font-size: 1.5rem;
+  line-height: 1.1;
+}
+
+@media (min-width: 768px) {
+  .project-section-heading {
+    font-size: 2.25rem;
+  }
+}
+
+@media (min-width: 1024px) {
+  .project-section-heading {
+    font-size: 3.75rem;
+  }
+}
+
 .project-card > div.brutal-card:hover,
 .highlight-card > div.brutal-card:hover,
 .project-category > div.brutal-card:hover {

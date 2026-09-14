@@ -155,6 +155,16 @@ const headerResponsiveStyles = `
         element.style.setProperty(property, colors[index % colors.length]);
       });
     });
+
+    document.querySelectorAll<HTMLElement>('.project-category').forEach((section) => {
+      const card = section.querySelector<HTMLElement>(':scope > .brutal-card');
+      const color = card?.style.getPropertyValue('--theme-category-card-background');
+      if (!section.id || !color) return;
+
+      document.querySelectorAll<HTMLElement>(`a[href="#${section.id}"]`).forEach((link) => {
+        link.style.setProperty('--project-section-color', color);
+      });
+    });
   };
 
   let transitionTimer: number | undefined;
