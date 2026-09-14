@@ -5,17 +5,13 @@ interface JumpLink {
 }
 
 interface Props {
-  heading: string;
-  headingId: string;
   links: readonly JumpLink[];
 }
 
-const { heading, headingId, links } = Astro.props;
+const { links } = Astro.props;
 ---
 
-<nav aria-labelledby={headingId} class='project-jump-card card-shadow'>
-  <h2 id={headingId} class='project-jump-card__heading project-section-heading dm-serif'>{heading}</h2>
-
+<nav aria-label='Project categories' class='project-jump-card card-shadow'>
   <ul class='project-jump-card__links'>
     {links.map(({ href, label }) => (
       <li>
@@ -35,11 +31,6 @@ const { heading, headingId, links } = Astro.props;
     border: 3px solid var(--theme-border);
     border-radius: 0.5rem;
     overflow: hidden;
-  }
-
-  .project-jump-card__heading {
-    padding: 1.25rem 1.5rem;
-    border-bottom: 3px solid var(--theme-border);
   }
 
   .project-jump-card__links {

@@ -20,8 +20,6 @@ const categories = [
 
 <div class='mb-10'>
   <ProjectJumpCard
-    heading='Projects'
-    headingId='projects-heading'
     links={categories.map(({ id, label }) => ({ href: `#${id}`, label }))}
   />
 </div>
@@ -51,7 +49,7 @@ const categories = [
               />
             ))}
             {index === categories.length - 1 && (
-              <ProjectJumpLink href='#projects-heading' label='Back to top' direction='top' />
+              <ProjectJumpLink href='#' label='Back to top' direction='top' />
             )}
           </nav>
         </Card>
