@@ -18,7 +18,7 @@ const sortedProjects = [...projects].sort((a, b) => {
 });
 ---
 
-<ul class='grid md:grid-cols-2 lg:grid-cols-3 gap-8'>
+<ul class='project-grid grid md:grid-cols-2 lg:grid-cols-3'>
   {
     sortedProjects.map((project) => (
       <li data-project-status={project.data.projectStatus}>
@@ -31,3 +31,9 @@ const sortedProjects = [...projects].sort((a, b) => {
     ))
   }
 </ul>
+
+<style>
+  .project-grid {
+    gap: var(--project-card-gap);
+  }
+</style>

@@ -138,12 +138,20 @@ const headerResponsiveStyles = `
     },
   ] as const;
 
+  const colorIndexCache = new Map<string, number[]>();
+
   const applyRandomColors = (theme: ThemeName) => {
     colorTargets(theme).forEach(({ selector, colors, property, unique = false }) => {
       const usedIndices = new Set<number>();
-      document.querySelectorAll<HTMLElement>(selector).forEach((element) => {
+      const cachedIndices = colorIndexCache.get(selector) ?? [];
+      document.querySelectorAll<HTMLElement>(selector).forEach((element, elementIndex) => {
         const storedIndex = Number(element.dataset.themeColorIndex);
-        let index = Number.isInteger(storedIndex) ? storedIndex : Math.floor(Math.random() * colors.length);
+        const cachedIndex = cachedIndices[elementIndex];
+        let index = Number.isInteger(cachedIndex)
+          ? cachedIndex
+          : Number.isInteger(storedIndex)
+            ? storedIndex
+            : Math.floor(Math.random() * colors.length);
 
         if (unique && usedIndices.has(index % colors.length)) {
           const availableIndices = colors.map((_, colorIndex) => colorIndex).filter((colorIndex) => !usedIndices.has(colorIndex));
@@ -151,9 +159,11 @@ const headerResponsiveStyles = `
         }
 
         usedIndices.add(index % colors.length);
+        cachedIndices[elementIndex] = index;
         element.dataset.themeColorIndex = String(index);
         element.style.setProperty(property, colors[index % colors.length]);
       });
+      colorIndexCache.set(selector, cachedIndices);
     });
 
     document.querySelectorAll<HTMLElement>('.project-category').forEach((section) => {

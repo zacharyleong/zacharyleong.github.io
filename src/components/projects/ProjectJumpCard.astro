@@ -50,7 +50,7 @@ const { links } = Astro.props;
     min-height: 5rem;
     padding: 1rem 1.25rem;
     color: inherit;
-    font-size: 1.25rem;
+    font-size: 1.125rem;
     text-decoration: none;
   }
 
@@ -83,6 +83,12 @@ const { links } = Astro.props;
 
     .project-jump-card__link {
       min-height: 3.75rem;
+    }
+  }
+
+  @media (min-width: 768px) {
+    .project-jump-card__link {
+      font-size: 1.25rem;
     }
   }
 </style>
