@@ -6,6 +6,7 @@ author: Zachary Leong
 tags:
   - C++
   - CUDA
+  - OpenGL
 imgUrl: ../../img/boids-donut.jpg
 category: graphics-programming
 projectOrder: 10
