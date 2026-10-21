@@ -14,7 +14,3 @@ projectStatus: finished
 layout: ../../layouts/ExternalLink.astro
 externalLink: https://github.com/zdragonite21/Project3-CUDA-Path-Tracer
 ---
-
-## About
-
-Start writing here.
