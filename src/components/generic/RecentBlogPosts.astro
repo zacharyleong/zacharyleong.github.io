@@ -16,7 +16,13 @@ const posts = await getCollection(
   ({ data }) => import.meta.env.DEV || !data.draft,
 ).then((posts) => {
   const filteredPosts = filter ? posts.filter(post => !post.data.title.includes(filter)) : posts;
-  const sortedPosts = filteredPosts.sort((a, b) => new Date(b.data.pubDate).getTime() - new Date(a.data.pubDate).getTime())
+  const sortedPosts = [...filteredPosts].sort((a, b) => {
+  const orderA = a.data.projectOrder ?? Number.POSITIVE_INFINITY;
+  const orderB = b.data.projectOrder ?? Number.POSITIVE_INFINITY;
+
+  if (orderA !== orderB) return orderA - orderB;
+    return b.data.pubDate.getTime() - a.data.pubDate.getTime();
+  });
   return sortedPosts.slice(0, count ?? 3)
 });
 ---
